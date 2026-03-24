@@ -1,4 +1,4 @@
-module org.group1.demo {
+module org.group.game {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -11,6 +11,6 @@ module org.group1.demo {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
-    opens org.group1.demo to javafx.fxml;
-    exports org.group1.demo;
+    opens org.group1.game to javafx.fxml;
+    exports org.group1.game;
 }

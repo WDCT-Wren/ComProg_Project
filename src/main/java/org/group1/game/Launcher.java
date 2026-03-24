@@ -1,4 +1,4 @@
-package org.group1.demo;
+package org.group1.game;
 
 public class Launcher {
     public static void main(String[] args) {
