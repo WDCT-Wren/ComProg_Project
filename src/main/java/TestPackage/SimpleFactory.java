@@ -10,6 +10,9 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 //nothing to implement, just marks your factory as the entity
 public class SimpleFactory implements EntityFactory {
 
@@ -26,8 +29,13 @@ public class SimpleFactory implements EntityFactory {
     @Spawns("movingEntity")
 
     public Entity newMovingEnemy(SpawnData data) {
+
+            Image img = new Image(BasicGameSample.class
+                    .getResourceAsStream("/assets/textures/Cuphead_Plane.png"));
+            ImageView plane = new ImageView(img);
+
         return FXGL.entityBuilder(data)
-                .view(new Rectangle(40, 40, Color.BLUE))
+                .view(plane)
                 // important when making an entity move
                 // Declare new Point2D(x,y) class with its corresponding speed (pixel per second)
                 .with(new ProjectileComponent(new Point2D(1,0), 150))

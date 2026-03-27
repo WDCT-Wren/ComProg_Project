@@ -109,6 +109,12 @@
     </dependency>  </dependencies>
 
   <build>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>false</filtering>
+        </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -129,6 +135,9 @@
             <id>default-cli</id>
             <configuration>
 <mainClass>org.group.game/TestPackage.BasicGameSample</mainClass>
+ <options>
+        <option>--enable-native-access=javafx.graphics</option>
+    </options>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

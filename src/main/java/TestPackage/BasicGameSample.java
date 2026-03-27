@@ -17,6 +17,7 @@ public class BasicGameSample extends GameApplication {
     //Overriden to set up the factory and
     //spawn the entities in the specific x and y coordinates in pixels.
     protected void initGame() {
+System.out.println("Resource URL: " + BasicGameSample.class.getResource("/assets/textures/Cuphead_Plane.png"));
         //Used to initialize the world and start to add entities
         FXGL.getGameWorld().addEntityFactory(new SimpleFactory());
 
