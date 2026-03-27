@@ -17,12 +17,12 @@ public class AnimationComponent extends Component {
 
 
     AnimationComponent() {
-    Image idle_sprite = FXGL.image("idle_sprite.png");
+    Image idle_sprite = FXGL.image("idle_sprite.png"); //sprite image in resource folder
     idleChannel = new AnimationChannel(
         idle_sprite,
             1,
-            112,
-            98,
+            112, //Width
+            98, //Height 
             Duration.seconds(0.1),
             0,
             3
@@ -31,10 +31,11 @@ public class AnimationComponent extends Component {
     texture = new AnimatedTexture(idleChannel);
     }
 
-@Override
-public void onAdded() {
-    entity.getViewComponent().addChild(texture);
-    texture.loopAnimationChannel(idleChannel);
-}
+    // Animation loop 
+    @Override
+    public void onAdded() {
+        entity.getViewComponent().addChild(texture);
+        texture.loopAnimationChannel(idleChannel);
+    }
 
 }
