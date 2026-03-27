@@ -17,7 +17,8 @@ public class BasicGameSample extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
-
+        gameSettings.setHeight(720);
+        gameSettings.setWidth(1280);
     }
 
     @Override
@@ -33,8 +34,10 @@ public class BasicGameSample extends GameApplication {
         FXGL.spawn("enemy", 100, 100); //buildAndAttatch() method is not necessary if this is called
         
         // Create a player entity that we can control
-        player = FXGL.spawn("movingEntity", 200, 200);
+        player = FXGL.spawn("cupheadPlane", 100, 200);
     }
+
+    //
     
     // Method to handle input/key listeners
     @Override
