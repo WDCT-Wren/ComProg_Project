@@ -36,7 +36,7 @@ public class SimpleFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 // Declare new Point2D(x,y) class with its corresponding speed (pixel per second)
-                .with(new ProjectileComponent(new Point2D(1,0), 150))
+                .with(new ProjectileComponent(new Point2D(1,0), 0))
                 .with(new AnimationComponent())
                 .build();
     }
