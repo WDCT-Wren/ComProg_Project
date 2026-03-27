@@ -128,7 +128,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>org.group1.demo/org.group1.demo.HelloApplication</mainClass>
+<mainClass>org.group.game/org.group1.game.Launcher</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

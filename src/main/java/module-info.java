@@ -11,6 +11,8 @@ module org.group.game {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
+    opens org.group1.game.controllers to javafx.fxml;
+
     opens org.group1.game to javafx.fxml;
 
 
