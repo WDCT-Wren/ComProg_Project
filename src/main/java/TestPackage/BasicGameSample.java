@@ -30,8 +30,7 @@ public class BasicGameSample extends GameApplication {
 
         // add entities
 
-        // IMPORTANT: entityName String must be the same as in the Spawn annotation.
-        FXGL.spawn("enemy", 100, 100); //buildAndAttatch() method is not necessary if this is called
+        // IMPORTANT: entityName String must be the same as in the Spawn annotation
         
         // Create a player entity that we can control
         player = FXGL.spawn("cupheadPlane", 100, 200);
@@ -43,6 +42,19 @@ public class BasicGameSample extends GameApplication {
     @Override
     protected void initInput() {
         FXGL.getAudioPlayer();
+
+        // Shooting mechanic
+        FXGL.getInput().addAction(
+                new UserAction("Shoot") {
+                    @Override
+                    protected void onAction() {
+                        //Offset to match sprite position
+                        FXGL.spawn("bullet", player.getX()+120, player.getY()+50);
+                    }
+                },
+                KeyCode.Q
+        );
+
         // Move up
         FXGL.getInput().addAction(
             new UserAction("Move up") {

@@ -2,6 +2,7 @@ package TestPackage;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -9,6 +10,7 @@ import com.almasb.fxgl.entity.Spawns;
 
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -16,12 +18,13 @@ import javafx.scene.shape.Rectangle;
 public class SimpleFactory implements EntityFactory {
 
     //Tells FXGL which methods to call when spawning <entity> ("enemy") in this case
-    @Spawns("enemy")
+    @Spawns("bullet")
 
     //Method should be precisely what it is, with the method name being the only one that can be anything.
-    public Entity newEnemy(SpawnData data) {
+    public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .view(new Rectangle(40, 40, Color.RED))
+                .with(new ProjectileComponent(new Point2D(1,0), 1000))
                 .build();
     }
 
