@@ -3,10 +3,17 @@ package TestPackage;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.input.UserAction;
+
+import javafx.scene.input.KeyCode;
 
 //GameApplication is used to start the game instead of
 //JavaFX's native Application class
 public class BasicGameSample extends GameApplication {
+
+    // Variable to hold our controllable entity
+    private Entity player;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -24,7 +31,58 @@ public class BasicGameSample extends GameApplication {
 
         // IMPORTANT: entityName String must be the same as in the Spawn annotation.
         FXGL.spawn("enemy", 100, 100); //buildAndAttatch() method is not necessary if this is called
-        FXGL.spawn("movingEntity", 200, 200);
+        
+        // Create a player entity that we can control
+        player = FXGL.spawn("movingEntity", 200, 200);
+    }
+    
+    // Method to handle input/key listeners
+    @Override
+    protected void initInput() {
+        FXGL.getAudioPlayer();
+        // Move up
+        FXGL.getInput().addAction(
+            new UserAction("Move up") {
+                @Override
+                protected void onAction() {
+                    player.translateY(-2);
+                }
+            },
+            KeyCode.W
+        );
+        
+        // Move down
+        FXGL.getInput().addAction(
+            new UserAction("Move down") {
+                @Override
+                protected void onAction() {
+                    player.translateY(2);
+                }
+            },
+            KeyCode.S
+        );
+        
+        // Move left
+        FXGL.getInput().addAction(
+           new UserAction("Move left") {
+                @Override
+                protected void onAction() {
+                    player.translateX(-2);
+                }
+            },
+            KeyCode.A
+        );
+        
+        // Move right
+        FXGL.getInput().addAction(
+            new UserAction("Move right") {
+                @Override
+                protected void onAction() {
+                    player.translateX(2);
+                }
+            },
+            KeyCode.D
+        );
     }
 
     public static void main(String[] args) {

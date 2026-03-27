@@ -10,6 +10,8 @@ open module org.group.game {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires com.almasb.fxgl.core;
+    requires javafx.graphics;
 
     exports org.group1.game;
     exports TestPackage;
