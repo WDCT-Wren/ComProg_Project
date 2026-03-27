@@ -15,6 +15,7 @@ public class AnimationComponent extends Component {
     private final AnimatedTexture texture;
     private final AnimationChannel idleChannel;
     private final AnimationChannel downChannel;
+    private final AnimationChannel upChannel;
 
 
     AnimationComponent() {
@@ -40,6 +41,19 @@ public class AnimationComponent extends Component {
                 3
                 );
 
+        Image up_sprite = FXGL.image("up_sprite.png"); //up_sprite image in resource folder
+        upChannel = new AnimationChannel(
+                up_sprite,
+                1,
+                114, // Width
+                92, // Total Height divided by amount of frames (4)
+                Duration.seconds(0.1),
+                0,
+                3
+                );
+
+
+
         texture = new AnimatedTexture(idleChannel);
     }
 
@@ -56,6 +70,13 @@ public class AnimationComponent extends Component {
     public void onDown() {
         if (texture.getAnimationChannel() != downChannel) {
             texture.loopAnimationChannel(downChannel);
+        }
+    }
+
+    // Up Animation Loop
+    public void onUp() {
+        if (texture.getAnimationChannel() != upChannel) {
+            texture.loopAnimationChannel(upChannel);
         }
     }
 

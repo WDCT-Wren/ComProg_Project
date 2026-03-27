@@ -48,7 +48,13 @@ public class BasicGameSample extends GameApplication {
             new UserAction("Move up") {
                 @Override
                 protected void onAction() {
-                    player.translateY(-2);
+                    player.translateY(-5);
+                    player.getComponent(AnimationComponent.class).onUp();
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    player.getComponent(AnimationComponent.class).onIdle();
                 }
             },
             KeyCode.W
@@ -59,7 +65,7 @@ public class BasicGameSample extends GameApplication {
             new UserAction("Move down") {
                 @Override
                 protected void onAction() {
-                    player.translateY(2);
+                    player.translateY(5);
                     player.getComponent(AnimationComponent.class).onDown();
                 }
 
@@ -76,7 +82,7 @@ public class BasicGameSample extends GameApplication {
            new UserAction("Move left") {
                 @Override
                 protected void onAction() {
-                    player.translateX(-2);
+                    player.translateX(-5);
                 }
             },
             KeyCode.A
@@ -87,7 +93,7 @@ public class BasicGameSample extends GameApplication {
             new UserAction("Move right") {
                 @Override
                 protected void onAction() {
-                    player.translateX(2);
+                    player.translateX(5);
                 }
             },
             KeyCode.D
