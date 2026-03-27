@@ -57,6 +57,12 @@ public class BasicGameSample extends GameApplication {
                 @Override
                 protected void onAction() {
                     player.translateY(2);
+                    player.getComponent(AnimationComponent.class).onDown();
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    player.getComponent(AnimationComponent.class).onIdle();
                 }
             },
             KeyCode.S

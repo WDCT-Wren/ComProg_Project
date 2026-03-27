@@ -30,10 +30,6 @@ public class SimpleFactory implements EntityFactory {
 
     public Entity newMovingEnemy(SpawnData data) {
 
-            Image img = new Image(BasicGameSample.class
-                    .getResourceAsStream("/assets/textures/idle_sprite.png"));
-            ImageView plane = new ImageView(img);
-
         return FXGL.entityBuilder(data)
                 // Declare new Point2D(x,y) class with its corresponding speed (pixel per second)
                 .with(new ProjectileComponent(new Point2D(1,0), 0))

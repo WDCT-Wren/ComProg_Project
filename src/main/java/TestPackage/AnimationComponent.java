@@ -14,28 +14,56 @@ public class AnimationComponent extends Component {
 
     private final AnimatedTexture texture;
     private final AnimationChannel idleChannel;
+    private final AnimationChannel downChannel;
 
 
     AnimationComponent() {
-    Image idle_sprite = FXGL.image("idle_sprite.png"); //sprite image in resource folder
-    idleChannel = new AnimationChannel(
-        idle_sprite,
-            1,
-            112, //Width
-            98, //Height 
-            Duration.seconds(0.1),
-            0,
-            3
-            );
+        Image idle_sprite = FXGL.image("idle_sprite.png"); //idle_sprite image in resource folder
+        idleChannel = new AnimationChannel(
+                idle_sprite,
+                1,
+                112, //Width
+                98, //Height 
+                Duration.seconds(0.1),
+                0,
+                3
+                );
 
-    texture = new AnimatedTexture(idleChannel);
+        Image down_sprite = FXGL.image("down_sprite.png"); //down_sprite image in resource folder
+        downChannel = new AnimationChannel(
+                down_sprite,
+                1,
+                110, // Width
+                103, // Total Height divided by amount of frames (4)
+                Duration.seconds(0.1),
+                0,
+                3
+                );
+
+        texture = new AnimatedTexture(idleChannel);
     }
 
-    // Animation loop 
+
+
+    // Idle Animation Loop On Spawn 
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(idleChannel);
+    }
+
+    // Down Animation Loop
+    public void onDown() {
+        if (texture.getAnimationChannel() != downChannel) {
+            texture.loopAnimationChannel(downChannel);
+        }
+    }
+
+    // Idle Animation Loop
+    public void onIdle() {
+        if (texture.getAnimationChannel() != idleChannel) {
+            texture.loopAnimationChannel(idleChannel);
+        }
     }
 
 }
