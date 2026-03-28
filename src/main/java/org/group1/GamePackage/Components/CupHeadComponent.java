@@ -2,7 +2,9 @@ package org.group1.GamePackage.Components;
 
 import com.almasb.fxgl.entity.component.Component;
 
+
 public class CupHeadComponent extends Component {
+
     private int health = 100;
     private int lives = 3;
     private int boostLevel = 10;
@@ -16,6 +18,13 @@ public class CupHeadComponent extends Component {
 
     public void decreaseBoostLevel (int amount) {
         if (boostLevel < 10) boostLevel-=amount;
+    }
+
+    public void decreaseLives () {
+        if (lives > 0 && health == 0) {
+            lives-=1;
+            health = 100;
+        }
     }
 
     public void heal (int healAmount) {

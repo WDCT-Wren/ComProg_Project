@@ -1,9 +1,11 @@
 package org.group1.GamePackage;
 
 import org.group1.GamePackage.Components.AnimationComponent;
+import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.EntityFactory.SimpleFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+import org.group1.GamePackage.UI.HUDInterface;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -15,6 +17,7 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.time.TimerAction;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 //GameApplication is used to start the game instead of
@@ -34,6 +37,23 @@ public class Application extends GameApplication {
 
     // Variable for enemies
     private TimerAction normalEnemy;
+    private boolean enemyPresent = false;
+
+    /*
+    Initializes HUD object
+    Variables for HUD texts
+     */
+    HUDInterface HUD = new HUDInterface();
+    private Text hpText;
+    private Text boostText;
+    private Text livesText; 
+
+    @Override
+    protected void initUI() {
+        hpText = HUD.displayHealth(player, hpText);
+        boostText = HUD.displayLives(player, livesText);
+        livesText = HUD.displayBoostLevel(player, boostText);
+    }
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -53,15 +73,27 @@ public class Application extends GameApplication {
                         enemy.getComponent(EnemyAnimationComponent.class).explode();
                     }
                 });
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    EntityType.ENEMY,
+                    EntityType.PLAYER) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity enemy, Entity player) {
+                        var playerComponent = player.getComponent(CupHeadComponent.class);
+                        playerComponent.takeDamage(10);
+                        playerComponent.decreaseLives();
+
+                        enemy.getComponent(EnemyAnimationComponent.class).explode();
+                    }  
+                });
     }
 
     @Override
     protected void initGame() {
         FXGL.getGameWorld().addEntityFactory(new SimpleFactory());
-
         // Create a controllable player entity
         player = FXGL.spawn("cupheadPlane", 100, 200);
-
+    
         normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
             // Generate random position within screen bounds
             double y = FXGLMath.random(0, FXGL.getAppHeight());
@@ -69,10 +101,11 @@ public class Application extends GameApplication {
             // Spawn the entity (defined in your EntityFactory)
             FXGL.spawn("enemy", 1000, y);
 
+            enemyPresent = true;
         }, Duration.seconds(3.0)); // Spawn every 2 seconds
 
     }
-    
+
     // Method to handle input/key listeners
     @Override
     protected void initInput() {
@@ -164,6 +197,27 @@ public class Application extends GameApplication {
         } else {
             player.getComponent(AnimationComponent.class).onIdle();
         }
+
+        /*
+         Checks if enemy entities are present
+         If true, entities explode when they reach the end of the screen
+        */
+        if (enemyPresent == true) {
+            try {
+                if (FXGL.getGameWorld().getSingleton(EntityType.ENEMY).getPosition().getX() == 0) {
+                var enemyInstance = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
+                enemyInstance.getComponent(EnemyAnimationComponent.class).explode();
+                }
+            } catch (Exception NoSuchElementException) {
+                enemyPresent = false;
+            }
+        }
+        
+        //Updates HUD texts if player attributes change
+        var pc = player.getComponent(CupHeadComponent.class);
+        hpText.setText("HP: " + pc.getHealth());
+        livesText.setText("Lives: " + pc.getLives());
+        boostText.setText("Boost: " + pc.getBoostLevel());
     }
 
     public static void main(String[] args) {

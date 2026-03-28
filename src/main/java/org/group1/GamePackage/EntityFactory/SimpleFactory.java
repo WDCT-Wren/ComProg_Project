@@ -49,11 +49,11 @@ public class SimpleFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 // Declare new Point2D(x,y) class with its corresponding speed (pixel per second)
                 .type(EntityType.PLAYER)
+                .with(new CupHeadComponent())
                 .with(new AnimationComponent())
                 .bbox(new HitBox(BoundingShape.box(120, 100)))
                 .with(new KeepOnScreenComponent())
                 .with(new CollidableComponent(true))
-                .with(new CupHeadComponent())
                 .build();
     }
 
