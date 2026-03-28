@@ -58,7 +58,7 @@ public class SimpleFactory implements EntityFactory {
     public Entity enemy(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(EntityType.ENEMY)
-            .view(new Rectangle(25,25, Color.BLUE))
+            .with(new EnemyAnimationComponent())
             .bbox(new HitBox(BoundingShape.box(25, 25)))
             .with(new CollidableComponent(true))
             .build();
