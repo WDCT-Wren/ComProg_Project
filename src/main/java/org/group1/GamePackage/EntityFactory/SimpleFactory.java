@@ -1,4 +1,4 @@
-package TestPackage;
+package org.group1.GamePackage;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -11,9 +11,9 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
-
-import javafx.scene.shape.Rectangle;
-import javafx.scene.paint.Color;   
+import org.group1.GamePackage.Components.AnimationComponent;
+import org.group1.GamePackage.Components.BulletAnimationComponent;
+import org.group1.GamePackage.Components.EnemyAnimationComponent;
 
 
 //nothing to implement, just marks your factory as the entity
@@ -32,7 +32,7 @@ public class SimpleFactory implements EntityFactory {
     public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(EntityType.BULLET)
-                .with(new BulletAnimationComponent()) 
+                .with(new BulletAnimationComponent())
                 .with(new ProjectileComponent(new Point2D(1,0), 1000))
                 .bbox(new HitBox(BoundingShape.box(25, 25)))
                 .with(new CollidableComponent(true))
@@ -57,10 +57,12 @@ public class SimpleFactory implements EntityFactory {
 
     public Entity enemy(SpawnData data) {
         return FXGL.entityBuilder(data)
-            .type(EntityType.ENEMY)
+            .type(EntityType.ENEMY).with()
+            .with(new ProjectileComponent(new Point2D(-1,0), 500))
             .with(new EnemyAnimationComponent())
-            .bbox(new HitBox(BoundingShape.box(25, 25)))
+            .bbox(new HitBox(BoundingShape.box(100, 100)))
             .with(new CollidableComponent(true))
+            .with(new KeepOnScreenComponent())
             .build();
 
     }

@@ -1,14 +1,17 @@
-package TestPackage;
+package org.group1.GamePackage;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 
-import TestPackage.SimpleFactory.EntityType;
+import org.group1.GamePackage.SimpleFactory.EntityType;
+import com.almasb.fxgl.time.TimerAction;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 
 //GameApplication is used to start the game instead of
 //JavaFX's native Application class
@@ -26,7 +29,7 @@ public class BasicGameSample extends GameApplication {
     private Entity player;
 
     // Variable for enemies
-    private Entity normalEnemy;
+    private TimerAction normalEnemy;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -48,23 +51,22 @@ public class BasicGameSample extends GameApplication {
     }
 
     @Override
-    //Overriden to set up the factory and
-    //spawn the entities in the specific x and y coordinates in pixels.
     protected void initGame() {
-        //Used to initialize the world and start to add entities
         FXGL.getGameWorld().addEntityFactory(new SimpleFactory());
 
-        // add entities
-
-        // IMPORTANT: entityName String must be the same as in the Spawn annotation
-        
-        // Create a player entity that we can control
+        // Create a controllable player entity
         player = FXGL.spawn("cupheadPlane", 100, 200);
-        normalEnemy = FXGL.spawn("enemy", 1000, 300);
+
+        normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
+            // Generate random position within screen bounds
+            double y = FXGLMath.random(0, FXGL.getAppHeight());
+
+            // Spawn the entity (defined in your EntityFactory)
+            FXGL.spawn("enemy", 1000, y);
+
+        }, Duration.seconds(3.0)); // Spawn every 2 seconds
 
     }
-
-    //
     
     // Method to handle input/key listeners
     @Override
