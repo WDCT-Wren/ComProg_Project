@@ -1,5 +1,9 @@
 package org.group1.GamePackage;
 
+import org.group1.GamePackage.Components.AnimationComponent;
+import org.group1.GamePackage.EntityFactory.SimpleFactory;
+import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.core.math.FXGLMath;
@@ -7,11 +11,8 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
-
-import org.group1.GamePackage.Components.AnimationComponent;
-import org.group1.GamePackage.EntityFactory.SimpleFactory;
-import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
 import com.almasb.fxgl.time.TimerAction;
+
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
@@ -77,18 +78,18 @@ public class Application extends GameApplication {
 
         // Shooting mechanic
         FXGL.getInput().addAction(
-                new UserAction("Shoot") {
-                    @Override
-                    protected void onAction() {
-                        // Delay curretTimeMillis
-                        long currentTime = System.currentTimeMillis();
-                        if (currentTime - firstBullet >= BULLET_COOLDOWN){
-                            FXGL.spawn("bullet", player.getX()+120, player.getY()+50);
-                            firstBullet = currentTime;
-                        }
+            new UserAction("Shoot") {
+                @Override
+                protected void onAction() {
+                    // Delay curretTimeMillis
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - firstBullet >= BULLET_COOLDOWN){
+                        FXGL.spawn("bullet", player.getX()+120, player.getY()+50);
+                        firstBullet = currentTime;
                     }
-                },
-                KeyCode.SPACE
+                }
+            },
+            KeyCode.SPACE
         );
 
         // Move up
