@@ -64,7 +64,7 @@ public class BasicGameSample extends GameApplication {
                         }
                     }
                 },
-                KeyCode.Q
+                KeyCode.SPACE
         );
 
         // Move up
