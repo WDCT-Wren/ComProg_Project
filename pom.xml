@@ -134,7 +134,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-<mainClass>org.group.game/TestPackage.BasicGameSample</mainClass>
+<mainClass>org.group1.GamePackage.Application</mainClass>
  <options>
         <option>--enable-native-access=javafx.graphics</option>
     </options>

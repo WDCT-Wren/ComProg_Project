@@ -8,14 +8,16 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 
-import org.group1.GamePackage.SimpleFactory.EntityType;
+import org.group1.GamePackage.Components.AnimationComponent;
+import org.group1.GamePackage.EntityFactory.SimpleFactory;
+import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
 import com.almasb.fxgl.time.TimerAction;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
 //GameApplication is used to start the game instead of
 //JavaFX's native Application class
-public class BasicGameSample extends GameApplication {
+public class Application extends GameApplication {
 
     // Bullet Cooldown
     private long firstBullet = 0;

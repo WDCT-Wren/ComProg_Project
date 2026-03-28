@@ -1,9 +1,6 @@
-/home/me/ComProg_Project/src/main/java/TestPackage/AnimationComponent.java
-/home/me/ComProg_Project/src/main/java/TestPackage/BasicGameSample.java
-/home/me/ComProg_Project/src/main/java/TestPackage/BulletAnimationComponent.java
-/home/me/ComProg_Project/src/main/java/TestPackage/EnemyAnimationComponent.java
-/home/me/ComProg_Project/src/main/java/TestPackage/SimpleFactory.java
-/home/me/ComProg_Project/src/main/java/module-info.java
-/home/me/ComProg_Project/src/main/java/org/group1/game/Application.java
-/home/me/ComProg_Project/src/main/java/org/group1/game/Launcher.java
-/home/me/ComProg_Project/src/main/java/org/group1/game/controllers/HelloController.java
+C:\Users\Wren\IdeaProjects\GameGame\src\main\java\module-info.java
+C:\Users\Wren\IdeaProjects\GameGame\src\main\java\org\group1\GamePackage\Application.java
+C:\Users\Wren\IdeaProjects\GameGame\src\main\java\org\group1\GamePackage\Components\AnimationComponent.java
+C:\Users\Wren\IdeaProjects\GameGame\src\main\java\org\group1\GamePackage\Components\BulletAnimationComponent.java
+C:\Users\Wren\IdeaProjects\GameGame\src\main\java\org\group1\GamePackage\Components\EnemyAnimationComponent.java
+C:\Users\Wren\IdeaProjects\GameGame\src\main\java\org\group1\GamePackage\EntityFactory\SimpleFactory.java

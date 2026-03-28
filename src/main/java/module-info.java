@@ -10,10 +10,11 @@ open module org.group.game {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
-    requires com.almasb.fxgl.all;
+    requires transitive com.almasb.fxgl.all;
     requires com.almasb.fxgl.core;
     requires javafx.graphics;
 
-    exports org.group1.game;
-    exports TestPackage;
+    exports org.group1.GamePackage;
+    exports org.group1.GamePackage.Components;
+    exports org.group1.GamePackage.EntityFactory;
 }

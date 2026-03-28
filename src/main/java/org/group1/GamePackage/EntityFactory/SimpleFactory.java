@@ -1,4 +1,4 @@
-package org.group1.GamePackage;
+package org.group1.GamePackage.EntityFactory;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;

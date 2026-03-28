@@ -1,4 +1,4 @@
-package org.group1.GamePackage;
+package org.group1.GamePackage.Components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -18,7 +18,7 @@ public class AnimationComponent extends Component {
     private final AnimationChannel upChannel;
 
 
-    AnimationComponent() {
+    public AnimationComponent() {
         Image idle_sprite = FXGL.image("idle_sprite.png"); //idle_sprite image in resource folder
         idleChannel = new AnimationChannel(
                 idle_sprite,

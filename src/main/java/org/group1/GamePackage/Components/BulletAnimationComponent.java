@@ -1,4 +1,4 @@
-package org.group1.GamePackage;
+package org.group1.GamePackage.Components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -14,7 +14,7 @@ public class BulletAnimationComponent extends Component {
     private final AnimationChannel normalBullet;
 
 
-    BulletAnimationComponent() {
+    public BulletAnimationComponent() {
         Image bullet_sprite = FXGL.image("bullet_sprite.png");
         normalBullet = new AnimationChannel(
                 bullet_sprite,

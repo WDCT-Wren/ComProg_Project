@@ -1,4 +1,4 @@
-package org.group1.GamePackage;
+package org.group1.GamePackage.Components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -13,7 +13,7 @@ public class EnemyAnimationComponent extends Component {
     private final AnimatedTexture texture; 
     private final AnimationChannel normalEnemy;
 
-    EnemyAnimationComponent() {
+    public EnemyAnimationComponent() {
         Image enemy_sprite = FXGL.image("enemy_sprite.png");
         normalEnemy = new AnimationChannel(
                 enemy_sprite,
