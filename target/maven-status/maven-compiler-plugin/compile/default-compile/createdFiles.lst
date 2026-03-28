@@ -3,5 +3,6 @@ TestPackage/AnimationComponent.class
 TestPackage/SimpleFactory.class
 module-info.class
 org/group1/game/controllers/HelloController.class
+TestPackage/BasicGameSample$5.class
 TestPackage/BasicGameSample.class
 org/group1/game/Application.class

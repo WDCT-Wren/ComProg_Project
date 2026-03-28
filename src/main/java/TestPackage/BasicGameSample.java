@@ -12,6 +12,14 @@ import javafx.scene.input.KeyCode;
 //JavaFX's native Application class
 public class BasicGameSample extends GameApplication {
 
+    // Bullet Cooldown
+    private long firstBullet = 0;
+    private final long BULLET_COOLDOWN = 300;
+
+    // Boolean To Keep the up and Down Animation
+    private boolean movingUp = false;
+    private boolean movingDown = false;
+
     // Variable to hold our controllable entity
     private Entity player;
 
@@ -48,8 +56,12 @@ public class BasicGameSample extends GameApplication {
                 new UserAction("Shoot") {
                     @Override
                     protected void onAction() {
-                        //Offset to match sprite position
-                        FXGL.spawn("bullet", player.getX()+120, player.getY()+50);
+                        // Delay curretTimeMillis
+                        long currentTime = System.currentTimeMillis();
+                        if (currentTime - firstBullet >= BULLET_COOLDOWN){
+                            FXGL.spawn("bullet", player.getX()+120, player.getY()+50);
+                            firstBullet = currentTime;
+                        }
                     }
                 },
                 KeyCode.Q
@@ -58,15 +70,15 @@ public class BasicGameSample extends GameApplication {
         // Move up
         FXGL.getInput().addAction(
             new UserAction("Move up") {
+                
                 @Override
-                protected void onAction() {
-                    player.translateY(-5);
-                    player.getComponent(AnimationComponent.class).onUp();
+                protected void onActionBegin() {
+                    movingUp = true;
                 }
 
                 @Override
                 protected void onActionEnd() {
-                    player.getComponent(AnimationComponent.class).onIdle();
+                    movingUp = false;
                 }
             },
             KeyCode.W
@@ -75,15 +87,15 @@ public class BasicGameSample extends GameApplication {
         // Move down
         FXGL.getInput().addAction(
             new UserAction("Move down") {
+
                 @Override
-                protected void onAction() {
-                    player.translateY(5);
-                    player.getComponent(AnimationComponent.class).onDown();
+                protected void onActionBegin() {
+                    movingDown = true;
                 }
 
                 @Override
                 protected void onActionEnd() {
-                    player.getComponent(AnimationComponent.class).onIdle();
+                    movingDown = false;
                 }
             },
             KeyCode.S
@@ -110,6 +122,21 @@ public class BasicGameSample extends GameApplication {
             },
             KeyCode.D
         );
+    }
+
+    @Override
+    protected void onUpdate(double update) {
+        if (movingUp && movingDown) {
+            player.getComponent(AnimationComponent.class).onIdle();
+        } else if (movingUp) {
+            player.translateY(-5);
+            player.getComponent(AnimationComponent.class).onUp();
+        } else if (movingDown) {
+            player.translateY(5);
+            player.getComponent(AnimationComponent.class).onDown();
+        } else {
+            player.getComponent(AnimationComponent.class).onIdle();
+        }
     }
 
     public static void main(String[] args) {
