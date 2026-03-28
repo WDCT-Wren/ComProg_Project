@@ -5,6 +5,7 @@ org/group1/GamePackage/Application$2.class
 org/group1/GamePackage/EntityFactory/SimpleFactory$EntityType.class
 org/group1/GamePackage/Application$6.class
 org/group1/GamePackage/Application$1.class
+org/group1/GamePackage/Components/CupHeadComponent.class
 org/group1/GamePackage/Application.class
 org/group1/GamePackage/Components/EnemyAnimationComponent.class
 org/group1/GamePackage/Application$5.class

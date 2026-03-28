@@ -69,11 +69,13 @@ public class EnemyAnimationComponent extends Component {
         explodeTexture.playAnimationChannel(explosionAnimation);
 
         // runOnce before removing the enemy 
-        FXGL.runOnce(() -> entity.removeFromWorld(),
-                Duration.seconds(0.3)
-                );
+        FXGL.runOnce(() -> {
+            // Checks if entity is not null before removing 
+            if (entity != null) {
+                entity.removeFromWorld();
+            }
+        }, Duration.seconds(0.1));
     }
-
 }
 
 
