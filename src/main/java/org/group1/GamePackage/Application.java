@@ -1,6 +1,7 @@
 package org.group1.GamePackage;
 
 import org.group1.GamePackage.Components.AnimationComponent;
+import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.EntityFactory.SimpleFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
 
@@ -48,7 +49,8 @@ public class Application extends GameApplication {
                 {
                     @Override
                     protected void onCollisionBegin(Entity bullet, Entity enemy){
-                        enemy.removeFromWorld();
+                        bullet.removeFromWorld();
+                        enemy.getComponent(EnemyAnimationComponent.class).explode();
                     }
                 });
     }
