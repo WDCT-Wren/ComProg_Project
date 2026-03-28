@@ -41,7 +41,7 @@ public class AnimationComponent extends Component {
                 3
                 );
 
-        Image up_sprite = FXGL.image("up_sprite.png"); //up_sprite image in resource folder
+        Image up_sprite = FXGL.image("up_sprite.png"); //image in resource folder
         upChannel = new AnimationChannel(
                 up_sprite,
                 1,

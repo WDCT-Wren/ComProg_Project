@@ -11,8 +11,6 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 //nothing to implement, just marks your factory as the entity
 public class SimpleFactory implements EntityFactory {
@@ -23,7 +21,7 @@ public class SimpleFactory implements EntityFactory {
     //Method should be precisely what it is, with the method name being the only one that can be anything.
     public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .view(new Rectangle(40, 40, Color.RED))
+                .with(new BulletAnimationComponent()) 
                 .with(new ProjectileComponent(new Point2D(1,0), 1000))
                 .build();
     }
