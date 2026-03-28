@@ -7,13 +7,23 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
-
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;   
+
+
 //nothing to implement, just marks your factory as the entity
 public class SimpleFactory implements EntityFactory {
+
+    public enum EntityType {
+        PLAYER, 
+        ENEMY, 
+        BULLET
+    }
 
     //Tells FXGL which methods to call when spawning <entity> ("enemy") in this case
     @Spawns("bullet")
@@ -21,8 +31,11 @@ public class SimpleFactory implements EntityFactory {
     //Method should be precisely what it is, with the method name being the only one that can be anything.
     public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
+                .type(EntityType.BULLET)
                 .with(new BulletAnimationComponent()) 
                 .with(new ProjectileComponent(new Point2D(1,0), 1000))
+                .bbox(new HitBox(BoundingShape.box(25, 25)))
+                .with(new CollidableComponent(true))
                 .build();
     }
 
@@ -32,9 +45,23 @@ public class SimpleFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 // Declare new Point2D(x,y) class with its corresponding speed (pixel per second)
+                .type(EntityType.PLAYER)
                 .with(new AnimationComponent())
                 .bbox(new HitBox(BoundingShape.box(120, 100)))
                 .with(new KeepOnScreenComponent())
+                .with(new CollidableComponent(true))
                 .build();
+    }
+
+    @Spawns("enemy")
+
+    public Entity enemy(SpawnData data) {
+        return FXGL.entityBuilder(data)
+            .type(EntityType.ENEMY)
+            .view(new Rectangle(25,25, Color.BLUE))
+            .bbox(new HitBox(BoundingShape.box(25, 25)))
+            .with(new CollidableComponent(true))
+            .build();
+
     }
 }

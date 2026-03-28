@@ -1,8 +1,13 @@
+TestPackage/BasicGameSample$1.class
 org/group1/game/Launcher.class
+TestPackage/BasicGameSample$2.class
 TestPackage/AnimationComponent.class
+TestPackage/BulletAnimationComponent.class
+TestPackage/BasicGameSample$4.class
 TestPackage/SimpleFactory.class
 module-info.class
 org/group1/game/controllers/HelloController.class
 TestPackage/BasicGameSample$5.class
+TestPackage/BasicGameSample$3.class
 TestPackage/BasicGameSample.class
 org/group1/game/Application.class

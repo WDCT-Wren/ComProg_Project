@@ -5,7 +5,9 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.CollisionHandler;
 
+import TestPackage.SimpleFactory.EntityType;
 import javafx.scene.input.KeyCode;
 
 //GameApplication is used to start the game instead of
@@ -23,10 +25,26 @@ public class BasicGameSample extends GameApplication {
     // Variable to hold our controllable entity
     private Entity player;
 
+    // Variable for enemies
+    private Entity normalEnemy;
+
     @Override
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setHeight(720);
         gameSettings.setWidth(1280);
+    }
+
+    @Override
+    protected void initPhysics() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    EntityType.BULLET,
+                    EntityType.ENEMY)
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity bullet, Entity enemy){
+                        enemy.removeFromWorld();
+                    }
+                });
     }
 
     @Override
@@ -42,6 +60,8 @@ public class BasicGameSample extends GameApplication {
         
         // Create a player entity that we can control
         player = FXGL.spawn("cupheadPlane", 100, 200);
+        normalEnemy = FXGL.spawn("enemy", 1000, 300);
+
     }
 
     //
