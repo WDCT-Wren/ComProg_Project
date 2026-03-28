@@ -3,6 +3,7 @@ open module org.group.game {
     requires javafx.fxml;
     requires javafx.web;
 
+    requires transitive com.almasb.fxgl.entity;
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
