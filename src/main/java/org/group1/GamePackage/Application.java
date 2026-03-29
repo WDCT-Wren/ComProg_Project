@@ -1,13 +1,16 @@
 package org.group1.GamePackage;
 
+import javafx.geometry.Point2D;
 import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
-import org.group1.GamePackage.EntityFactory.BackgroundFactory;
-import org.group1.GamePackage.EntityFactory.SimpleFactory;
-import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+import org.group1.GamePackage.Components.TimerComponent;
+import org.group1.GamePackage.Factory.BackgroundFactory;
+import org.group1.GamePackage.Factory.EntityFactory.EntityType;
+import org.group1.GamePackage.Factory.EntityFactory;
 import org.group1.GamePackage.Handlers.CollisionManager;
 import org.group1.GamePackage.Handlers.InputManager;
+import org.group1.GamePackage.Handlers.LevelManager;
 import org.group1.GamePackage.Music.AudioManager;
 import org.group1.GamePackage.UI.HUDInterface;
 
@@ -28,18 +31,19 @@ public class Application extends GameApplication {
     // Instantiate AudioManager
     AudioManager audioManager = new AudioManager();
 
-    // Bullet Cooldown
-    private long firstBullet = 0;
-    private final long BULLET_COOLDOWN = 300;
-
     // Variable to hold our controllable entity
     private Entity player;
+    private final Point2D playerSpawnPoint = new Point2D(100, 200);
+
+    // Variables
+    private static final double NORMAL_ENEMY_SPAWN_RATE = 3.0; // every three seconds
+    private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
+
 
     // Input manager
     private InputManager inputManager;
 
-    // Variable for enemies
-    private TimerAction normalEnemy;
+    //Enemy presence manager
     private boolean enemyPresent = false;
 
     /*
@@ -47,15 +51,13 @@ public class Application extends GameApplication {
     Variables for HUD texts
      */
     HUDInterface HUD = new HUDInterface();
-    private Text hpText;
     private Text boostText;
     private Text livesText; 
 
     @Override
     protected void initUI() {
-        hpText = HUD.displayHealth(player, hpText);
-        boostText = HUD.displayLives(player, livesText);
-        livesText = HUD.displayBoostLevel(player, boostText);
+        boostText = HUD.displayLives(player);
+        livesText = HUD.displayBoostLevel(player);
     }
 
     @Override
@@ -74,35 +76,42 @@ public class Application extends GameApplication {
 
     @Override
     protected void initGame() {
-        FXGL.getGameWorld().addEntityFactory(new SimpleFactory());
-
-        // Background
+        // Initialize Factories
+        FXGL.getGameWorld().addEntityFactory(new EntityFactory());
         FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
-        FXGL.spawn("background");
-        FXGL.spawn("stars1");
-        FXGL.spawn("stars2");
-        FXGL.spawn("stars3");
 
-        FXGL.spawn("cloud1");
-        FXGL.spawn("cloud2", 0, 100);
+        // Initalize Level Handler
+        // Level Manager
+        LevelManager levelManager = new LevelManager();
+        levelManager.initBackground();
 
-        FXGL.spawn("mist1", 0, 500);
-        FXGL.spawn("hills", 0 , 500);
-        FXGL.spawn("forest", 0 , 550);
-        FXGL.spawn("large_forest", 0 , 550);
+        // Builds the entity and attach the component
+        Entity timerEntity = FXGL.entityBuilder()
+                .with(new TimerComponent())
+                .buildAndAttach();
+
+        // Grabs the component from the entity and start it
+        // Timer Component instantiation
+        TimerComponent timerComponent = timerEntity.getComponent(TimerComponent.class);
+        timerComponent.initTimer();
+
 
         // Create a controllable player entity
-        player = FXGL.spawn("cupheadPlane", 100, 200);
-    
-        normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
+        player = FXGL.spawn("player", playerSpawnPoint);
+
+        // Generate random position within 2 /3 of screen bounds
+        // Spawn the entity (defined in your EntityFactory)
+        // Variable for enemies
+        TimerAction normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
             // Generate random position within 2 /3 of screen bounds
-            double y = FXGLMath.random(0, FXGL.getAppHeight() * 2 / 3 );
+            double enemyBounds = (double) (FXGL.getAppHeight() * 2) / 3;
+            double y = FXGLMath.random(0, enemyBounds);
 
             // Spawn the entity (defined in your EntityFactory)
-            FXGL.spawn("enemy", 1000, y);
+            FXGL.spawn("enemy", NORMAL_ENEMY_SPAWN_DISTANCE, y);
 
             enemyPresent = true;
-        }, Duration.seconds(3.0)); // Spawn every 2 seconds
+        }, Duration.seconds(NORMAL_ENEMY_SPAWN_RATE));
 
     }
 
@@ -117,29 +126,30 @@ public class Application extends GameApplication {
 
     @Override
     protected void onUpdate(double update) {
+        int playerSpeed = 5;
         if (inputManager.isMovingUp() && inputManager.isMovingDown()) {
             player.getComponent(AnimationComponent.class).onIdle();
         } else if (inputManager.isMovingUp()) {
-            player.translateY(-5);
+            player.translateY(-playerSpeed);
             player.getComponent(AnimationComponent.class).onUp();
         } else if (inputManager.isMovingDown()) {
-            player.translateY(5);
+            player.translateY(playerSpeed);
             player.getComponent(AnimationComponent.class).onDown();
         } else {
             player.getComponent(AnimationComponent.class).onIdle();
         }
         
         if (inputManager.isMovingLeft()) {
-            player.translateX(-5);
+            player.translateX(-playerSpeed);
         } else if (inputManager.isMovingRight()) {
-            player.translateX(5);
+            player.translateX(playerSpeed);
         }
 
         /*
          Checks if enemy entities are present
          If true, entities explode when they reach the end of the screen
         */
-        if (enemyPresent == true) {
+        if (enemyPresent) {
             try {
                 if (FXGL.getGameWorld().getSingleton(EntityType.ENEMY).getPosition().getX() == 0) {
                 var enemyInstance = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
@@ -152,7 +162,6 @@ public class Application extends GameApplication {
         
         //Updates HUD texts if player attributes change
         var pc = player.getComponent(CupHeadComponent.class);
-        hpText.setText("HP: " + pc.getHealth());
         livesText.setText("Lives: " + pc.getLives());
         boostText.setText("Boost: " + pc.getBoostLevel());
     }
