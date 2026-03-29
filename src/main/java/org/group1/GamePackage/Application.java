@@ -3,6 +3,7 @@ package org.group1.GamePackage;
 import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
+import org.group1.GamePackage.EntityFactory.BackgroundFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
 import org.group1.GamePackage.UI.HUDInterface;
@@ -91,12 +92,28 @@ public class Application extends GameApplication {
     @Override
     protected void initGame() {
         FXGL.getGameWorld().addEntityFactory(new SimpleFactory());
+
+        // Background
+        FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
+        FXGL.spawn("background");
+        FXGL.spawn("stars1");
+        FXGL.spawn("stars2");
+        FXGL.spawn("stars3");
+
+        FXGL.spawn("cloud1");
+        FXGL.spawn("cloud2", 0, 100);
+
+        FXGL.spawn("mist1", 0, 500);
+        FXGL.spawn("hills", 0 , 500);
+        FXGL.spawn("forest", 0 , 550);
+        FXGL.spawn("large_forest", 0 , 550);
+
         // Create a controllable player entity
         player = FXGL.spawn("cupheadPlane", 100, 200);
     
         normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
-            // Generate random position within screen bounds
-            double y = FXGLMath.random(0, FXGL.getAppHeight());
+            // Generate random position within 2 /3 of screen bounds
+            double y = FXGLMath.random(0, FXGL.getAppHeight() * 2 / 3 );
 
             // Spawn the entity (defined in your EntityFactory)
             FXGL.spawn("enemy", 1000, y);
