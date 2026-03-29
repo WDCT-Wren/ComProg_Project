@@ -159,10 +159,6 @@ public class Application extends GameApplication {
         boostText.setText("Boost: " + pc.getBoostLevel());
     }
 
-    public Entity getPlayer() {
-        return player;
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
