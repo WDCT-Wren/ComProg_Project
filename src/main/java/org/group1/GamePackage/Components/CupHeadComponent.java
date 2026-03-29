@@ -6,7 +6,7 @@ import javafx.util.Duration;
 
 
 public class CupHeadComponent extends Component {
-    private static final double INVINSIBLE_DURATION = 1.5; // seconds
+    private static final double INVINCIBLE_DURATION = 1.5; // seconds
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
 
     private int lives = 9;
@@ -28,6 +28,9 @@ public class CupHeadComponent extends Component {
         }
     }
 
+    /**
+     * Triggers the player's invincibility. Making the player flash and invincible for 1.5 seconds
+     */
     private void triggerInvincibility() {
         isInvincible = true;
 
@@ -40,13 +43,13 @@ public class CupHeadComponent extends Component {
             flashTask.expire();
             isInvincible = false;
             entity.getViewComponent().setOpacity(1.0);
-        }, Duration.seconds(INVINSIBLE_DURATION));
+        }, Duration.seconds(INVINCIBLE_DURATION));
     }
 
     public boolean isInvincible() {return isInvincible;}
 
     public void decreaseBoostLevel (int amount) {
-        if (boostLevel < 10) boostLevel-=amount;
+        if (boostLevel < 10) boostLevel -= amount;
     }
 
     public int getLives() {

@@ -1,6 +1,6 @@
 package org.group1.GamePackage.Handlers;
 
-import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -31,7 +31,7 @@ public class InputManager {
                         Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
                         GameMechanics.shoot(player);
                     } catch (Exception e) {
-                        // Player not found yet, ignore input
+                        // Player isn't found yet, ignore input
                     }
                 }
             },
@@ -40,18 +40,16 @@ public class InputManager {
     }
 
     private void moveLeft() {
-        FXGL.getInput().addAction(
-           new UserAction("Move left") {
+        FXGL.getInput().addAction(new UserAction("Move left") {
+            @Override
+            protected void onActionBegin() {
+                movingLeft = true;
+            }
 
-               @Override
-                protected void onActionBegin() {
-                    movingLeft = true;
-                }
-
-                @Override
-                protected void onActionEnd() {
-                    movingLeft = false;
-                }
+            @Override
+            protected void onActionEnd() {
+                movingLeft = false;
+            }
             },
             KeyCode.A
         );

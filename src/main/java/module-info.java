@@ -17,4 +17,5 @@ open module org.group.game {
     exports org.group1.GamePackage;
     exports org.group1.GamePackage.Components;
     exports org.group1.GamePackage.Factory;
+    exports org.group1.GamePackage.Handlers;
 }

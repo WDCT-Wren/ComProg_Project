@@ -2,50 +2,78 @@ package org.group1.GamePackage.Handlers;
 
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
-import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 
+import java.util.Random;
+
 public class CollisionManager {
+    // RNG for chance extra life drops
+    private static final Random random = new Random();
+    private static final double LIFE_DROP_RATE = 0.30;
+
     AudioManager audioManager = new AudioManager();
 
     public void init() {
         enemyVSbullet();
-        enemyVSplayer ();
+        enemyVSplayer();
+        playerGetsExtraLife();
     }
 
     public void enemyVSbullet () {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.BULLET,
-                    EntityType.ENEMY)
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity bullet, Entity enemy){
-                        bullet.removeFromWorld();
-                        audioManager.playDeathSound();
-                        enemy.getComponent(EnemyAnimationComponent.class).explode();
+                EntityType.BULLET,
+                EntityType.ENEMY)
+            {
+                @Override
+                protected void onCollisionBegin(Entity bullet, Entity enemy){
+                    bullet.removeFromWorld();
+                    audioManager.playDeathSound();
+                    enemy.getComponent(EnemyAnimationComponent.class).explode();
+
+                    // your existing explosion code here
+
+                    // RNG powerup spawn
+                    if (random.nextDouble() < LIFE_DROP_RATE) {
+                        FXGL.spawn("extraLife", enemy.getPosition());
                     }
-                });
+                }
+            });
     }
 
     public void enemyVSplayer () {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.ENEMY,
-                    EntityType.PLAYER) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity enemy, Entity player) {
-                        var playerComponent = player.getComponent(CupHeadComponent.class);
-                        audioManager.FAH();
-                        audioManager.playDeathSound();
-                        playerComponent.takeDamage(10);
-                        playerComponent.decreaseLives();
+                EntityType.ENEMY,
+                EntityType.PLAYER)
+            {
+                @Override
+                protected void onCollisionBegin(Entity enemy, Entity player) {
+                    var playerComponent = player.getComponent(CupHeadComponent.class);
+                    audioManager.FAH();
+                    audioManager.playDeathSound();
+                    playerComponent.takeDamage();
 
-                        enemy.getComponent(EnemyAnimationComponent.class).explode();
-                    }  
-                });
+                    enemy.getComponent(EnemyAnimationComponent.class).explode();
+                }
+            });
+    }
+
+    public void playerGetsExtraLife() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                EntityType.POWER_UP,
+                EntityType.PLAYER)
+        {
+            @Override
+            protected void onCollisionBegin(Entity powerUp, Entity player) {
+                var playerComponent = player.getComponent(CupHeadComponent.class);
+
+                playerComponent.increaseLives();
+                powerUp.removeFromWorld();
+            }
+        });
     }
 }
