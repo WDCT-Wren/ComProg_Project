@@ -1,5 +1,7 @@
 package org.group1.GamePackage.Handlers;
 
+import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
@@ -12,20 +14,25 @@ public class InputManager {
     private boolean movingDown = false;
     private boolean movingUp = false;
 
-    public void registerInputs(Entity player) {
+    public void registerInputs() {
         moveLeft();
         moveRight();
         moveDown();
         moveUp();
-        shoot(player);
+        shoot();
     }
 
-    public void shoot(Entity player) {
+    public void shoot() {
         FXGL.getInput().addAction(
             new UserAction("Shoot") {
                 @Override
                 protected void onAction() {
-                    GameMechanics.shoot(player);
+                    try {
+                        Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                        GameMechanics.shoot(player);
+                    } catch (Exception e) {
+                        // Player not found yet, ignore input
+                    }
                 }
             },
             KeyCode.SPACE

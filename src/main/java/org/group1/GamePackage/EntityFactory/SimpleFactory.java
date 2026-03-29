@@ -4,7 +4,6 @@ import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.BulletAnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
-import org.group1.GamePackage.Components.PlayerInputComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -55,7 +54,6 @@ public class SimpleFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(120, 100)))
                 .with(new KeepOnScreenComponent())
                 .with(new CollidableComponent(true))
-                .with(new PlayerInputComponent())
                 .build();
     }
 

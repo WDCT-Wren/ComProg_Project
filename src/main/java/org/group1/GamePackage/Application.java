@@ -93,10 +93,6 @@ public class Application extends GameApplication {
 
         // Create a controllable player entity
         player = FXGL.spawn("cupheadPlane", 100, 200);
-        
-        // Register inputs after player is initialized
-        inputManager = new InputManager();
-        inputManager.registerInputs(player);
     
         normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
             // Generate random position within 2 /3 of screen bounds
@@ -113,8 +109,10 @@ public class Application extends GameApplication {
     // Method to handle input/key listeners
     @Override
     protected void initInput() {
-        // Input registration moved to initGame() after player is created
+        // Initialize InputManager and register inputs here
         FXGL.getAudioPlayer();
+        inputManager = new InputManager();
+        inputManager.registerInputs();
     }
 
     @Override
