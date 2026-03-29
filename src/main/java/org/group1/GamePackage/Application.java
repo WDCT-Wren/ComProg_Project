@@ -6,6 +6,8 @@ import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.EntityFactory.BackgroundFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+import org.group1.GamePackage.Handlers.CollisionManager;
+import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Music.AudioManager;
 import org.group1.GamePackage.UI.HUDInterface;
 
@@ -14,11 +16,8 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.time.TimerAction;
 
-import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -33,12 +32,11 @@ public class Application extends GameApplication {
     private long firstBullet = 0;
     private final long BULLET_COOLDOWN = 300;
 
-    // Boolean To Keep the up and Down Animation
-    private boolean movingUp = false;
-    private boolean movingDown = false;
-
     // Variable to hold our controllable entity
     private Entity player;
+
+    // Input manager
+    private InputManager inputManager;
 
     // Variable for enemies
     private TimerAction normalEnemy;
@@ -69,32 +67,9 @@ public class Application extends GameApplication {
     @Override
     protected void initPhysics() {
         audioManager.playBackgroundMusic();
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.BULLET,
-                    EntityType.ENEMY)
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity bullet, Entity enemy){
-                        bullet.removeFromWorld();
-                        audioManager.playDeathSound();
-                        enemy.getComponent(EnemyAnimationComponent.class).explode();
-                    }
-                });
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.ENEMY,
-                    EntityType.PLAYER) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity enemy, Entity player) {
-                        var playerComponent = player.getComponent(CupHeadComponent.class);
-                        audioManager.FAH();
-                        audioManager.playDeathSound();
-                        playerComponent.takeDamage(10);
-                        playerComponent.decreaseLives();
-
-                        enemy.getComponent(EnemyAnimationComponent.class).explode();
-                    }  
-                });
+        
+        CollisionManager collisionManager = new CollisionManager();
+        collisionManager.init();
     }
 
     @Override
@@ -118,6 +93,10 @@ public class Application extends GameApplication {
 
         // Create a controllable player entity
         player = FXGL.spawn("cupheadPlane", 100, 200);
+        
+        // Register inputs after player is initialized
+        inputManager = new InputManager();
+        inputManager.registerInputs(player);
     
         normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
             // Generate random position within 2 /3 of screen bounds
@@ -134,93 +113,28 @@ public class Application extends GameApplication {
     // Method to handle input/key listeners
     @Override
     protected void initInput() {
+        // Input registration moved to initGame() after player is created
         FXGL.getAudioPlayer();
-
-        // Shooting mechanic
-        FXGL.getInput().addAction(
-            new UserAction("Shoot") {
-                @Override
-                protected void onAction() {
-                    // Delay curretTimeMillis
-                    long currentTime = System.currentTimeMillis();
-                    if (currentTime - firstBullet >= BULLET_COOLDOWN){
-                        FXGL.spawn("bullet", player.getX()+120, player.getY()+50);
-                        firstBullet = currentTime;
-                    }
-                }
-            },
-            KeyCode.SPACE
-        );
-
-        // Move up
-        FXGL.getInput().addAction(
-            new UserAction("Move up") {
-                
-                @Override
-                protected void onActionBegin() {
-                    movingUp = true;
-                }
-
-                @Override
-                protected void onActionEnd() {
-                    movingUp = false;
-                }
-            },
-            KeyCode.W
-        );
-        
-        // Move down
-        FXGL.getInput().addAction(
-            new UserAction("Move down") {
-
-                @Override
-                protected void onActionBegin() {
-                    movingDown = true;
-                }
-
-                @Override
-                protected void onActionEnd() {
-                    movingDown = false;
-                }
-            },
-            KeyCode.S
-        );
-        
-        // Move left
-        FXGL.getInput().addAction(
-           new UserAction("Move left") {
-                @Override
-                protected void onAction() {
-                    player.translateX(-5);
-                }
-            },
-            KeyCode.A
-        );
-        
-        // Move right
-        FXGL.getInput().addAction(
-            new UserAction("Move right") {
-                @Override
-                protected void onAction() {
-                    player.translateX(5);
-                }
-            },
-            KeyCode.D
-        );
     }
 
     @Override
     protected void onUpdate(double update) {
-        if (movingUp && movingDown) {
+        if (inputManager.isMovingUp() && inputManager.isMovingDown()) {
             player.getComponent(AnimationComponent.class).onIdle();
-        } else if (movingUp) {
+        } else if (inputManager.isMovingUp()) {
             player.translateY(-5);
             player.getComponent(AnimationComponent.class).onUp();
-        } else if (movingDown) {
+        } else if (inputManager.isMovingDown()) {
             player.translateY(5);
             player.getComponent(AnimationComponent.class).onDown();
         } else {
             player.getComponent(AnimationComponent.class).onIdle();
+        }
+        
+        if (inputManager.isMovingLeft()) {
+            player.translateX(-5);
+        } else if (inputManager.isMovingRight()) {
+            player.translateX(5);
         }
 
         /*
@@ -243,6 +157,10 @@ public class Application extends GameApplication {
         hpText.setText("HP: " + pc.getHealth());
         livesText.setText("Lives: " + pc.getLives());
         boostText.setText("Boost: " + pc.getBoostLevel());
+    }
+
+    public Entity getPlayer() {
+        return player;
     }
 
     public static void main(String[] args) {

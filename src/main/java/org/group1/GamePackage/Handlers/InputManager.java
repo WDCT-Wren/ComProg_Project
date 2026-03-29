@@ -1,0 +1,123 @@
+package org.group1.GamePackage.Handlers;
+
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.input.UserAction;
+
+import javafx.scene.input.KeyCode;
+
+public class InputManager {
+    private boolean movingLeft = false;
+    private boolean movingRight = false;
+    private boolean movingDown = false;
+    private boolean movingUp = false;
+
+    public void registerInputs(Entity player) {
+        moveLeft();
+        moveRight();
+        moveDown();
+        moveUp();
+        shoot(player);
+    }
+
+    public void shoot(Entity player) {
+        FXGL.getInput().addAction(
+            new UserAction("Shoot") {
+                @Override
+                protected void onAction() {
+                    GameMechanics.shoot(player);
+                }
+            },
+            KeyCode.SPACE
+        );
+    }
+
+    private void moveLeft() {
+        FXGL.getInput().addAction(
+           new UserAction("Move left") {
+
+               @Override
+                protected void onActionBegin() {
+                    movingLeft = true;
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    movingLeft = false;
+                }
+            },
+            KeyCode.A
+        );
+    }
+
+    private void moveRight() {
+        FXGL.getInput().addAction(
+            new UserAction("Move right") {
+
+                @Override
+                protected void onActionBegin() {
+                    movingRight = true;
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    movingRight = false;
+                }
+            },
+            KeyCode.D
+        );
+    }
+
+    private void moveUp() {
+        FXGL.getInput().addAction(
+            new UserAction("Move up") {
+
+                @Override
+                protected void onActionBegin() {
+                    movingUp = true;
+                    
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    movingUp = false;
+                }
+            },
+            KeyCode.W
+        );
+    }
+
+    private void moveDown() {
+        FXGL.getInput().addAction(
+            new UserAction("Move down") {
+
+                @Override
+                protected void onActionBegin() {
+                    movingDown = true;
+                }
+
+                @Override
+                protected void onActionEnd() {
+                    movingDown = false;
+                }
+            },
+            KeyCode.S
+        );
+    }
+
+    public boolean isMovingUp() {
+        return movingUp;
+    }
+
+    public boolean isMovingDown() {
+        return movingDown;
+    }
+
+    public boolean isMovingLeft() {
+        return movingLeft;
+    }
+
+    public boolean isMovingRight() {
+        return movingRight;
+    }
+}
