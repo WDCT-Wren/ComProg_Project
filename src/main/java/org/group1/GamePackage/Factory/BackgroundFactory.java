@@ -1,14 +1,11 @@
-package org.group1.GamePackage.EntityFactory;
+package org.group1.GamePackage.Factory;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.dsl.views.SelfScrollingBackgroundView;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
-
-import javafx.geometry.Point2D;
 
 public class BackgroundFactory implements EntityFactory {
     public enum EntityType {
