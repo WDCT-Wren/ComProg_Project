@@ -9,16 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class HUDInterface {
-
-    public Text displayHealth (Entity player, Text hpText) {
-        String healthMessage = "HP: " + player.getComponent(CupHeadComponent.class).getHealth();
-        hpText = FXGL.getUIFactoryService().newText(healthMessage, Color.AQUAMARINE, 24);
-        hpText.setTranslateX(50);
-        hpText.setTranslateY(50);
-        FXGL.addUINode(hpText);
-        return hpText;
-    }
-
     public Text displayBoostLevel (Entity player, Text boostText) {
         String boostMessage = "Boost: " + player.getComponent(CupHeadComponent.class).getBoostLevel();
         boostText = FXGL.getUIFactoryService().newText(boostMessage, Color.AQUAMARINE, 24);

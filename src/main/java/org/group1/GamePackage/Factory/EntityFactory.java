@@ -1,5 +1,7 @@
-package org.group1.GamePackage.EntityFactory;
+package org.group1.GamePackage.Factory;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.BulletAnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
@@ -9,7 +11,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
@@ -18,40 +19,36 @@ import com.almasb.fxgl.physics.HitBox;
 
 import javafx.geometry.Point2D;
 
-
-//nothing to implement, just marks your factory as the entity
-public class SimpleFactory implements EntityFactory {
+public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
     public enum EntityType {
         PLAYER, 
         ENEMY, 
-        BULLET
+        BULLET,
+        POWER_UP
     }
 
-    //Tells FXGL which methods to call when spawning <entity> ("enemy") in this case
     @Spawns("bullet")
 
-    //Method should be precisely what it is, with the method name being the only one that can be anything.
     public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(EntityType.BULLET)
+                .bbox(new HitBox(BoundingShape.box(25, 25)))
                 .with(new BulletAnimationComponent())
                 .with(new ProjectileComponent(new Point2D(1,0), 1000))
-                .bbox(new HitBox(BoundingShape.box(25, 25)))
                 .with(new CollidableComponent(true))
                 .build();
     }
 
-    @Spawns("cupheadPlane")
+    @Spawns("player")
 
-    public Entity cupheadPlane(SpawnData data) {
+    public Entity newPlayer(SpawnData data) {
 
         return FXGL.entityBuilder(data)
-                // Declare new Point2D(x,y) class with its corresponding speed (pixel per second)
                 .type(EntityType.PLAYER)
+                .bbox(new HitBox(BoundingShape.box(120, 100)))
                 .with(new CupHeadComponent())
                 .with(new AnimationComponent())
-                .bbox(new HitBox(BoundingShape.box(120, 100)))
                 .with(new KeepOnScreenComponent())
                 .with(new CollidableComponent(true))
                 .build();
@@ -62,12 +59,26 @@ public class SimpleFactory implements EntityFactory {
     public Entity enemy(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(EntityType.ENEMY)
+            .bbox(new HitBox(BoundingShape.box(100, 100)))
             .with(new ProjectileComponent(new Point2D(-1,0), 500))
             .with(new EnemyAnimationComponent())
-            .bbox(new HitBox(BoundingShape.box(100, 100)))
             .with(new CollidableComponent(true))
             .with(new KeepOnScreenComponent())
             .build();
 
+    }
+
+    @Spawns("extraLife")
+
+    public Entity newPowerUp(SpawnData data) {
+
+        return FXGL.entityBuilder(data)
+            .type(EntityType.POWER_UP)
+            .view(new Rectangle(40, 40, Color.RED))
+            .bbox(new HitBox(BoundingShape.box(40, 40)))
+            .with(new ProjectileComponent(new Point2D(-1,0), 300))
+            .with(new CollidableComponent(true))
+            .with(new KeepOnScreenComponent())
+            .build();
     }
 }

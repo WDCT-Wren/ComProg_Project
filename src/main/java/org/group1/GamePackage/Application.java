@@ -1,11 +1,12 @@
 package org.group1.GamePackage;
 
+import com.almasb.fxgl.physics.HitBox;
 import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
-import org.group1.GamePackage.EntityFactory.BackgroundFactory;
-import org.group1.GamePackage.EntityFactory.SimpleFactory;
-import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+import org.group1.GamePackage.Factory.BackgroundFactory;
+import org.group1.GamePackage.Factory.EntityFactory;
+import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
 import org.group1.GamePackage.UI.HUDInterface;
 
@@ -22,12 +23,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-//GameApplication is used to start the game instead of
-//JavaFX's native Application class
+import java.util.Random;
+
 public class Application extends GameApplication {
 
     // Instantiate AudioManager
     AudioManager audioManager = new AudioManager();
+
+    // Game Duration for timer
+    private static final double GAME_DURATION = 2.0;
 
     // Bullet Cooldown
     private long firstBullet = 0;
@@ -44,6 +48,10 @@ public class Application extends GameApplication {
     private TimerAction normalEnemy;
     private boolean enemyPresent = false;
 
+    // RNG for power up generation
+    private static final Random random = new Random();
+    private static final double POWERUP_SPAWN_CHANCE = 0.30;
+
     /*
     Initializes HUD object
     Variables for HUD texts
@@ -55,7 +63,6 @@ public class Application extends GameApplication {
 
     @Override
     protected void initUI() {
-        hpText = HUD.displayHealth(player, hpText);
         boostText = HUD.displayLives(player, livesText);
         livesText = HUD.displayBoostLevel(player, boostText);
     }
@@ -69,55 +76,70 @@ public class Application extends GameApplication {
     @Override
     protected void initPhysics() {
         audioManager.playBackgroundMusic();
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.BULLET,
-                    EntityType.ENEMY)
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity bullet, Entity enemy){
-                        bullet.removeFromWorld();
-                        audioManager.playDeathSound();
-                        enemy.getComponent(EnemyAnimationComponent.class).explode();
-                    }
-                });
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.ENEMY,
-                    EntityType.PLAYER) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity enemy, Entity player) {
-                        var playerComponent = player.getComponent(CupHeadComponent.class);
-                        audioManager.FAH();
-                        audioManager.playDeathSound();
-                        playerComponent.takeDamage(10);
-                        playerComponent.decreaseLives();
 
-                        enemy.getComponent(EnemyAnimationComponent.class).explode();
-                    }  
-                });
+        // Bullet hits enemy
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                EntityType.BULLET,
+                EntityType.ENEMY)
+            {
+
+                @Override
+                protected void onCollisionBegin(Entity bullet, Entity enemy){
+                    bullet.removeFromWorld();
+                    audioManager.playDeathSound();
+                    enemy.getComponent(EnemyAnimationComponent.class).explode();
+
+                    // Random generation of extra life
+                    if (random.nextDouble() < POWERUP_SPAWN_CHANCE) {
+                        FXGL.spawn("extraLife", enemy.getPosition());
+                    }
+                }
+            });
+
+        // Enemy hits player
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                EntityType.ENEMY,
+                EntityType.PLAYER)
+            {
+                @Override
+                protected void onCollisionBegin(Entity enemy, Entity player) {
+                    var playerComponent = player.getComponent(CupHeadComponent.class);
+                    audioManager.FAH();
+                    audioManager.playDeathSound();
+                    playerComponent.takeDamage();
+
+                    enemy.getComponent(EnemyAnimationComponent.class).explode();
+                }
+            });
+
+        // Player gets power ups
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                EntityType.POWER_UP,
+                EntityType.PLAYER)
+            {
+                @Override
+                protected void onCollisionBegin(Entity powerUp, Entity player) {
+                    var playerComponent = player.getComponent(CupHeadComponent.class);
+                    audioManager.FAH();
+                    playerComponent.increaseLives();
+
+                    powerUp.removeFromWorld();
+            }
+        });
     }
 
     @Override
     protected void initGame() {
-        FXGL.getGameWorld().addEntityFactory(new SimpleFactory());
-
-        // Background
+        //Factory Initialization
+        FXGL.getGameWorld().addEntityFactory(new EntityFactory());
         FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
-        FXGL.spawn("background");
-        FXGL.spawn("stars1");
-        FXGL.spawn("stars2");
-        FXGL.spawn("stars3");
 
-        FXGL.spawn("cloud1");
-        FXGL.spawn("cloud2", 0, 100);
-
-        FXGL.spawn("mist1", 0, 500);
-        FXGL.spawn("hills", 0 , 500);
-        FXGL.spawn("forest", 0 , 550);
-        FXGL.spawn("large_forest", 0 , 550);
+        //Background Initialization
+        LevelManager levelManager = new LevelManager();
+        levelManager.initBackground();
 
         // Create a controllable player entity
-        player = FXGL.spawn("cupheadPlane", 100, 200);
+        player = FXGL.spawn("player", 100, 200);
     
         normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
             // Generate random position within 2 /3 of screen bounds
@@ -127,7 +149,7 @@ public class Application extends GameApplication {
             FXGL.spawn("enemy", 1000, y);
 
             enemyPresent = true;
-        }, Duration.seconds(3.0)); // Spawn every 2 seconds
+        }, Duration.seconds(2.0)); // Spawn every 2 seconds
 
     }
 
@@ -227,7 +249,7 @@ public class Application extends GameApplication {
          Checks if enemy entities are present
          If true, entities explode when they reach the end of the screen
         */
-        if (enemyPresent == true) {
+        if (enemyPresent) {
             try {
                 if (FXGL.getGameWorld().getSingleton(EntityType.ENEMY).getPosition().getX() == 0) {
                 var enemyInstance = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
@@ -240,7 +262,6 @@ public class Application extends GameApplication {
         
         //Updates HUD texts if player attributes change
         var pc = player.getComponent(CupHeadComponent.class);
-        hpText.setText("HP: " + pc.getHealth());
         livesText.setText("Lives: " + pc.getLives());
         boostText.setText("Boost: " + pc.getBoostLevel());
     }
