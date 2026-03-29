@@ -11,4 +11,6 @@ org/group1/GamePackage/Components/EnemyAnimationComponent.class
 org/group1/GamePackage/Application$5.class
 org/group1/GamePackage/Application$4.class
 module-info.class
+org/group1/GamePackage/UI/HUDInterface.class
+org/group1/GamePackage/Application$7.class
 org/group1/GamePackage/Application$3.class

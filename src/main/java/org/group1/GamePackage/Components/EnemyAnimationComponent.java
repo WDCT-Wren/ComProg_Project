@@ -13,6 +13,7 @@ public class EnemyAnimationComponent extends Component {
     private final AnimatedTexture texture; 
     private final AnimationChannel normalEnemy;
     private final AnimationChannel explosionAnimation;
+    private boolean exploding = false;
 
     public EnemyAnimationComponent() {
         Image enemy_sprite = FXGL.image("enemy_sprite.png");
@@ -51,6 +52,10 @@ public class EnemyAnimationComponent extends Component {
 
     // Explode method gets called when bullet collides with enemy at initPhysics 
     public void explode() {
+        // returns if currently exploding
+        if (exploding) return;
+        exploding = true;
+
         // Stops current animation
         texture.stop();
         // Clear View Component because the explosion_sprite is 500x500
@@ -73,6 +78,7 @@ public class EnemyAnimationComponent extends Component {
             // Checks if entity is not null before removing 
             if (entity != null) {
                 entity.removeFromWorld();
+                exploding = false;
             }
         }, Duration.seconds(0.1));
     }
