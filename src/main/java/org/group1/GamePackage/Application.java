@@ -6,6 +6,7 @@ import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.EntityFactory.BackgroundFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory;
 import org.group1.GamePackage.EntityFactory.SimpleFactory.EntityType;
+import org.group1.GamePackage.Music.AudioManager;
 import org.group1.GamePackage.UI.HUDInterface;
 
 import com.almasb.fxgl.app.GameApplication;
@@ -24,6 +25,9 @@ import javafx.util.Duration;
 //GameApplication is used to start the game instead of
 //JavaFX's native Application class
 public class Application extends GameApplication {
+
+    // Instantiate AudioManager
+    AudioManager audioManager = new AudioManager();
 
     // Bullet Cooldown
     private long firstBullet = 0;
@@ -64,6 +68,7 @@ public class Application extends GameApplication {
 
     @Override
     protected void initPhysics() {
+        audioManager.playBackgroundMusic();
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                     EntityType.BULLET,
                     EntityType.ENEMY)
@@ -71,6 +76,7 @@ public class Application extends GameApplication {
                     @Override
                     protected void onCollisionBegin(Entity bullet, Entity enemy){
                         bullet.removeFromWorld();
+                        audioManager.playDeathSound();
                         enemy.getComponent(EnemyAnimationComponent.class).explode();
                     }
                 });
@@ -81,6 +87,8 @@ public class Application extends GameApplication {
                     @Override
                     protected void onCollisionBegin(Entity enemy, Entity player) {
                         var playerComponent = player.getComponent(CupHeadComponent.class);
+                        audioManager.FAH();
+                        audioManager.playDeathSound();
                         playerComponent.takeDamage(10);
                         playerComponent.decreaseLives();
 

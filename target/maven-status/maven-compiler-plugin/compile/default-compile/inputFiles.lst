@@ -6,4 +6,5 @@
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/EnemyAnimationComponent.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/EntityFactory/BackgroundFactory.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/EntityFactory/SimpleFactory.java
+/home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Music/AudioManager.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/UI/HUDInterface.java
