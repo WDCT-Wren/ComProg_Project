@@ -1,5 +1,7 @@
 package org.group1.GamePackage.Factory;
 
+import org.group1.GamePackage.Components.OverlayAnimationComponent;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.views.SelfScrollingBackgroundView;
 import com.almasb.fxgl.entity.Entity;
@@ -8,6 +10,8 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 
 public class BackgroundFactory implements EntityFactory {
+    private int SCREEN_WIDTH = FXGL.getAppWidth();
+    private int SCREEN_HEIGHT = FXGL.getAppHeight();
     public enum EntityType {
         LARGE_TOWER
     }
@@ -24,8 +28,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity hills(SpawnData data) {
         var background_hills = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_hills.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 5
                 );
         return FXGL.entityBuilder(data)
@@ -38,8 +42,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity forest(SpawnData data) {
         var background_forest = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_forest.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 10
                 );
         return FXGL.entityBuilder(data)
@@ -52,8 +56,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity large_forest(SpawnData data) {
         var background_large_forest = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_large_forest.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 10
                 );
         return FXGL.entityBuilder(data)
@@ -67,8 +71,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity star1(SpawnData data) {
         var background_stars1 = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_stars1.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 10
                 );
         return FXGL.entityBuilder(data)
@@ -81,8 +85,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity star2(SpawnData data) {
         var background_stars2 = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_stars2.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 15
                 );
         return FXGL.entityBuilder(data)
@@ -95,8 +99,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity star3(SpawnData data) {
         var background_stars3 = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_stars3.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 13
                 );
         return FXGL.entityBuilder(data)
@@ -109,8 +113,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity cloud1(SpawnData data) {
         var background_cloud1 = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_cloud1.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 20
                 );
         return FXGL.entityBuilder(data)
@@ -123,8 +127,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity cloud2(SpawnData data) {
         var background_cloud2 = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_cloud2.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
                 30
                 );
         return FXGL.entityBuilder(data)
@@ -137,8 +141,8 @@ public class BackgroundFactory implements EntityFactory {
     public Entity mist1(SpawnData data) {
         var background_mist1 = new SelfScrollingBackgroundView(
                 FXGL.getAssetLoader().loadTexture("background_mist1.png").getImage(),
-                FXGL.getAppWidth(),
-                FXGL.getAppHeight(),
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT, 
                 30
                 );
         return FXGL.entityBuilder(data)
@@ -146,5 +150,16 @@ public class BackgroundFactory implements EntityFactory {
                 .zIndex(-20)
                 .build();
     }
+
+
+    @Spawns("death_overlay")
+    public Entity deathOverlay(SpawnData data) {
+        return FXGL.entityBuilder(data)
+            .with(new OverlayAnimationComponent())
+            .at((SCREEN_WIDTH - 1080) / 2, (SCREEN_HEIGHT - 234) / 2)
+            .build();
+
+    }
+
 
 }

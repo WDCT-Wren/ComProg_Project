@@ -25,7 +25,7 @@ public class AudioManager {
         sound.getAudio().setVolume(20.0);
     }
 
-    public void gameOver() {
+    public void playGameOver() {
         //TODO: Sound effect for gameover
     }
 

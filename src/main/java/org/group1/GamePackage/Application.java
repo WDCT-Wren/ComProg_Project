@@ -9,6 +9,7 @@ import org.group1.GamePackage.Factory.EntityFactory;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Factory.MainSceneFactory;
 import org.group1.GamePackage.Handlers.CollisionManager;
+import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Handlers.LevelManager;
 import org.group1.GamePackage.Music.AudioManager;
@@ -28,6 +29,12 @@ import javafx.util.Duration;
 //GameApplication is used to start the game instead of
 //JavaFX's native Application class
 public class Application extends GameApplication {
+
+    // Instantiate CupHeadComponent
+    CupHeadComponent cupHeadComponent = new CupHeadComponent();
+
+    // Instantiate GameMechanics 
+    GameMechanics gameMechanics = new GameMechanics();
 
     // Instantiate AudioManager
     AudioManager audioManager = new AudioManager();
@@ -86,6 +93,7 @@ public class Application extends GameApplication {
         // Initialize Factories
         FXGL.getGameWorld().addEntityFactory(new EntityFactory());
         FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
+
 
         // Initalize Level Handler
         // Level Manager
@@ -155,9 +163,22 @@ public class Application extends GameApplication {
         
         //TODO: Complete game over logic
         if (player.getComponent(CupHeadComponent.class).getLives() == 0) {
-            audioManager.gameOver();
+            FXGL.spawn("death_overlay");
+            FXGL.getGameTimer().runOnceAfter(() -> {
+            audioManager.playGameOver();
+            cupHeadComponent.die();
+            }, Duration.seconds(3));
         }
 
+        // Updates GameMechanics if the player is invincible
+        if (player.getComponent(CupHeadComponent.class).isInvincible()) {
+            gameMechanics.setInvincible();
+        } 
+        else if (!player.getComponent(CupHeadComponent.class).isInvincible()) {
+            gameMechanics.offInvincible();
+        } 
+
+            
         /*
          Checks if enemy entities are present
          If true, entities explode when they reach the end of the screen

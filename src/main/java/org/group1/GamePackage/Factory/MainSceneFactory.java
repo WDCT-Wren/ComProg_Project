@@ -9,6 +9,7 @@ import org.group1.GamePackage.UI.LoadingInterface;
 
 
 public class MainSceneFactory extends SceneFactory {
+
     @Override
     public FXGLMenu newMainMenu() {
         return new MenuInterface();

@@ -40,10 +40,11 @@ public class CollisionManager {
                         .getComponent(CupHeadComponent.class);
 
                     enemyComponent.addScore();
+
+                    // your existing explosion code here
                     audioManager.playDeathSound();
                     enemy.getComponent(EnemyAnimationComponent.class).explode();
 
-                    // your existing explosion code here
 
                     // RNG powerup spawn at Center 
                     if (random.nextDouble() < LIFE_DROP_RATE) {
@@ -66,6 +67,11 @@ public class CollisionManager {
                         playerComponent.takeDamage();
 
                         enemy.getComponent(EnemyAnimationComponent.class).explode();
+                    }
+
+                    if (playerComponent.getLives() == 0) {
+                        // IDK ANIMATE IT IDK
+                        player.getViewComponent().setVisible(false);
                     }
                 }
             });

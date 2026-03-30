@@ -8,6 +8,10 @@ import org.group1.GamePackage.Music.AudioManager;
 
 
 public class CupHeadComponent extends Component {
+
+    GameOverComponent gameOverComponent = new GameOverComponent();
+    AudioManager audioManager = new AudioManager();
+
     private static final double INVINCIBLE_DURATION = 1.5; // seconds
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
 
@@ -21,11 +25,16 @@ public class CupHeadComponent extends Component {
 
     public void takeDamage () {
         if (!isInvincible && lives > 0) {
-            AudioManager audioManager = new AudioManager();
             audioManager.FAH();
             lives -= 1;
-        }
+        } 
+
         triggerInvincibility();
+    }
+
+    // Just Die
+    public void die() {
+            gameOverComponent.gameOver();
     }
 
     public void increaseLives() {
