@@ -6,6 +6,7 @@ import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.BulletAnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
+import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -74,7 +75,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
-            .view(new Rectangle(40, 40, Color.RED))
+            .with(new EnemyDropsAnimationComponent())
             .bbox(new HitBox(BoundingShape.box(40, 40)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))

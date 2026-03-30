@@ -2,6 +2,7 @@ package org.group1.GamePackage.Handlers;
 
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
+import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
 
@@ -70,9 +71,11 @@ public class CollisionManager {
             @Override
             protected void onCollisionBegin(Entity powerUp, Entity player) {
                 var playerComponent = player.getComponent(CupHeadComponent.class);
+                audioManager.playHeartGain();
 
                 playerComponent.increaseLives();
-                powerUp.removeFromWorld();
+
+                powerUp.getComponent(EnemyDropsAnimationComponent.class).explodeHeart();
             }
         });
     }

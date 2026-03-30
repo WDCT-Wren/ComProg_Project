@@ -19,6 +19,14 @@ public class AudioManager {
         sound.getAudio().setVolume(20.0);
     }
 
+    public void playHeartGain() {
+        Sound sound = FXGL.getAssetLoader().loadSound("heart_gain.wav");
+        FXGL.getAudioPlayer().playSound(sound);
+        sound.getAudio().setVolume(20.0);
+    }
+
+
+
     public void FAH() {
         FXGL.play("fah.wav");
     }
