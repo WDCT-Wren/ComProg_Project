@@ -15,30 +15,37 @@ This is a sample "alpha" test for Group 1's 2d <b>Space Impact</b> style arcade 
 ### Project Structure
 ```
 src/
-└── main/
-    └── java/
-        └── org.group1.GamePackage/
-            ├── Components/         # Entity components (behavior, animation, timers)
-            │   ├── AnimationComponent
-            │   ├── BulletAnimationComponent
-            │   ├── CupHeadComponent
-            │   ├── EnemyAnimationComponent
-            │   ├── EnemyDropsAnimationComponent
-            │   └── TimerComponent
-            ├── Factory/            # Entity and scene factories
-            │   ├── BackgroundFactory
-            │   ├── EntityFactory
-            │   └── MainSceneFactory
-            ├── Handlers/           # Game logic and input management
-            │   ├── CollisionManager
-            │   ├── GameMechanics
-            │   ├── InputManager
-            │   └── LevelManager
-            ├── Music/              # Audio management
-            │   └── AudioManager
-            ├── UI/                 # HUD and interface screens
-            │   ├── HUDInterface
-            │   ├── LoadingInterface
-            │   └── MenuInterface
-            └── Application         # Main entry point
+├── main/
+│   └── java/
+│       ├── org.group1.GamePackage/
+│       │   ├── Components/         # Entity components (behavior, animation, timers)
+│       │   │   ├── AnimationComponent
+│       │   │   ├── BulletAnimationComponent
+│       │   │   ├── CupHeadComponent
+│       │   │   ├── EnemyAnimationComponent
+│       │   │   ├── EnemyDropsAnimationComponent
+│       │   │   └── TimerComponent
+│       │   ├── Factory/            # Entity and scene factories
+│       │   │   ├── BackgroundFactory
+│       │   │   ├── EntityFactory
+│       │   │   └── MainSceneFactory
+│       │   ├── Handlers/           # Game logic and input management
+│       │   │   ├── CollisionManager
+│       │   │   ├── GameMechanics
+│       │   │   ├── InputManager
+│       │   │   └── LevelManager
+│       │   ├── Music/              # Audio management
+│       │   │   └── AudioManager
+│       │   ├── UI/                 # HUD and interface screens
+│       │   │   ├── HUDInterface
+│       │   │   ├── LoadingInterface
+│       │   │   └── MenuInterface
+│       │   └── Application         # Main entry point
+│       └── Resources               # Project Resources
+│           └── Assets/             
+│               ├── music           # Game Music
+│               ├── sounds          # Game Sound Effects
+│               └── textures        # Game Textures
+├── pom.xml                                  # Maven configuration
+└── README.md 
 ```
