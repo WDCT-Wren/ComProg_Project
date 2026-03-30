@@ -15,9 +15,10 @@ import java.util.Random;
 public class CollisionManager {
     // RNG for chance extra life drops
     private static final Random random = new Random();
-    private static final double LIFE_DROP_RATE = 0.30;
+    private static final double LIFE_DROP_RATE = 0.10;
 
     AudioManager audioManager = new AudioManager();
+    CupHeadComponent cupHeadComponent = new CupHeadComponent();
 
     public void init() {
         enemyVSbullet();
@@ -28,13 +29,18 @@ public class CollisionManager {
     public void enemyVSbullet () {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 EntityType.BULLET,
-                EntityType.ENEMY)
+                EntityType.ENEMY
+                )
             {
                 @Override
                 protected void onCollisionBegin(Entity bullet, Entity enemy){
                     bullet.removeFromWorld();
-                   
-                        audioManager.playDeathSound();
+                    var enemyComponent = FXGL.getGameWorld()
+                        .getSingleton(EntityType.PLAYER)
+                        .getComponent(CupHeadComponent.class);
+
+                    enemyComponent.addScore();
+                    audioManager.playDeathSound();
                     enemy.getComponent(EnemyAnimationComponent.class).explode();
 
                     // your existing explosion code here

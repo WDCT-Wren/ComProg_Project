@@ -82,7 +82,6 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
             .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
-            .with(new KeepOnScreenComponent())
             .build();
     }
 

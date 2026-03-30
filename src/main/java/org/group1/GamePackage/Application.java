@@ -36,7 +36,7 @@ public class Application extends GameApplication {
     private final Point2D playerSpawnPoint = new Point2D(100, 200);
 
     // Variables
-    private static final double NORMAL_ENEMY_SPAWN_RATE = 1.0; // every three seconds
+    private static final double NORMAL_ENEMY_SPAWN_RATE = 0.5; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
 
 
@@ -54,11 +54,13 @@ public class Application extends GameApplication {
     private Text boostText;
     private Text livesText; 
     private Text timerText;
+    private Text scoreText;
 
     @Override
     protected void initUI() {
         boostText = HUD.displayLives(player);
         livesText = HUD.displayBoostLevel(player);
+        scoreText = HUD.displayScore(player);
     }
 
     @Override
@@ -166,6 +168,7 @@ public class Application extends GameApplication {
         var pc = player.getComponent(CupHeadComponent.class);
         livesText.setText("Lives: " + pc.getLives());
         boostText.setText("Boost: " + pc.getBoostLevel());
+        scoreText.setText("Score: " + pc.getScore());
         
     }
 

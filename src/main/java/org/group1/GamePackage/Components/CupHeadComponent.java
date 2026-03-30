@@ -14,6 +14,8 @@ public class CupHeadComponent extends Component {
     private int lives = 9;
     private int boostLevel = 10;
 
+    private int score = 0;
+
     private boolean isInvincible = false;
     private boolean visible = true;
 
@@ -30,6 +32,10 @@ public class CupHeadComponent extends Component {
         if (lives <9) {
             lives += 1;
         }
+    }
+
+    public void addScore() {
+        score++;
     }
 
     /**
@@ -60,6 +66,10 @@ public class CupHeadComponent extends Component {
 
     public int getLives() {
         return lives;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public int getBoostLevel() {
