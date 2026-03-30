@@ -16,7 +16,6 @@ public class EnemyDropsAnimationComponent extends Component {
     private boolean exploding = false;
 
     private int HEART_EXPLOSION_SIZE = 350;
-    private double HEART_SCALE = 0.5;
 
     public EnemyDropsAnimationComponent() {
         Image heart_sprite = FXGL.image("heart_sprite.png");
@@ -49,8 +48,6 @@ public class EnemyDropsAnimationComponent extends Component {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(heartDrop);
 
-        texture.setScaleX(HEART_SCALE);
-        texture.setScaleY(HEART_SCALE);
     }
 
     public void explodeHeart() {
@@ -65,10 +62,8 @@ public class EnemyDropsAnimationComponent extends Component {
 
         explodeTexture.setScaleY(-1);
         explodeTexture.setScaleX(1);
-        explodeTexture.setTranslateX(
-                -(HEART_EXPLOSION_SIZE * HEART_SCALE) / 2.0 + (157 * HEART_SCALE) / 2.0);
-        explodeTexture.setTranslateY(
-                -(HEART_EXPLOSION_SIZE * HEART_SCALE) / 2.0 + (128 * HEART_SCALE) / 2.0);
+        explodeTexture.setTranslateX(-HEART_EXPLOSION_SIZE / 2.0 + 157 / 2.0);
+        explodeTexture.setTranslateY(-HEART_EXPLOSION_SIZE / 2.0 + 128 / 2.0);
 
         entity.getViewComponent().addChild(explodeTexture);
         explodeTexture.playAnimationChannel(heartExplode);
