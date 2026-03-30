@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.component.Component;
 
 public class GameOverComponent extends Component {
 
+    //TODO: GUI OR LOGIC OF WHATEVER HAPPENS HERE
     GameMechanics gameMechanics = new GameMechanics();
 
     public void gameOver() {

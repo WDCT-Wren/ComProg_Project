@@ -26,4 +26,8 @@ public class TimerComponent extends Component {
     private void onTimerEnds() {
         timeLeft.set(0);
     }
+
+    public boolean timeEnded() {
+        return timeLeft.get() <= 0;
+    }
 }

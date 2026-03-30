@@ -30,6 +30,8 @@ import javafx.util.Duration;
 //JavaFX's native Application class
 public class Application extends GameApplication {
 
+    private TimerComponent timerComponent;
+
     // Instantiate CupHeadComponent
     CupHeadComponent cupHeadComponent = new CupHeadComponent();
 
@@ -108,14 +110,13 @@ public class Application extends GameApplication {
         // Grabs the component from the entity and start it
         // Timer Component instantiation
         // Displays timer text
-        TimerComponent timerComponent = timerEntity.getComponent(TimerComponent.class);
+        timerComponent = timerEntity.getComponent(TimerComponent.class);
         timerComponent.initTimer();
         timerText = HUD.displayTimer(timerEntity);
 
         // Create a controllable player entity
         player = FXGL.spawn("player", playerSpawnPoint);
         
-        // Generate random position within 2 /3 of screen bounds
         // Spawn the entity (defined in your EntityFactory)
         // Variable for enemies
         TimerAction normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
@@ -162,7 +163,9 @@ public class Application extends GameApplication {
         }
         
         //TODO: Complete game over logic
-        if (player.getComponent(CupHeadComponent.class).getLives() == 0) {
+        // Added some logic but its ragebait and honestly incomplete
+        if (player.getComponent(CupHeadComponent.class).getLives() == 0 || 
+                timerComponent.timeEnded()) {
             FXGL.spawn("death_overlay");
             FXGL.getGameTimer().runOnceAfter(() -> {
             audioManager.playGameOver();
