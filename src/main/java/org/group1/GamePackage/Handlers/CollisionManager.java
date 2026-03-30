@@ -33,14 +33,15 @@ public class CollisionManager {
                 @Override
                 protected void onCollisionBegin(Entity bullet, Entity enemy){
                     bullet.removeFromWorld();
-                    audioManager.playDeathSound();
+                   
+                        audioManager.playDeathSound();
                     enemy.getComponent(EnemyAnimationComponent.class).explode();
 
                     // your existing explosion code here
 
-                    // RNG powerup spawn
+                    // RNG powerup spawn at Center 
                     if (random.nextDouble() < LIFE_DROP_RATE) {
-                        FXGL.spawn("extraLife", enemy.getPosition());
+                        FXGL.spawn("extraLife", enemy.getCenter());
                     }
                 }
             });
@@ -54,7 +55,7 @@ public class CollisionManager {
                 @Override
                 protected void onCollisionBegin(Entity enemy, Entity player) {
                     var playerComponent = player.getComponent(CupHeadComponent.class);
-                    audioManager.FAH();
+
                     audioManager.playDeathSound();
                     playerComponent.takeDamage();
 

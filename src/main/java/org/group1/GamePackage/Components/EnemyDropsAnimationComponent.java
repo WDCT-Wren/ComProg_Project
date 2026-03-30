@@ -8,6 +8,8 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
+import org.group1.GamePackage.Factory.EntityFactory;
+
 public class EnemyDropsAnimationComponent extends Component {
 
     private final AnimatedTexture texture; 
@@ -16,6 +18,10 @@ public class EnemyDropsAnimationComponent extends Component {
     private boolean exploding = false;
 
     private int HEART_EXPLOSION_SIZE = 350;
+    private double HEART_SCALE = 0.5;
+
+    EntityFactory entityFactory = new EntityFactory();
+    private double HEART_HITBOX = entityFactory.getLifeHitbox();
 
     public EnemyDropsAnimationComponent() {
         Image heart_sprite = FXGL.image("heart_sprite.png");
@@ -47,6 +53,13 @@ public class EnemyDropsAnimationComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(heartDrop);
+
+
+        texture.setScaleX(HEART_SCALE);
+        texture.setScaleY(HEART_SCALE);
+        
+        texture.setTranslateX(-(157 * HEART_SCALE - HEART_HITBOX) / 2.0);
+        texture.setTranslateY(-(128 * HEART_SCALE - HEART_HITBOX) / 2.0);
 
     }
 

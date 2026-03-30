@@ -29,12 +29,15 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         POWER_UP
     }
 
+    private double BULLET_HITBOX = 25;
+    private double LIFE_HITBOX = 40;
+
     @Spawns("bullet")
 
     public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(EntityType.BULLET)
-                .bbox(new HitBox(BoundingShape.box(25, 25)))
+                .bbox(new HitBox(BoundingShape.box(BULLET_HITBOX, BULLET_HITBOX)))
                 .with(new BulletAnimationComponent())
                 .with(new ProjectileComponent(new Point2D(1,0), 1000))
                 .with(new CollidableComponent(true))
@@ -76,10 +79,14 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .with(new EnemyDropsAnimationComponent())
-            .bbox(new HitBox(BoundingShape.box(40, 40)))
+            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
             .with(new KeepOnScreenComponent())
             .build();
+    }
+
+    public double getLifeHitbox() {
+        return LIFE_HITBOX;
     }
 }

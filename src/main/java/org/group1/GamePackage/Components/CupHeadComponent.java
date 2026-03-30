@@ -4,6 +4,8 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import javafx.util.Duration;
 
+import org.group1.GamePackage.Music.AudioManager;
+
 
 public class CupHeadComponent extends Component {
     private static final double INVINCIBLE_DURATION = 1.5; // seconds
@@ -17,6 +19,8 @@ public class CupHeadComponent extends Component {
 
     public void takeDamage () {
         if (!isInvincible && lives > 0) {
+            AudioManager audioManager = new AudioManager();
+            audioManager.FAH();
             lives -= 1;
         }
         triggerInvincibility();
@@ -46,7 +50,9 @@ public class CupHeadComponent extends Component {
         }, Duration.seconds(INVINCIBLE_DURATION));
     }
 
-    public boolean isInvincible() {return isInvincible;}
+    public boolean isInvincible() {
+        return isInvincible;
+    }
 
     public void decreaseBoostLevel (int amount) {
         if (boostLevel < 10) boostLevel -= amount;
