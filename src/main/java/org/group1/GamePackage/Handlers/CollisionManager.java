@@ -1,5 +1,7 @@
 package org.group1.GamePackage.Handlers;
 
+import java.util.Random;
+
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
@@ -9,8 +11,6 @@ import org.group1.GamePackage.Music.AudioManager;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
-
-import java.util.Random;
 
 public class CollisionManager {
     // RNG for chance extra life drops
@@ -61,11 +61,12 @@ public class CollisionManager {
                 @Override
                 protected void onCollisionBegin(Entity enemy, Entity player) {
                     var playerComponent = player.getComponent(CupHeadComponent.class);
+                    if (!playerComponent.isInvincible()) {
+                        audioManager.playDeathSound();
+                        playerComponent.takeDamage();
 
-                    audioManager.playDeathSound();
-                    playerComponent.takeDamage();
-
-                    enemy.getComponent(EnemyAnimationComponent.class).explode();
+                        enemy.getComponent(EnemyAnimationComponent.class).explode();
+                    }
                 }
             });
     }

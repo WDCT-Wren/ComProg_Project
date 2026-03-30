@@ -1,7 +1,5 @@
 package org.group1.GamePackage.Factory;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.BulletAnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
@@ -29,8 +27,8 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         POWER_UP
     }
 
-    private double BULLET_HITBOX = 25;
-    private double LIFE_HITBOX = 40;
+    private final double BULLET_HITBOX = 60;
+    private final double LIFE_HITBOX = 60;
 
     @Spawns("bullet")
 
@@ -50,7 +48,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(EntityType.PLAYER)
-                .bbox(new HitBox(BoundingShape.box(120, 100)))
+                .bbox(new HitBox(BoundingShape.box(100, 80)))
                 .with(new CupHeadComponent())
                 .with(new AnimationComponent())
                 .with(new KeepOnScreenComponent())
@@ -63,7 +61,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     public Entity enemy(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(EntityType.ENEMY)
-            .bbox(new HitBox(BoundingShape.box(100, 100)))
+            .bbox(new HitBox(BoundingShape.box(80, 80)))
             .with(new ProjectileComponent(new Point2D(-1,0), 500))
             .with(new EnemyAnimationComponent())
             .with(new CollidableComponent(true))

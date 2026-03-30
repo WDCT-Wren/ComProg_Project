@@ -24,6 +24,6 @@ public class TimerComponent extends Component {
     public IntegerProperty timeLeftProperty() {return timeLeft;}
 
     private void onTimerEnds() {
-        //TODO: set timer event
+        timeLeft.set(0);
     }
 }

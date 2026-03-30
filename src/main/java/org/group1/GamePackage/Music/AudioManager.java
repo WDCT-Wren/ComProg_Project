@@ -25,7 +25,9 @@ public class AudioManager {
         sound.getAudio().setVolume(20.0);
     }
 
-
+    public void gameOver() {
+        //TODO: Sound effect for gameover
+    }
 
     public void FAH() {
         FXGL.play("fah.wav");

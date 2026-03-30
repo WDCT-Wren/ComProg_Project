@@ -1,16 +1,14 @@
 package org.group1.GamePackage.UI;
 
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.entity.components.TimeComponent;
-import javafx.beans.binding.Bindings;
 import org.group1.GamePackage.Components.CupHeadComponent;
+import org.group1.GamePackage.Components.TimerComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import org.group1.GamePackage.Components.TimerComponent;
 
 public class HUDInterface {
     public Text displayTimer(Entity time) {

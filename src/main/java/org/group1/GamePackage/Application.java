@@ -6,8 +6,8 @@ import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.TimerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
-import org.group1.GamePackage.Factory.MainSceneFactory;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
+import org.group1.GamePackage.Factory.MainSceneFactory;
 import org.group1.GamePackage.Handlers.CollisionManager;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Handlers.LevelManager;
@@ -106,7 +106,7 @@ public class Application extends GameApplication {
 
         // Create a controllable player entity
         player = FXGL.spawn("player", playerSpawnPoint);
-
+        
         // Generate random position within 2 /3 of screen bounds
         // Spawn the entity (defined in your EntityFactory)
         // Variable for enemies
@@ -151,6 +151,11 @@ public class Application extends GameApplication {
             player.translateX(-playerSpeed);
         } else if (inputManager.isMovingRight()) {
             player.translateX(playerSpeed);
+        }
+        
+        //TODO: Complete game over logic
+        if (player.getComponent(CupHeadComponent.class).getLives() == 0) {
+            audioManager.gameOver();
         }
 
         /*
