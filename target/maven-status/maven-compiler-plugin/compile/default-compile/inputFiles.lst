@@ -8,9 +8,12 @@
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/TimerComponent.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/BackgroundFactory.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/EntityFactory.java
+/home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/MainSceneFactory.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/CollisionManager.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/GameMechanics.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/InputManager.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/LevelManager.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Music/AudioManager.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/UI/HUDInterface.java
+/home/me/ComProg_Project/src/main/java/org/group1/GamePackage/UI/LoadingInterface.java
+/home/me/ComProg_Project/src/main/java/org/group1/GamePackage/UI/MenuInterface.java

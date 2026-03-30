@@ -6,6 +6,7 @@ import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.TimerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
+import org.group1.GamePackage.Factory.MainSceneFactory;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.CollisionManager;
 import org.group1.GamePackage.Handlers.InputManager;
@@ -67,6 +68,9 @@ public class Application extends GameApplication {
     protected void initSettings(GameSettings gameSettings) {
         gameSettings.setHeight(720);
         gameSettings.setWidth(1280);
+        gameSettings.setMainMenuEnabled(true);
+        gameSettings.setGameMenuEnabled(true);
+        gameSettings.setSceneFactory(new MainSceneFactory());
     }
 
     @Override
