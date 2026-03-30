@@ -1,13 +1,12 @@
 package org.group1.GamePackage;
 
-import javafx.geometry.Point2D;
 import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.TimerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
-import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Factory.EntityFactory;
+import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.CollisionManager;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Handlers.LevelManager;
@@ -21,6 +20,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.time.TimerAction;
 
+import javafx.geometry.Point2D;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -53,6 +53,7 @@ public class Application extends GameApplication {
     HUDInterface HUD = new HUDInterface();
     private Text boostText;
     private Text livesText; 
+    private Text timerText;
 
     @Override
     protected void initUI() {
@@ -92,9 +93,10 @@ public class Application extends GameApplication {
 
         // Grabs the component from the entity and start it
         // Timer Component instantiation
+        // Displays timer text
         TimerComponent timerComponent = timerEntity.getComponent(TimerComponent.class);
         timerComponent.initTimer();
-
+        timerText = HUD.displayTimer(timerEntity);
 
         // Create a controllable player entity
         player = FXGL.spawn("player", playerSpawnPoint);
@@ -164,6 +166,7 @@ public class Application extends GameApplication {
         var pc = player.getComponent(CupHeadComponent.class);
         livesText.setText("Lives: " + pc.getLives());
         boostText.setText("Boost: " + pc.getBoostLevel());
+        
     }
 
     public static void main(String[] args) {
