@@ -29,6 +29,10 @@ public class AudioManager {
         //TODO: Sound effect for gameover
     }
 
+    public void speedUpSound() {
+        FXGL.play("speed.wav");
+    }
+
     public void FAH() {
         FXGL.play("fah.wav");
     }

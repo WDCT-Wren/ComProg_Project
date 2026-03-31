@@ -71,7 +71,7 @@ public class CupHeadComponent extends Component {
     }
 
     public void decreaseBoostLevel (double amount) {
-        if (boostLevel < 10) boostLevel -= amount;
+        boostLevel -= amount;
     }
 
     public void setBoostLevel (int amount) {

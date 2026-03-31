@@ -46,7 +46,7 @@ public class Application extends GameApplication {
     private final Point2D playerSpawnPoint = new Point2D(100, 200);
 
     // Variables
-    private static final double NORMAL_ENEMY_SPAWN_RATE = 0.5; // every seconds
+    private static final double NORMAL_ENEMY_SPAWN_RATE = 2; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
 
 
@@ -55,6 +55,9 @@ public class Application extends GameApplication {
 
     //Enemy presence manager
     private boolean enemyPresent = false;
+
+    // Boost level decrease timer
+    private double boostDecreaseTimer = 0;
 
     /*
     Initializes HUD object
@@ -146,6 +149,19 @@ public class Application extends GameApplication {
         int playerSpeed = 5;
         var playerMainComponent = player.getComponent(CupHeadComponent.class);
         var playerAnimationComponent = player.getComponent(AnimationComponent.class);
+
+        //Checks if boost level is above zero
+        if (playerMainComponent.getBoostLevel() > 0) {
+            playerSpeed *= 2;
+            boostDecreaseTimer += 0.016; // ~60 FPS
+            if (boostDecreaseTimer >= 1.5) {
+                playerMainComponent.decreaseBoostLevel(0.5);
+                boostDecreaseTimer = 0;
+            }
+        } else {
+            boostDecreaseTimer = 0; // Reset if boost hits zero
+        }
+
         if (inputManager.isMovingUp() && inputManager.isMovingDown()) {
             playerAnimationComponent.onIdle();
         } else if (inputManager.isMovingUp()) {
@@ -183,12 +199,6 @@ public class Application extends GameApplication {
             gameMechanics.offInvincible();
         } 
 
-        if (playerMainComponent.getBoostLevel() > 0) {
-            FXGL.getGameTimer().runAtInterval(() -> {
-                playerMainComponent.decreaseBoostLevel(0.5);
-            }, Duration.seconds(1.5));
-        }
-            
         /*
          Checks if enemy entities are present
          If true, entities explode when they reach the end of the screen
