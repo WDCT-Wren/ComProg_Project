@@ -46,7 +46,7 @@ public class Application extends GameApplication {
     private final Point2D playerSpawnPoint = new Point2D(100, 200);
 
     // Variables
-    private static final double NORMAL_ENEMY_SPAWN_RATE = 2; // every seconds
+    private static final double NORMAL_ENEMY_SPAWN_RATE = 0.5; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
 
 
@@ -150,12 +150,18 @@ public class Application extends GameApplication {
         var playerMainComponent = player.getComponent(CupHeadComponent.class);
         var playerAnimationComponent = player.getComponent(AnimationComponent.class);
 
-        //Checks if boost level is above zero
+        /*
+        - Checks if boost level is above zero
+        - Decreases boost level by 1 every 1.5 seconds
+        - Implemented boostDecreastTimer since onUpdate updates every frame
+        - 1s / 60frames = 0.16 seconds per frame
+         */
+        
         if (playerMainComponent.getBoostLevel() > 0) {
             playerSpeed *= 2;
             boostDecreaseTimer += 0.016; // ~60 FPS
             if (boostDecreaseTimer >= 1.5) {
-                playerMainComponent.decreaseBoostLevel(0.5);
+                playerMainComponent.decreaseBoostLevel(1);
                 boostDecreaseTimer = 0;
             }
         } else {
