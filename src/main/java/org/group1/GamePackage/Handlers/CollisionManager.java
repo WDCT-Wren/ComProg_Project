@@ -5,6 +5,7 @@ import java.util.Random;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
+import org.group1.GamePackage.Components.boostUpComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
 
@@ -16,6 +17,7 @@ public class CollisionManager {
     // RNG for chance extra life drops
     private static final Random random = new Random();
     private static final double LIFE_DROP_RATE = 0.10;
+    private int randomIndex;
 
     AudioManager audioManager = new AudioManager();
     CupHeadComponent cupHeadComponent = new CupHeadComponent();
@@ -47,9 +49,14 @@ public class CollisionManager {
 
 
                     // RNG powerup spawn at Center 
+                    // Random spawner between speed boost and extra life powerup
+                    String[] powerUps = {"extraLife", "boostUp"};
+                    randomIndex = random.nextInt(2);
+                    String powerUpType = powerUps[randomIndex];
                     if (random.nextDouble() < LIFE_DROP_RATE) {
-                        FXGL.spawn("extraLife", enemy.getCenter());
+                        FXGL.spawn(powerUpType, enemy.getCenter());
                     }
+
                 }
             });
     }
@@ -84,13 +91,28 @@ public class CollisionManager {
         {
             @Override
             protected void onCollisionBegin(Entity powerUp, Entity player) {
-                var playerComponent = player.getComponent(CupHeadComponent.class);
-                audioManager.playHeartGain();
+                if (powerUp.hasComponent(boostUpComponent.class)) {
+                    boostUp(powerUp, player);
+                }
 
-                playerComponent.increaseLives();
-
-                powerUp.getComponent(EnemyDropsAnimationComponent.class).explodeHeart();
+                if (powerUp.hasComponent(EnemyDropsAnimationComponent.class)) {
+                     extraLives(powerUp, player);
+                }
             }
         });
+    }
+
+    private void extraLives(Entity powerUp, Entity player) {
+        var playerComponent = player.getComponent(CupHeadComponent.class);
+        audioManager.playHeartGain();
+
+        playerComponent.increaseLives();
+
+        powerUp.getComponent(EnemyDropsAnimationComponent.class).explodeHeart();
+    }
+
+    private void boostUp(Entity powerUp, Entity player) {
+        powerUp.removeFromWorld();
+        player.getComponent(CupHeadComponent.class).setBoostLevel(10);
     }
 }

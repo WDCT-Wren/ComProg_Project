@@ -144,16 +144,18 @@ public class Application extends GameApplication {
     @Override
     protected void onUpdate(double update) {
         int playerSpeed = 5;
+        var playerMainComponent = player.getComponent(CupHeadComponent.class);
+        var playerAnimationComponent = player.getComponent(AnimationComponent.class);
         if (inputManager.isMovingUp() && inputManager.isMovingDown()) {
-            player.getComponent(AnimationComponent.class).onIdle();
+            playerAnimationComponent.onIdle();
         } else if (inputManager.isMovingUp()) {
             player.translateY(-playerSpeed);
-            player.getComponent(AnimationComponent.class).onUp();
+            playerAnimationComponent.onUp();
         } else if (inputManager.isMovingDown()) {
             player.translateY(playerSpeed);
-            player.getComponent(AnimationComponent.class).onDown();
+            playerAnimationComponent.onDown();
         } else {
-            player.getComponent(AnimationComponent.class).onIdle();
+            playerAnimationComponent.onIdle();
         }
         
         if (inputManager.isMovingLeft()) {
@@ -164,7 +166,7 @@ public class Application extends GameApplication {
         
         //TODO: Complete game over logic
         // Added some logic but its ragebait and honestly incomplete
-        if (player.getComponent(CupHeadComponent.class).getLives() == 0 || 
+        if (playerMainComponent.getLives() == 0 || 
                 timerComponent.timeEnded()) {
             FXGL.spawn("death_overlay");
             FXGL.getGameTimer().runOnceAfter(() -> {
@@ -174,13 +176,18 @@ public class Application extends GameApplication {
         }
 
         // Updates GameMechanics if the player is invincible
-        if (player.getComponent(CupHeadComponent.class).isInvincible()) {
+        if (playerMainComponent.isInvincible()) {
             gameMechanics.setInvincible();
         } 
-        else if (!player.getComponent(CupHeadComponent.class).isInvincible()) {
+        else if (!playerMainComponent.isInvincible()) {
             gameMechanics.offInvincible();
         } 
 
+        if (playerMainComponent.getBoostLevel() > 0) {
+            FXGL.getGameTimer().runAtInterval(() -> {
+                playerMainComponent.decreaseBoostLevel(0.5);
+            }, Duration.seconds(1.5));
+        }
             
         /*
          Checks if enemy entities are present

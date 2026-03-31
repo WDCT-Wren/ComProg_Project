@@ -1,10 +1,11 @@
 package org.group1.GamePackage.Components;
 
+import org.group1.GamePackage.Music.AudioManager;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
-import javafx.util.Duration;
 
-import org.group1.GamePackage.Music.AudioManager;
+import javafx.util.Duration;
 
 
 public class CupHeadComponent extends Component {
@@ -16,7 +17,7 @@ public class CupHeadComponent extends Component {
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
 
     private int lives = 9;
-    private int boostLevel = 10;
+    private int boostLevel = 0;
 
     private int score = 0;
 
@@ -69,8 +70,12 @@ public class CupHeadComponent extends Component {
         return isInvincible;
     }
 
-    public void decreaseBoostLevel (int amount) {
+    public void decreaseBoostLevel (double amount) {
         if (boostLevel < 10) boostLevel -= amount;
+    }
+
+    public void setBoostLevel (int amount) {
+        boostLevel = amount;
     }
 
     public int getLives() {

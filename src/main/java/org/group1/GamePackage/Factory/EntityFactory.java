@@ -5,6 +5,7 @@ import org.group1.GamePackage.Components.BulletAnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
+import org.group1.GamePackage.Components.boostUpComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -17,6 +18,8 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
@@ -77,6 +80,20 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .with(new EnemyDropsAnimationComponent())
+            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
+            .with(new ProjectileComponent(new Point2D(-1,0), 300))
+            .with(new CollidableComponent(true))
+            .build();
+    }
+
+    @Spawns("boostUp")
+
+    public Entity boostUpPowerUp(SpawnData data) {
+        
+        return FXGL.entityBuilder(data)
+            .type(EntityType.POWER_UP)
+            .viewWithBBox(new Circle(30, Color.AZURE))
+            .with(new boostUpComponent())
             .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
