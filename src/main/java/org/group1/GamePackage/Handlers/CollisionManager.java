@@ -5,7 +5,7 @@ import java.util.Random;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
-import org.group1.GamePackage.Components.boostUpComponent;
+import org.group1.GamePackage.Components.BoostUpComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
 
@@ -91,7 +91,7 @@ public class CollisionManager {
         {
             @Override
             protected void onCollisionBegin(Entity powerUp, Entity player) {
-                if (powerUp.hasComponent(boostUpComponent.class)) {
+                if (powerUp.hasComponent(BoostUpComponent.class)) {
                     boostUp(powerUp, player);
                 }
 
