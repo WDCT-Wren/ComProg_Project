@@ -160,7 +160,7 @@ public class Application extends GameApplication {
         if (playerMainComponent.getBoostLevel() > 0) {
             playerSpeed *= 2;
             boostDecreaseTimer += 0.016; // ~60 FPS
-            if (boostDecreaseTimer >= 1.5) {
+            if (boostDecreaseTimer >= 0.5) {
                 playerMainComponent.decreaseBoostLevel(1);
                 boostDecreaseTimer = 0;
             }
