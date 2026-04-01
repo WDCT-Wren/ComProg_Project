@@ -37,11 +37,11 @@ public class GameMechanics {
         isInvincible = false;
     }
 
-    public void pauseGame() {
+    public static void pauseGame() {
         FXGL.getGameController().pauseEngine();
     }
 
-    public void resumeGame() {
+    public static void resumeGame() {
         FXGL.getGameController().resumeEngine();
     }
 

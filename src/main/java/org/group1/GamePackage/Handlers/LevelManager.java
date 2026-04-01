@@ -1,9 +1,6 @@
 package org.group1.GamePackage.Handlers;
 
 import com.almasb.fxgl.dsl.FXGL;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.util.Duration;
 
 public class LevelManager {
     /**

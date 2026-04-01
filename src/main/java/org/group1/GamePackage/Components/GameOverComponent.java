@@ -5,10 +5,13 @@ import com.almasb.fxgl.entity.component.Component;
 
 public class GameOverComponent extends Component {
 
-    //TODO: GUI OR LOGIC OF WHATEVER HAPPENS HERE
-    GameMechanics gameMechanics = new GameMechanics();
+    // TODO: GUI OR LOGIC OF WHATEVER HAPPENS HERE
 
     public void gameOver() {
-        gameMechanics.pauseGame();
-    } 
+        GameMechanics.pauseGame();
+    }
+
+    public static void winGame() {
+        GameMechanics.pauseGame();
+    }
 }

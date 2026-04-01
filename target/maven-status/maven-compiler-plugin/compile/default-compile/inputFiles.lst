@@ -1,6 +1,7 @@
 /home/me/ComProg_Project/src/main/java/module-info.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Application.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/AnimationComponent.java
+/home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/BoostUpComponent.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/BulletAnimationComponent.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/CupHeadComponent.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/EnemyAnimationComponent.java
@@ -9,8 +10,10 @@
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/OverlayAnimationComponent.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Components/TimerComponent.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/BackgroundFactory.java
+/home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/BossFactory.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/EntityFactory.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/MainSceneFactory.java
+/home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/BossLevelManager.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/CollisionManager.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/GameMechanics.java
 /home/me/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/InputManager.java

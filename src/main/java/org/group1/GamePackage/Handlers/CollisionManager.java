@@ -7,6 +7,9 @@ import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
+import org.group1.GamePackage.Factory.BossFactory;
+import org.group1.GamePackage.Factory.BossFactory.BossType;
+import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.dsl.FXGL;
@@ -26,6 +29,7 @@ public class CollisionManager {
         enemyVSbullet();
         enemyVSplayer();
         playerGetsExtraLife();
+        bossVSbullet();
     }
 
     public void enemyVSbullet () {
@@ -59,6 +63,24 @@ public class CollisionManager {
 
                 }
             });
+    }
+
+    public void bossVSbullet () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    BossType.BOSS,
+                    EntityType.BULLET
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity boss, Entity bullet) {
+                    var BOSS = boss.getComponent(BossLevelManager.class);
+                        bullet.removeFromWorld();
+                        BOSS.takeDamage();
+                    }
+
+            
+        });
+
     }
 
     public void enemyVSplayer () {

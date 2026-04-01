@@ -3,8 +3,10 @@ package org.group1.GamePackage;
 import org.group1.GamePackage.Components.AnimationComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
+import org.group1.GamePackage.Components.GameOverComponent;
 import org.group1.GamePackage.Components.TimerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
+import org.group1.GamePackage.Factory.BossFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Factory.MainSceneFactory;
@@ -12,6 +14,7 @@ import org.group1.GamePackage.Handlers.CollisionManager;
 import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Handlers.LevelManager;
+import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Music.AudioManager;
 import org.group1.GamePackage.UI.HUDInterface;
 
@@ -32,6 +35,10 @@ public class Application extends GameApplication {
 
     private TimerComponent timerComponent;
 
+    BossLevelManager bossLevelManager = new BossLevelManager();
+    private boolean bossLevel = false;
+    private boolean bossSpawned = false;
+
     // Instantiate CupHeadComponent
     CupHeadComponent cupHeadComponent = new CupHeadComponent();
 
@@ -48,6 +55,7 @@ public class Application extends GameApplication {
     // Variables
     private static final double NORMAL_ENEMY_SPAWN_RATE = 0.5; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
+
 
 
     // Input manager
@@ -98,6 +106,7 @@ public class Application extends GameApplication {
         // Initialize Factories
         FXGL.getGameWorld().addEntityFactory(new EntityFactory());
         FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
+        FXGL.getGameWorld().addEntityFactory(new BossFactory());
 
 
         // Initalize Level Handler
@@ -122,7 +131,10 @@ public class Application extends GameApplication {
         
         // Spawn the entity (defined in your EntityFactory)
         // Variable for enemies
+        //
         TimerAction normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
+            // Don't spawn at bossLevel
+            if (bossLevel) return;
             // Generate random position within 2 /3 of screen bounds
             double enemyBounds = (double) (FXGL.getAppHeight() * 2) / 3;
             double y = FXGLMath.random(0, enemyBounds);
@@ -189,13 +201,20 @@ public class Application extends GameApplication {
         //TODO: Complete game over logic
         // Added some logic but its ragebait and honestly incomplete
         if (playerMainComponent.getLives() == 0 || 
-                timerComponent.timeEnded()) {
+            timerComponent.timeEnded()) {
+
             FXGL.spawn("death_overlay");
             FXGL.getGameTimer().runOnceAfter(() -> {
             audioManager.playGameOver();
             cupHeadComponent.die();
             }, Duration.seconds(3));
         }
+        
+        // WINGAME
+        if (bossLevelManager.dead()) {
+            GameOverComponent.winGame();
+        }
+
 
         // Updates GameMechanics if the player is invincible
         if (playerMainComponent.isInvincible()) {
@@ -219,12 +238,22 @@ public class Application extends GameApplication {
                 enemyPresent = false;
             }
         }
+
+        if (bossLevelManager.inBossLevel() == true && !bossSpawned) {
+            bossLevel = true;
+            bossLevelManager.spawnBoss();
+            bossSpawned = true;
+        }
+
+        
         
         //Updates HUD texts if player attributes change
         var pc = player.getComponent(CupHeadComponent.class);
         livesText.setText("Lives: " + pc.getLives());
         boostText.setText("Boost: " + pc.getBoostLevel());
-        scoreText.setText("Score: " + pc.getScore());
+        
+        // Becoz I changed it to static idk if we should implement this for the methods
+        scoreText.setText("Score: " + CupHeadComponent.getScore());
         
     }
 

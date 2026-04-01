@@ -61,6 +61,5 @@ public class HUDInterface {
 
         FXGL.addUINode(scoreText);
         return scoreText;
-
     }
 }

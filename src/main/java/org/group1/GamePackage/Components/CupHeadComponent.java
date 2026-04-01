@@ -19,7 +19,8 @@ public class CupHeadComponent extends Component {
     private int lives = 9;
     private int boostLevel = 0;
 
-    private int score = 0;
+    // static so it belongs to the class itself
+    private static int score = 0;
 
     private boolean isInvincible = false;
     private boolean visible = true;
@@ -82,7 +83,8 @@ public class CupHeadComponent extends Component {
         return lives;
     }
 
-    public int getScore() {
+    // static as well so that getScore keeps updating in this class
+    public static int getScore() {
         return score;
     }
 
