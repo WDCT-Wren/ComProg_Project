@@ -2,10 +2,10 @@ package org.group1.GamePackage.Handlers;
 
 import java.util.Random;
 
+import org.group1.GamePackage.Components.BoostUpComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
-import org.group1.GamePackage.Components.BoostUpComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
 
@@ -96,7 +96,7 @@ public class CollisionManager {
                 }
 
                 if (powerUp.hasComponent(EnemyDropsAnimationComponent.class)) {
-                     extraLives(powerUp, player);
+                    extraLives(powerUp, player);
                 }
             }
         });
@@ -113,6 +113,6 @@ public class CollisionManager {
 
     private void boostUp(Entity powerUp, Entity player) {
         powerUp.removeFromWorld();
-        player.getComponent(CupHeadComponent.class).setBoostLevel(10);
+        GameMechanics.speedUp(player);
     }
 }

@@ -1,5 +1,7 @@
 package org.group1.GamePackage.Handlers;
 
+import org.group1.GamePackage.Components.CupHeadComponent;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 
@@ -21,6 +23,10 @@ public class GameMechanics {
             FXGL.spawn("bullet", player.getX() + 120, player.getY() + 50);
             firstBullet = currentTime;
         }
+    }
+
+    public static void speedUp(Entity player) {
+        player.getComponent(CupHeadComponent.class).setBoostLevel(10);
     }
 
     public void setInvincible() {
