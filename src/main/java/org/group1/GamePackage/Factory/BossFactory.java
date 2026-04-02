@@ -1,5 +1,6 @@
 package org.group1.GamePackage.Factory;
 
+import org.group1.GamePackage.Components.BossComponent;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 
 import com.almasb.fxgl.dsl.FXGL;
@@ -29,6 +30,7 @@ public class BossFactory implements EntityFactory {
             .type(BossType.BOSS)
             .viewWithBBox(FXGL.texture("boss_placeholder.png", BOSS_HITBOX, BOSS_HITBOX))
             .with(new BossLevelManager())
+            .with(new BossComponent())
             .with(new CollidableComponent(true))
             .build();
     }

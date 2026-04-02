@@ -9,9 +9,11 @@ org/group1/GamePackage/Components/EnemyAnimationComponent.class
 org/group1/GamePackage/Handlers/CollisionManager$2.class
 org/group1/GamePackage/Handlers/CollisionManager.class
 org/group1/GamePackage/Music/AudioManager.class
+org/group1/GamePackage/Handlers/CollisionManager$5.class
 org/group1/GamePackage/UI/LoadingInterface.class
 org/group1/GamePackage/Components/BulletAnimationComponent.class
 org/group1/GamePackage/Components/OverlayAnimationComponent.class
+org/group1/GamePackage/Components/BossComponent$State.class
 org/group1/GamePackage/Handlers/InputManager$4.class
 org/group1/GamePackage/Handlers/CollisionManager$1.class
 module-info.class
@@ -19,6 +21,7 @@ org/group1/GamePackage/UI/HUDInterface.class
 org/group1/GamePackage/Factory/BackgroundFactory.class
 org/group1/GamePackage/Components/GameOverComponent.class
 org/group1/GamePackage/Factory/EntityFactory.class
+org/group1/GamePackage/Components/BossComponent.class
 org/group1/GamePackage/Components/AnimationComponent.class
 org/group1/GamePackage/Handlers/InputManager$5.class
 org/group1/GamePackage/Handlers/CollisionManager$3.class

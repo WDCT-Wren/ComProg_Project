@@ -30,6 +30,7 @@ public class CollisionManager {
         enemyVSplayer();
         playerGetsExtraLife();
         bossVSbullet();
+        playerVSboss();
     }
 
     public void enemyVSbullet () {
@@ -78,6 +79,24 @@ public class CollisionManager {
                         BOSS.takeDamage();
                     }
 
+            
+        });
+
+    }
+
+    public void playerVSboss () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    EntityType.PLAYER,
+                    BossType.BOSS
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity player, Entity boss){
+                        var playerComponent = player.getComponent(CupHeadComponent.class);
+                        audioManager.playDeathSound();
+                        playerComponent.takeDamage();
+
+                    }
             
         });
 

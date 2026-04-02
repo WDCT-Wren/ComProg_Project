@@ -1,0 +1,162 @@
+package org.group1.GamePackage.Components;
+
+import org.group1.GamePackage.Factory.EntityFactory.EntityType;
+
+import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.component.Component;
+
+import javafx.geometry.Point2D;
+
+public class BossComponent extends Component {
+
+
+    // State of the BOSS initial state IDLE
+    private enum State {
+        IDLE,
+        CHARGING,
+        RECOVERING
+    }
+    private State state = State.IDLE;
+
+    // Initial position of BOSS set by FXGL.spawn
+    private double INITIAL_BOSS_Y;
+    private double INITIAL_BOSS_X;
+
+    /* Y movement SPEED and MOVE_RANGE
+     * Initial DIRECTION is 1 (positive Y movement)
+     * RANDOM_DIRECTION_CHANCE: chance to change determined by randomBoolean
+     * */
+    private double SPEED_Y = 200;
+    private double MOVE_RANGE = 150;
+    private double DIRECTION = 1;
+    private double RANDOM_DIRECTION_CHANCE = 0.01;
+
+
+    /* Charge Attack Variables
+     * CHARGE_SPEED: How fast move to player
+     * RECOVER_SPEED: How fast till boss goes back to initial X position
+     * CHARGE_CHANCE: chance to attack determined by randomBoolean
+     * CHARGE_TARGET_X CHARGE_TARGET_Y: player position
+     * */
+    private static final double CHARGE_SPEED = 1200;
+    private static final double RECOVER_SPEED = 800;
+    private static final double CHARGE_CHANCE = 0.005;
+    private double CHARGE_TARGET_X;
+    private double CHARGE_TARGET_Y;
+
+
+    @Override
+    public void onAdded(){
+        // When boss spawns, get the position and initialize it
+        INITIAL_BOSS_Y = entity.getY();
+        INITIAL_BOSS_X = entity.getX();
+
+        // Picks a random Y movement direction
+        DIRECTION = FXGLMath.randomBoolean() ? 1 : -1;
+    }
+
+    @Override
+    public void onUpdate(double update) {
+        // switch states that updates all the time by overriding FXGL onUpdate(double)
+        switch (state) {
+            case IDLE -> onIdle(update);
+            case CHARGING -> currentlyCharging(update);
+            case RECOVERING -> currentlyRecovering(update);
+        }
+    }
+
+
+    // IDLE logic, with the update parameter to constantly translateY
+    private void onIdle(double update) {
+        entity.translateY(SPEED_Y * DIRECTION * update);
+
+        /* if INITIAL_BOSS_Y + MOVE_RANGE is greater than the current Y
+         * set it to INITIAL_BOSS_Y + MOVE_RANGE
+         * and CHANGE THE DIRECTION by multiplying to -1
+         * else if its less than INITIAL_BOSS_Y - MOVE_RANGE
+         * set it to INITIAL_BOSS_Y - MOVE_RANGE
+         * change the direction again
+         */
+        if (entity.getY() > INITIAL_BOSS_Y + MOVE_RANGE){
+            entity.setY(INITIAL_BOSS_Y + MOVE_RANGE); 
+            DIRECTION *= -1;
+        }
+        else if (entity.getY() < INITIAL_BOSS_Y - MOVE_RANGE){
+            entity.setY(INITIAL_BOSS_Y - MOVE_RANGE); 
+            DIRECTION *= -1;
+        }
+
+
+        // Randomly change directions
+        if (FXGLMath.randomBoolean(RANDOM_DIRECTION_CHANCE)){ 
+            DIRECTION *= -1;
+        }
+
+        // Randomly charge attacks
+        if (FXGLMath.randomBoolean(CHARGE_CHANCE)) {
+            chargeAttack();
+        }
+    }
+
+
+    /* Charge attack logic
+     * doesnt have the update parameter because this initializes the CHARGING state
+     * gets the play current position
+     * */
+    private void chargeAttack() {
+        var player = FXGL.getGameWorld()
+            .getSingleton(e -> e.isType(EntityType.PLAYER));
+
+        CHARGE_TARGET_X = player.getX();
+        CHARGE_TARGET_Y = player.getY();
+
+        state = State.CHARGING;
+    }
+
+    /* if state = CHARGING -> run this method
+     * Point2D position: gets the current position of boss
+     * Point2D target: gets the current position of player
+     * Point2D direction: subtracts the target to postion
+     * Essentially creates a vector from position to target or idk
+     * I think of it like if boss X = 700 & boss Y = 160
+     * then player X = 100, player Y = 200
+     * subtracts (100, 200) to (700, 160) = (-600, 40) = 601.33... < vector magnitude
+     * .normalize() just divides by the magnitude so it gets the right distance to player
+     * (-600 / 601.33, 40 / 601.33) = (-0.998, 0.066) this is the distance to player = direction
+     */
+    private void currentlyCharging(double update) {
+        Point2D position = new Point2D(entity.getX(), entity.getY());
+        Point2D target = new Point2D(CHARGE_TARGET_X, CHARGE_TARGET_Y);
+        Point2D direction = target.subtract(position).normalize();
+
+        // translate the direction multiplied by CHARGE_SPEED while onUpdate
+        entity.translate(direction.multiply(CHARGE_SPEED * update));
+
+        // if position reaches the target, set position to the CHARGE_TARGET
+        if (position.distance(target) < CHARGE_SPEED * update) {
+            entity.setPosition(CHARGE_TARGET_X, CHARGE_TARGET_Y);
+            // and then initialize RECOVERING state
+            state = State.RECOVERING;
+        }
+    }
+
+    /* RECOVERING logic
+     * ORIGINAL_X: how far current x position from initial position
+     * if the absolute value of ORIGINAL_X is less than RECOVER_SPEED * onUpdate
+     * it means that its close enough to snap back to INITIAL_BOSS_X position
+     * returns to IDLE state
+     * else keep moving back
+     * */
+    private void currentlyRecovering(double update) {
+        double ORIGINAL_X = INITIAL_BOSS_X - entity.getX();
+
+        if (Math.abs(ORIGINAL_X) < RECOVER_SPEED * update) {
+            entity.setX(INITIAL_BOSS_X);
+            state = State.IDLE;
+        } else {
+            entity.translateX((ORIGINAL_X > 0 ? 1 : -1) * RECOVER_SPEED * update);
+        }
+
+    }
+}
