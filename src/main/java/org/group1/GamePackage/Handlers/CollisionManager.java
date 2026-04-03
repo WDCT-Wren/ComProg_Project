@@ -17,7 +17,7 @@ import com.almasb.fxgl.physics.CollisionHandler;
 public class CollisionManager {
     // RNG for chance extra life drops
     private static final Random random = new Random();
-    private static final double LIFE_DROP_RATE = 0.10;
+    private static double POWER_UP_DROP_RATE = 0.10;
     private int randomIndex;
 
     AudioManager audioManager = new AudioManager();
@@ -45,24 +45,11 @@ public class CollisionManager {
                         .getComponent(CupHeadComponent.class);
 
                     enemyComponent.addScore();
+                    dropPowerUp(enemy);
 
                     // your existing explosion code here
                     audioManager.playDeathSound();
                     enemy.getComponent(EnemyAnimationComponent.class).explode();
-
-
-                    // RNG powerup spawn at Center 
-                    // 10% chance for powerup, then 50/50 split between boostUp and extraLife
-                    if (random.nextDouble() < LIFE_DROP_RATE) {
-                        String[] powerUps = {"extraLife", "boostUp"};
-                        randomIndex = random.nextInt(2);
-                        
-                        String powerUpType = powerUps[randomIndex];
-                        System.out.println(powerUpType);
-
-                        FXGL.spawn(powerUpType, enemy.getCenter());
-                    }
-
                 }
             });
     }
@@ -78,9 +65,12 @@ public class CollisionManager {
                     var BOSS = boss.getComponent(BossLevelManager.class);
                         bullet.removeFromWorld();
                         BOSS.takeDamage();
-                    }
 
-            
+                        // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
+                        POWER_UP_DROP_RATE = 0.01;
+                        System.out.println(POWER_UP_DROP_RATE);
+                        dropPowerUp(boss);
+                    }
         });
 
     }
@@ -154,5 +144,21 @@ public class CollisionManager {
     private void boostUp(Entity powerUp, Entity player) {
         powerUp.removeFromWorld();
         GameMechanics.speedUp(player);
+    }
+
+    // method takes an Entity parameter to get its center
+    // RNG powerup spawn at Center 
+    // 10% chance for powerup, then 50/50 split between boostUp and extraLife
+    private void dropPowerUp(Entity entity) {
+        if (random.nextDouble() < POWER_UP_DROP_RATE) {
+            String[] powerUps = {"extraLife", "boostUp"};
+            randomIndex = random.nextInt(2);
+
+            String powerUpType = powerUps[randomIndex];
+            System.out.println(powerUpType);
+
+            FXGL.spawn(powerUpType, entity.getCenter());
+        }
+
     }
 }
