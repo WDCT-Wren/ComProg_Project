@@ -6,10 +6,8 @@ import org.group1.GamePackage.Components.BoostUpComponent;
 import org.group1.GamePackage.Components.CupHeadComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
-import org.group1.GamePackage.Factory.EntityFactory.EntityType;
-import org.group1.GamePackage.Factory.BossFactory;
 import org.group1.GamePackage.Factory.BossFactory.BossType;
-import org.group1.GamePackage.Handlers.BossLevelManager;
+import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.dsl.FXGL;
@@ -28,7 +26,7 @@ public class CollisionManager {
     public void init() {
         enemyVSbullet();
         enemyVSplayer();
-        playerGetsExtraLife();
+        playerVSpowerUp();
         bossVSbullet();
         playerVSboss();
     }
@@ -54,11 +52,14 @@ public class CollisionManager {
 
 
                     // RNG powerup spawn at Center 
-                    // Random spawner between speed boost and extra life powerup
-                    String[] powerUps = {"extraLife", "boostUp"};
-                    randomIndex = random.nextInt(2);
-                    String powerUpType = powerUps[randomIndex];
+                    // 10% chance for powerup, then 50/50 split between boostUp and extraLife
                     if (random.nextDouble() < LIFE_DROP_RATE) {
+                        String[] powerUps = {"extraLife", "boostUp"};
+                        randomIndex = random.nextInt(2);
+                        
+                        String powerUpType = powerUps[randomIndex];
+                        System.out.println(powerUpType);
+
                         FXGL.spawn(powerUpType, enemy.getCenter());
                     }
 
@@ -125,7 +126,7 @@ public class CollisionManager {
             });
     }
 
-    public void playerGetsExtraLife() {
+    public void playerVSpowerUp() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 EntityType.POWER_UP,
                 EntityType.PLAYER)
@@ -134,9 +135,7 @@ public class CollisionManager {
             protected void onCollisionBegin(Entity powerUp, Entity player) {
                 if (powerUp.hasComponent(BoostUpComponent.class)) {
                     boostUp(powerUp, player);
-                }
-
-                if (powerUp.hasComponent(EnemyDropsAnimationComponent.class)) {
+                } else if (powerUp.hasComponent(EnemyDropsAnimationComponent.class)) {
                     extraLives(powerUp, player);
                 }
             }
