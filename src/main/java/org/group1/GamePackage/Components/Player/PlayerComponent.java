@@ -4,6 +4,7 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.scene.image.Image;
 import org.group1.GamePackage.Components.UI.GameOverComponent;
+import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Music.AudioManager;
 
@@ -17,6 +18,7 @@ public class PlayerComponent extends Component {
 
     GameOverComponent gameOverComponent = new GameOverComponent();
     AudioManager audioManager = new AudioManager();
+    GameMechanics gameMechanics = new GameMechanics();
 
     private static final double INVINCIBLE_DURATION = 1.5; // seconds
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
@@ -25,6 +27,7 @@ public class PlayerComponent extends Component {
 
     // Boost level decrease timer
     private double boostDecreaseTimer = 0;
+
 
     private int lives = 9;
     private int boostLevel = 0;
@@ -108,6 +111,14 @@ public class PlayerComponent extends Component {
             entity.translateX(playerSpeed);
         }
 
+        // Updates GameMechanics if the player is invincible
+        if (isInvincible) {
+            gameMechanics.setInvincible();
+        }
+        else {
+            gameMechanics.offInvincible();
+        }
+
         /*
         - Checks if boost level is above zero
         - Decreases boost level by 1 every 1.5 seconds
@@ -146,7 +157,6 @@ public class PlayerComponent extends Component {
             texture.loopAnimationChannel(idleChannel);
         }
     }
-
 
     public void takeDamage () {
         if (!isInvincible && lives > 0) {

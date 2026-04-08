@@ -39,11 +39,7 @@ public class Application extends GameApplication {
     // Input manager
     public static InputManager inputManager;
 
-    // Player Component
-    private PlayerComponent playerMainComponent;
-
-    // Instantiate GameMechanics 
-    GameMechanics gameMechanics = new GameMechanics();
+    public static PlayerComponent playerMainComponent;
 
     // Instantiate AudioManager
     AudioManager audioManager = new AudioManager();
@@ -65,7 +61,7 @@ public class Application extends GameApplication {
      */
     HUDInterface HUD = new HUDInterface();
     private Text boostText;
-    private Text livesText; 
+    private Text livesText;
     private Text timerText;
     private Text scoreText;
 
@@ -88,7 +84,7 @@ public class Application extends GameApplication {
     @Override
     protected void initPhysics() {
         audioManager.playBackgroundMusic();
-        
+
         CollisionManager collisionManager = new CollisionManager();
         collisionManager.init();
     }
@@ -102,15 +98,43 @@ public class Application extends GameApplication {
         inputManager.registerInputs();
     }
 
-    @Override
-    protected void initGame() {
-        // Initialize Factories
+    /**
+     * Initializes all existing entityFactories.
+     * <br><br>
+     * I just simply did this to reduce line coverage of {@code initGame()}
+     * and to have a centralized method just in case more entity factories
+     * are implemented.
+     */
+    protected void initFactory() {
         FXGL.getGameWorld().addEntityFactory(new EntityFactory());
         FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
         FXGL.getGameWorld().addEntityFactory(new BossFactory());
+    }
+
+    /**
+     * Spawns enemies based on the {@code NORMAL_ENEMY_SPAWN_RATE}
+     * where it spawns an enemy within the bounds of the 2/3 of the screen.
+     */
+    protected void spawnEnemies() {
+        TimerAction normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
+            // Don't spawn at bossLevel
+            if (bossLevel) return;
+            // Generate random position within 2 /3 of screen bounds
+            double enemyBounds = (double) (FXGL.getAppHeight() * 2) / 3;
+            double y = FXGLMath.random(0, enemyBounds);
+
+            // Spawn the entity (defined in your EntityFactory)
+            FXGL.spawn("enemy", NORMAL_ENEMY_SPAWN_DISTANCE, y);
+
+            enemyPresent = true;
+        }, Duration.seconds(NORMAL_ENEMY_SPAWN_RATE));
+    }
+
+    @Override
+    protected void initGame() {
+        initFactory();
 
         // Initalize Level Handler
-        // Level Manager
         LevelManager levelManager = new LevelManager();
         levelManager.initBackground();
 
@@ -128,23 +152,9 @@ public class Application extends GameApplication {
 
         // Create a controllable player entity
         player = FXGL.spawn("player", playerSpawnPoint);
+        // Player Component
         playerMainComponent = player.getComponent(PlayerComponent.class);
-
-        // Spawn the entity (defined in your EntityFactory)
-        // Variable for enemies
-        //
-        TimerAction normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
-            // Don't spawn at bossLevel
-            if (bossLevel) return;
-            // Generate random position within 2 /3 of screen bounds
-            double enemyBounds = (double) (FXGL.getAppHeight() * 2) / 3;
-            double y = FXGLMath.random(0, enemyBounds);
-
-            // Spawn the entity (defined in your EntityFactory)
-            FXGL.spawn("enemy", NORMAL_ENEMY_SPAWN_DISTANCE, y);
-
-            enemyPresent = true;
-        }, Duration.seconds(NORMAL_ENEMY_SPAWN_RATE));
+        spawnEnemies();
     }
 
     @Override
@@ -152,14 +162,6 @@ public class Application extends GameApplication {
         // WINGAME
         if (bossLevelManager.dead()) {
             GameOverComponent.winGame();
-        }
-
-        // Updates GameMechanics if the player is invincible
-        if (playerMainComponent.isInvincible()) {
-            gameMechanics.setInvincible();
-        }
-        else if (!playerMainComponent.isInvincible()) {
-            gameMechanics.offInvincible();
         }
 
         if (bossLevelManager.inBossLevel() == true && !bossSpawned) {
@@ -177,6 +179,7 @@ public class Application extends GameApplication {
             FXGL.getGameTimer().runOnceAfter(() -> {
                 audioManager.playGameOver();
                 playerMainComponent.die();
+                FXGL.getGameController().pauseEngine(); // pause here, not before
             }, Duration.seconds(3));
         }
         
