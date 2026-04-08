@@ -1,6 +1,6 @@
 package org.group1.GamePackage.UI;
 
-import org.group1.GamePackage.Components.CupHeadComponent;
+import org.group1.GamePackage.Components.PlayerComponent;
 import org.group1.GamePackage.Components.TimerComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
@@ -35,7 +35,7 @@ public class HUDInterface {
     }
 
     public Text displayBoostLevel(Entity player) {
-        String boostMessage = "Boost: " + player.getComponent(CupHeadComponent.class).getBoostLevel();
+        String boostMessage = "Boost: " + player.getComponent(PlayerComponent.class).getBoostLevel();
         Text boostText = FXGL.getUIFactoryService().newText(boostMessage, Color.AQUAMARINE, 24);
         boostText.setTranslateX(50);
         boostText.setTranslateY(80);
@@ -44,7 +44,7 @@ public class HUDInterface {
     }
 
     public Text displayLives(Entity player) {
-        String livesMessage = "Lives: " + player.getComponent(CupHeadComponent.class).getLives();
+        String livesMessage = "Lives: " + player.getComponent(PlayerComponent.class).getLives();
         Text livesText = FXGL.getUIFactoryService().newText(livesMessage, Color.AQUAMARINE, 24);
         livesText.setTranslateX(50);
         livesText.setTranslateY(110);
@@ -53,7 +53,7 @@ public class HUDInterface {
     }
 
     public Text displayScore(Entity score) {
-        String scoreMessage = "Score: " + score.getComponent(CupHeadComponent.class).getScore();
+        String scoreMessage = "Score: " + score.getComponent(PlayerComponent.class).getScore();
         Text scoreText = FXGL.getUIFactoryService().newText(scoreMessage, Color.AQUAMARINE, 24);
 
         scoreText.setTranslateX(50);

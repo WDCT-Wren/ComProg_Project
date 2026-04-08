@@ -7,7 +7,7 @@ import javafx.util.Duration;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.ui.ProgressBar;
 
-import org.group1.GamePackage.Components.CupHeadComponent;
+import org.group1.GamePackage.Components.PlayerComponent;
 
 public class BossLevelManager extends Component {
 
@@ -44,7 +44,7 @@ public class BossLevelManager extends Component {
     }
 
     public boolean inBossLevel() {
-        return CupHeadComponent.getScore() >= SCORE_TO_SPAWN;
+        return PlayerComponent.getScore() >= SCORE_TO_SPAWN;
     }
 
     public void takeDamage() {
@@ -74,6 +74,4 @@ public class BossLevelManager extends Component {
         }, Duration.seconds(FLASH_DURATION));
     }
 }
-
- 
 

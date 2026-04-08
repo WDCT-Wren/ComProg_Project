@@ -1,6 +1,6 @@
 package org.group1.GamePackage.Handlers;
 
-import org.group1.GamePackage.Components.CupHeadComponent;
+import org.group1.GamePackage.Components.PlayerComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -26,7 +26,7 @@ public class GameMechanics {
     }
 
     public static void speedUp(Entity player) {
-        player.getComponent(CupHeadComponent.class).setBoostLevel(10);
+        player.getComponent(PlayerComponent.class).setBoostLevel(10);
     }
 
     public void setInvincible() {

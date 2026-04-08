@@ -80,7 +80,7 @@ public class InputManager {
                 @Override
                 protected void onActionBegin() {
                     movingUp = true;
-                    
+
                 }
 
                 @Override

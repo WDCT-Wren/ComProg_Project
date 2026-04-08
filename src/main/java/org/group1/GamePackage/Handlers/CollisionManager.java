@@ -2,8 +2,9 @@ package org.group1.GamePackage.Handlers;
 
 import java.util.Random;
 
+import org.group1.GamePackage.Application;
 import org.group1.GamePackage.Components.BoostUpComponent;
-import org.group1.GamePackage.Components.CupHeadComponent;
+import org.group1.GamePackage.Components.PlayerComponent;
 import org.group1.GamePackage.Components.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
 import org.group1.GamePackage.Factory.BossFactory.BossType;
@@ -21,7 +22,7 @@ public class CollisionManager {
     private int randomIndex;
 
     AudioManager audioManager = new AudioManager();
-    CupHeadComponent cupHeadComponent = new CupHeadComponent();
+    PlayerComponent playerComponent = new PlayerComponent(Application.inputManager);
 
     public void init() {
         enemyVSbullet();
@@ -42,7 +43,7 @@ public class CollisionManager {
                     bullet.removeFromWorld();
                     var enemyComponent = FXGL.getGameWorld()
                         .getSingleton(EntityType.PLAYER)
-                        .getComponent(CupHeadComponent.class);
+                        .getComponent(PlayerComponent.class);
 
                     enemyComponent.addScore();
                     dropPowerUp(enemy);
@@ -83,7 +84,7 @@ public class CollisionManager {
                 {
                     @Override
                     protected void onCollisionBegin(Entity player, Entity boss){
-                        var playerComponent = player.getComponent(CupHeadComponent.class);
+                        var playerComponent = player.getComponent(PlayerComponent.class);
                         audioManager.playDeathSound();
                         playerComponent.takeDamage();
 
@@ -100,7 +101,7 @@ public class CollisionManager {
             {
                 @Override
                 protected void onCollisionBegin(Entity enemy, Entity player) {
-                    var playerComponent = player.getComponent(CupHeadComponent.class);
+                    var playerComponent = player.getComponent(PlayerComponent.class);
                     if (!playerComponent.isInvincible()) {
                         audioManager.playDeathSound();
                         playerComponent.takeDamage();
@@ -133,7 +134,7 @@ public class CollisionManager {
     }
 
     private void extraLives(Entity powerUp, Entity player) {
-        var playerComponent = player.getComponent(CupHeadComponent.class);
+        var playerComponent = player.getComponent(PlayerComponent.class);
         audioManager.playHeartGain();
 
         playerComponent.increaseLives();

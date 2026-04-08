@@ -1,10 +1,7 @@
 package org.group1.GamePackage;
 
-import org.group1.GamePackage.Components.AnimationComponent;
-import org.group1.GamePackage.Components.CupHeadComponent;
-import org.group1.GamePackage.Components.EnemyAnimationComponent;
-import org.group1.GamePackage.Components.GameOverComponent;
-import org.group1.GamePackage.Components.TimerComponent;
+import org.group1.GamePackage.Components.*;
+import org.group1.GamePackage.Components.PlayerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
 import org.group1.GamePackage.Factory.BossFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
@@ -39,8 +36,11 @@ public class Application extends GameApplication {
     private boolean bossLevel = false;
     private boolean bossSpawned = false;
 
-    // Instantiate CupHeadComponent
-    CupHeadComponent cupHeadComponent = new CupHeadComponent();
+    // Input manager
+    public static InputManager inputManager;
+
+    // Player Component
+    private PlayerComponent playerMainComponent;
 
     // Instantiate GameMechanics 
     GameMechanics gameMechanics = new GameMechanics();
@@ -55,11 +55,6 @@ public class Application extends GameApplication {
     // Variables
     private static final double NORMAL_ENEMY_SPAWN_RATE = 0.5; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
-
-
-
-    // Input manager
-    private InputManager inputManager;
 
     //Enemy presence manager
     private boolean enemyPresent = false;
@@ -101,13 +96,21 @@ public class Application extends GameApplication {
         collisionManager.init();
     }
 
+    // Method to handle input/key listeners
+    @Override
+    protected void initInput() {
+        // Initialize InputManager and register inputs here
+        FXGL.getAudioPlayer();
+        inputManager = new InputManager();
+        inputManager.registerInputs();
+    }
+
     @Override
     protected void initGame() {
         // Initialize Factories
         FXGL.getGameWorld().addEntityFactory(new EntityFactory());
         FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
         FXGL.getGameWorld().addEntityFactory(new BossFactory());
-
 
         // Initalize Level Handler
         // Level Manager
@@ -128,7 +131,8 @@ public class Application extends GameApplication {
 
         // Create a controllable player entity
         player = FXGL.spawn("player", playerSpawnPoint);
-        
+        playerMainComponent = player.getComponent(PlayerComponent.class);
+
         // Spawn the entity (defined in your EntityFactory)
         // Variable for enemies
         //
@@ -144,33 +148,18 @@ public class Application extends GameApplication {
 
             enemyPresent = true;
         }, Duration.seconds(NORMAL_ENEMY_SPAWN_RATE));
-
-    }
-
-    // Method to handle input/key listeners
-    @Override
-    protected void initInput() {
-        // Initialize InputManager and register inputs here
-        FXGL.getAudioPlayer();
-        inputManager = new InputManager();
-        inputManager.registerInputs();
     }
 
     @Override
     protected void onUpdate(double update) {
-        int playerSpeed = 5;
-        var playerMainComponent = player.getComponent(CupHeadComponent.class);
-        var playerAnimationComponent = player.getComponent(AnimationComponent.class);
-
         /*
         - Checks if boost level is above zero
         - Decreases boost level by 1 every 1.5 seconds
         - Implemented boostDecreastTimer since onUpdate updates every frame
         - 1s / 60frames = 0.16 seconds per frame
          */
-        
         if (playerMainComponent.getBoostLevel() > 0) {
-            playerSpeed *= 2;
+            playerMainComponent.boostSpeed(2);
             boostDecreaseTimer += 0.016; // ~60 FPS
             if (boostDecreaseTimer >= 0.5) {
                 playerMainComponent.decreaseBoostLevel(1);
@@ -178,24 +167,6 @@ public class Application extends GameApplication {
             }
         } else {
             boostDecreaseTimer = 0; // Reset if boost hits zero
-        }
-
-        if (inputManager.isMovingUp() && inputManager.isMovingDown()) {
-            playerAnimationComponent.onIdle();
-        } else if (inputManager.isMovingUp()) {
-            player.translateY(-playerSpeed);
-            playerAnimationComponent.onUp();
-        } else if (inputManager.isMovingDown()) {
-            player.translateY(playerSpeed);
-            playerAnimationComponent.onDown();
-        } else {
-            playerAnimationComponent.onIdle();
-        }
-        
-        if (inputManager.isMovingLeft()) {
-            player.translateX(-playerSpeed);
-        } else if (inputManager.isMovingRight()) {
-            player.translateX(playerSpeed);
         }
         
         //TODO: Complete game over logic
@@ -206,7 +177,7 @@ public class Application extends GameApplication {
             FXGL.spawn("death_overlay");
             FXGL.getGameTimer().runOnceAfter(() -> {
             audioManager.playGameOver();
-            cupHeadComponent.die();
+            playerMainComponent.die();
             }, Duration.seconds(3));
         }
         
@@ -248,12 +219,12 @@ public class Application extends GameApplication {
         
         
         //Updates HUD texts if player attributes change
-        var pc = player.getComponent(CupHeadComponent.class);
+        var pc = player.getComponent(PlayerComponent.class);
         livesText.setText("Lives: " + pc.getLives());
         boostText.setText("Boost: " + pc.getBoostLevel());
         
         // Becoz I changed it to static idk if we should implement this for the methods
-        scoreText.setText("Score: " + CupHeadComponent.getScore());
+        scoreText.setText("Score: " + PlayerComponent.getScore());
         
     }
 
