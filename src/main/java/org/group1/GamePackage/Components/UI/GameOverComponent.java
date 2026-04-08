@@ -1,4 +1,4 @@
-package org.group1.GamePackage.Components;
+package org.group1.GamePackage.Components.UI;
 
 import org.group1.GamePackage.Handlers.GameMechanics;
 import com.almasb.fxgl.entity.component.Component;

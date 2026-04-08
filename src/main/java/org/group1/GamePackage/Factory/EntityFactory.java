@@ -1,9 +1,9 @@
 package org.group1.GamePackage.Factory;
 
-import com.almasb.fxgl.input.Input;
 import org.group1.GamePackage.Application;
-import org.group1.GamePackage.Components.*;
-import org.group1.GamePackage.Components.PlayerComponent;
+import org.group1.GamePackage.Components.Enemy.EnemyAnimationComponent;
+import org.group1.GamePackage.Components.Enemy.EnemyDropsAnimationComponent;
+import org.group1.GamePackage.Components.Player.PlayerComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -18,7 +18,8 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import org.group1.GamePackage.Handlers.InputManager;
+import org.group1.GamePackage.Components.Projectiles.BulletAnimationComponent;
+import org.group1.GamePackage.Components.UI.BoostUpComponent;
 
 public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     public enum EntityType {

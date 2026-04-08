@@ -1,10 +1,9 @@
-package org.group1.GamePackage.Components;
+package org.group1.GamePackage.Components.Player;
 
-import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
+import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Music.AudioManager;
 
@@ -24,11 +23,13 @@ public class PlayerComponent extends Component {
 
     private InputManager inputManager;
 
+    // Boost level decrease timer
+    private double boostDecreaseTimer = 0;
+
     private int lives = 9;
     private int boostLevel = 0;
     private int playerSpeed = 5;
 
-    // static so it belongs to the class itself
     private static int score = 0;
 
     private boolean isInvincible = false;
@@ -106,6 +107,23 @@ public class PlayerComponent extends Component {
         } else if (inputManager.isMovingRight()) {
             entity.translateX(playerSpeed);
         }
+
+        /*
+        - Checks if boost level is above zero
+        - Decreases boost level by 1 every 1.5 seconds
+        - Implemented boostDecreastTimer since onUpdate updates every frame
+        - 1s / 60frames = 0.16 seconds per frame
+         */
+        if (boostLevel > 0) {
+            playerSpeed *= 2;
+            boostDecreaseTimer += 0.016; // ~60 FPS
+            if (boostDecreaseTimer >= 0.5) {
+                --boostLevel;
+                boostDecreaseTimer = 0;
+            }
+        } else {
+            boostDecreaseTimer = 0; // Reset if boost hits zero
+        }
     }
 
     // Down Animation Loop
@@ -172,17 +190,11 @@ public class PlayerComponent extends Component {
         }, Duration.seconds(INVINCIBLE_DURATION));
     }
 
-    public boolean isInvincible() {
-        return isInvincible;
-    }
-
-    public void decreaseBoostLevel (double amount) {
-        boostLevel -= amount;
-    }
-
     public int getLives() {
         return lives;
     }
+
+    public boolean isInvincible() {return isInvincible;}
 
     // static as well so that getScore keeps updating in this class
     public static int getScore() {
@@ -195,9 +207,5 @@ public class PlayerComponent extends Component {
 
     public void setBoostLevel (int amount) {
         boostLevel = amount;
-    }
-
-    public void boostSpeed (int amount) {
-        playerSpeed *= amount;
     }
 }

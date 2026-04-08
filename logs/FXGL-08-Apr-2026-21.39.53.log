@@ -114,7 +114,7 @@ Scene Factory: class org.group1.GamePackage.Factory.MainSceneFactory
 21:39:46.914 [JavaFX Application Thread] DEBUG LoopRunner           - Stopping loop
 21:39:46.915 [JavaFX Application Thread] FATAL FXGLApplication      - Uncaught Exception:
 java.lang.NullPointerException: Cannot invoke "com.almasb.fxgl.texture.AnimatedTexture.getAnimationChannel()" because "this.texture" is null
-	at org.group.game/org.group1.GamePackage.Components.PlayerComponent.onIdle(PlayerComponent.java:93)
+	at org.group.game/org.group1.GamePackage.Components.Player.PlayerComponent.onIdle(PlayerComponent.java:93)
 	at org.group.game/org.group1.GamePackage.Application.onUpdate(Application.java:186)
 	at com.almasb.fxgl.all@25/com.almasb.fxgl.app.FXGLApplication$GameApplicationService.onGameUpdate(FXGLApplication.kt:446)
 	at com.almasb.fxgl.all@25/com.almasb.fxgl.app.Engine.onGameUpdate(Engine.kt:137)

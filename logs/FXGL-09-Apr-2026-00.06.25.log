@@ -232,7 +232,7 @@ Scene Factory: class org.group1.GamePackage.Factory.MainSceneFactory
 00:06:25.208 [JavaFX Application Thread] DEBUG LoopRunner           - Stopping loop
 00:06:25.209 [JavaFX Application Thread] FATAL FXGLApplication      - Uncaught Exception:
 java.lang.NullPointerException: Cannot invoke "org.group1.GamePackage.Music.AudioManager.FAH()" because "this.audioManager" is null
-	at org.group.game/org.group1.GamePackage.Components.PlayerComponent.takeDamage(PlayerComponent.java:135)
+	at org.group.game/org.group1.GamePackage.Components.Player.PlayerComponent.takeDamage(PlayerComponent.java:135)
 	at org.group.game/org.group1.GamePackage.Handlers.CollisionManager$4.onCollisionBegin(CollisionManager.java:107)
 	at com.almasb.fxgl.entity@25/com.almasb.fxgl.physics.CollisionPair.collisionBegin(CollisionPair.java:37)
 	at com.almasb.fxgl.entity@25/com.almasb.fxgl.physics.PhysicsWorld.collisionBeginFor(PhysicsWorld.java:453)

@@ -15,7 +15,10 @@ open module org.group.game {
     requires javafx.graphics;
 
     exports org.group1.GamePackage;
-    exports org.group1.GamePackage.Components;
     exports org.group1.GamePackage.Factory;
     exports org.group1.GamePackage.Handlers;
+    exports org.group1.GamePackage.Components.Player;
+    exports org.group1.GamePackage.Components.Enemy;
+    exports org.group1.GamePackage.Components.Projectiles;
+    exports org.group1.GamePackage.Components.UI;
 }

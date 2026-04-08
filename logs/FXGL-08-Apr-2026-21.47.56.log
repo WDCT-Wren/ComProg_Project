@@ -117,7 +117,7 @@ java.lang.RuntimeException: Initialization failed
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 Caused by: java.lang.NullPointerException: Parameter specified as non-null is null: method com.almasb.fxgl.texture.AnimatedTexture.<init>, parameter defaultChannel
 	at com.almasb.fxgl.core@25/com.almasb.fxgl.texture.AnimatedTexture.<init>(AnimatedTexture.kt)
-	at org.group.game/org.group1.GamePackage.Components.PlayerComponent.onAdded(PlayerComponent.java:39)
+	at org.group.game/org.group1.GamePackage.Components.Player.PlayerComponent.onAdded(PlayerComponent.java:39)
 	at com.almasb.fxgl.entity@25/com.almasb.fxgl.entity.Entity.addComponentNoChecks(Entity.java:401)
 	at com.almasb.fxgl.entity@25/com.almasb.fxgl.entity.Entity.addComponent(Entity.java:393)
 	at com.almasb.fxgl.all@25/com.almasb.fxgl.dsl.EntityBuilder.with(EntityBuilder.kt:202)

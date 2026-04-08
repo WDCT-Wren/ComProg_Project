@@ -1,6 +1,6 @@
 package org.group1.GamePackage.Factory;
 
-import org.group1.GamePackage.Components.OverlayAnimationComponent;
+import org.group1.GamePackage.Components.UI.OverlayAnimationComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.views.SelfScrollingBackgroundView;

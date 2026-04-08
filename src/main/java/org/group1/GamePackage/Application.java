@@ -1,11 +1,11 @@
 package org.group1.GamePackage;
 
-import org.group1.GamePackage.Components.*;
-import org.group1.GamePackage.Components.PlayerComponent;
+import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.UI.GameOverComponent;
+import org.group1.GamePackage.Components.UI.TimerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
 import org.group1.GamePackage.Factory.BossFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
-import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Factory.MainSceneFactory;
 import org.group1.GamePackage.Handlers.CollisionManager;
 import org.group1.GamePackage.Handlers.GameMechanics;
@@ -58,9 +58,6 @@ public class Application extends GameApplication {
 
     //Enemy presence manager
     private boolean enemyPresent = false;
-
-    // Boost level decrease timer
-    private double boostDecreaseTimer = 0;
 
     /*
     Initializes HUD object
@@ -152,62 +149,17 @@ public class Application extends GameApplication {
 
     @Override
     protected void onUpdate(double update) {
-        /*
-        - Checks if boost level is above zero
-        - Decreases boost level by 1 every 1.5 seconds
-        - Implemented boostDecreastTimer since onUpdate updates every frame
-        - 1s / 60frames = 0.16 seconds per frame
-         */
-        if (playerMainComponent.getBoostLevel() > 0) {
-            playerMainComponent.boostSpeed(2);
-            boostDecreaseTimer += 0.016; // ~60 FPS
-            if (boostDecreaseTimer >= 0.5) {
-                playerMainComponent.decreaseBoostLevel(1);
-                boostDecreaseTimer = 0;
-            }
-        } else {
-            boostDecreaseTimer = 0; // Reset if boost hits zero
-        }
-        
-        //TODO: Complete game over logic
-        // Added some logic but its ragebait and honestly incomplete
-        if (playerMainComponent.getLives() == 0 || 
-            timerComponent.timeEnded()) {
-
-            FXGL.spawn("death_overlay");
-            FXGL.getGameTimer().runOnceAfter(() -> {
-            audioManager.playGameOver();
-            playerMainComponent.die();
-            }, Duration.seconds(3));
-        }
-        
         // WINGAME
         if (bossLevelManager.dead()) {
             GameOverComponent.winGame();
         }
 
-
         // Updates GameMechanics if the player is invincible
         if (playerMainComponent.isInvincible()) {
             gameMechanics.setInvincible();
-        } 
+        }
         else if (!playerMainComponent.isInvincible()) {
             gameMechanics.offInvincible();
-        } 
-
-        /*
-         Checks if enemy entities are present
-         If true, entities explode when they reach the end of the screen
-        */
-        if (enemyPresent) {
-            try {
-                if (FXGL.getGameWorld().getSingleton(EntityType.ENEMY).getPosition().getX() == 0) {
-                var enemyInstance = FXGL.getGameWorld().getSingleton(EntityType.ENEMY);
-                enemyInstance.getComponent(EnemyAnimationComponent.class).explode();
-                }
-            } catch (Exception NoSuchElementException) {
-                enemyPresent = false;
-            }
         }
 
         if (bossLevelManager.inBossLevel() == true && !bossSpawned) {
@@ -216,7 +168,17 @@ public class Application extends GameApplication {
             bossSpawned = true;
         }
 
-        
+        //TODO: Complete game over logic
+        // Added some logic but its ragebait and honestly incomplete
+        if (playerMainComponent.getLives() == 0 ||
+                timerComponent.timeEnded()) {
+
+            FXGL.spawn("death_overlay");
+            FXGL.getGameTimer().runOnceAfter(() -> {
+                audioManager.playGameOver();
+                playerMainComponent.die();
+            }, Duration.seconds(3));
+        }
         
         //Updates HUD texts if player attributes change
         var pc = player.getComponent(PlayerComponent.class);
@@ -225,7 +187,6 @@ public class Application extends GameApplication {
         
         // Becoz I changed it to static idk if we should implement this for the methods
         scoreText.setText("Score: " + PlayerComponent.getScore());
-        
     }
 
     public static void main(String[] args) {

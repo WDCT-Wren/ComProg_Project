@@ -1,7 +1,7 @@
 package org.group1.GamePackage.UI;
 
-import org.group1.GamePackage.Components.PlayerComponent;
-import org.group1.GamePackage.Components.TimerComponent;
+import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.UI.TimerComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;

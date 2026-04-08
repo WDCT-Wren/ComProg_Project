@@ -1,4 +1,4 @@
-package org.group1.GamePackage.Components;
+package org.group1.GamePackage.Components.Enemy;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;

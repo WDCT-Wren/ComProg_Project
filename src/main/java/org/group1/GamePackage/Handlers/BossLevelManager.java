@@ -7,7 +7,7 @@ import javafx.util.Duration;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.ui.ProgressBar;
 
-import org.group1.GamePackage.Components.PlayerComponent;
+import org.group1.GamePackage.Components.Player.PlayerComponent;
 
 public class BossLevelManager extends Component {
 

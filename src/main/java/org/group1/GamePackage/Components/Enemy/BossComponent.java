@@ -1,4 +1,4 @@
-package org.group1.GamePackage.Components;
+package org.group1.GamePackage.Components.Enemy;
 
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 

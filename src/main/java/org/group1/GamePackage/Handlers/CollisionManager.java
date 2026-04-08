@@ -3,10 +3,10 @@ package org.group1.GamePackage.Handlers;
 import java.util.Random;
 
 import org.group1.GamePackage.Application;
-import org.group1.GamePackage.Components.BoostUpComponent;
-import org.group1.GamePackage.Components.PlayerComponent;
-import org.group1.GamePackage.Components.EnemyAnimationComponent;
-import org.group1.GamePackage.Components.EnemyDropsAnimationComponent;
+import org.group1.GamePackage.Components.UI.BoostUpComponent;
+import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.Enemy.EnemyAnimationComponent;
+import org.group1.GamePackage.Components.Enemy.EnemyDropsAnimationComponent;
 import org.group1.GamePackage.Factory.BossFactory.BossType;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
