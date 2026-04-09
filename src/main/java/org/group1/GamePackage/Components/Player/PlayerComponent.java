@@ -32,7 +32,6 @@ public class PlayerComponent extends Component {
     private int lives = 9;
     private int boostLevel = 0;
     private int playerSpeed = 5;
-    private long fireRate = 300;
 
     private static int score = 0;
 
@@ -221,9 +220,5 @@ public class PlayerComponent extends Component {
 
     public void setBoostLevel (int amount) {
         boostLevel = amount;
-    }
-
-    public long getFireRate () {
-        return fireRate;
     }
 }
