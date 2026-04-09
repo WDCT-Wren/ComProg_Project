@@ -32,6 +32,7 @@ public class PlayerComponent extends Component {
     private int lives = 9;
     private int boostLevel = 0;
     private int playerSpeed = 5;
+    private long fireRate = 300;
 
     private static int score = 0;
 
@@ -121,18 +122,21 @@ public class PlayerComponent extends Component {
 
         /*
         - Checks if boost level is above zero
-        - Decreases boost level by 1 every 1.5 seconds
+        - Decreases boost level by 1 every 0.5 seconds
         - Implemented boostDecreastTimer since onUpdate updates every frame
         - 1s / 60frames = 0.16 seconds per frame
          */
         if (boostLevel > 0) {
             playerSpeed = 10;
+            GameMechanics.setBULLET_COOLDOWN(200);
             boostDecreaseTimer += 0.016; // ~60 FPS
             if (boostDecreaseTimer >= 0.5) {
-                --boostLevel;
+                boostLevel--;
                 boostDecreaseTimer = 0;
             }
         } else {
+            GameMechanics.setBULLET_COOLDOWN(300);
+            playerSpeed = 5;
             boostDecreaseTimer = 0; // Reset if boost hits zero
         }
     }
@@ -217,5 +221,9 @@ public class PlayerComponent extends Component {
 
     public void setBoostLevel (int amount) {
         boostLevel = amount;
+    }
+
+    public long getFireRate () {
+        return fireRate;
     }
 }

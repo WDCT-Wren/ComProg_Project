@@ -8,7 +8,7 @@ import com.almasb.fxgl.entity.Entity;
 public class GameMechanics {
 
     private static long firstBullet = 0;
-    private static final long BULLET_COOLDOWN = 300;
+    private static long BULLET_COOLDOWN = 300;
     private static boolean isInvincible = false;
 
     public static void shoot(Entity player) {
@@ -43,6 +43,10 @@ public class GameMechanics {
 
     public static void resumeGame() {
         FXGL.getGameController().resumeEngine();
+    }
+
+    public static void setBULLET_COOLDOWN(long BULLET_COOLDOWN) {
+        GameMechanics.BULLET_COOLDOWN = BULLET_COOLDOWN;
     }
 
 }
