@@ -89,8 +89,7 @@ public class PlayerComponent extends Component {
     }
     
     @Override
-    public void onUpdate(double tpf) {
-
+    public void onUpdate(double timePerFrame) {
         //Handles up and down input
         if (inputManager.isMovingUp() && inputManager.isMovingDown()) {
             onIdle();
@@ -119,25 +118,8 @@ public class PlayerComponent extends Component {
             gameMechanics.offInvincible();
         }
 
-        /*
-        - Checks if boost level is above zero
-        - Decreases boost level by 1 every 0.5 seconds
-        - Implemented boostDecreastTimer since onUpdate updates every frame
-        - 1s / 60frames = 0.16 seconds per frame
-         */
-        if (boostLevel > 0) {
-            playerSpeed = 10;
-            GameMechanics.setBULLET_COOLDOWN(200);
-            boostDecreaseTimer += 0.016; // ~60 FPS
-            if (boostDecreaseTimer >= 0.5) {
-                boostLevel--;
-                boostDecreaseTimer = 0;
-            }
-        } else {
-            GameMechanics.setBULLET_COOLDOWN(300);
-            playerSpeed = 5;
-            boostDecreaseTimer = 0; // Reset if boost hits zero
-        }
+        // Checks if boost is active and applies it if it is
+        checkBoost(timePerFrame);
     }
 
     // Down Animation Loop
@@ -203,21 +185,49 @@ public class PlayerComponent extends Component {
         }, Duration.seconds(INVINCIBLE_DURATION));
     }
 
+    /**
+     * <ul> Checks if the player has boost and applies it if they do:
+     *      <li>Sets player speed to {@code boostedSpeed}</li>
+     *      <li>Sets bullet cooldown to 200</li>
+     *      <li>Checks if {@code boostlevel} is above zero</li>
+     *      <li>Decreases boost level by 1 every 1.5 seconds</li>
+     *      <li>Implemented boostDecreastTimer since onUpdate updates every frame</li>
+     *</ul>
+     * @param timePerFrame Time elapsed since the last frame in seconds
+     */
+    private void checkBoost(double timePerFrame) {
+        long BOOST_FIRE_RATE = 200;
+        int boostedSpeed = 10;
+
+        if (boostLevel > 0) {
+            playerSpeed = boostedSpeed;
+            GameMechanics.setBULLET_COOLDOWN(BOOST_FIRE_RATE);
+            boostDecreaseTimer += timePerFrame;
+            if (boostDecreaseTimer >= 1.5) {
+                boostLevel--;
+                boostDecreaseTimer = 0;
+            }
+        } else {
+            // Reset boost level and fire rate
+            GameMechanics.setBULLET_COOLDOWN(300);
+            playerSpeed = 5;
+            boostDecreaseTimer = 0;
+        }
+    }
+
+    // getters
     public int getLives() {
         return lives;
     }
-
     public boolean isInvincible() {return isInvincible;}
-
-    // static as well so that getScore keeps updating in this class
     public static int getScore() {
         return score;
-    }
-
+    }// static as well so that getScore keeps updating in this class
     public int getBoostLevel() {
         return boostLevel;
     }
 
+    // setters
     public void setBoostLevel (int amount) {
         boostLevel = amount;
     }
