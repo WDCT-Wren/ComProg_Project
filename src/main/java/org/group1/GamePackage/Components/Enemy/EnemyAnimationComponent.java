@@ -82,6 +82,14 @@ public class EnemyAnimationComponent extends Component {
             }
         }, Duration.seconds(0.1));
     }
+
+    // onUpdate Override to explode on wall
+    @Override
+    public void onUpdate(double tpf) {
+        if (entity.getX() <= 0) {
+            explode();
+        }
+    }
 }
 
 
