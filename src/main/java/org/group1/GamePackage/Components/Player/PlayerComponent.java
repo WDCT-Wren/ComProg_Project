@@ -1,8 +1,5 @@
 package org.group1.GamePackage.Components.Player;
 
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
-import javafx.scene.image.Image;
 import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
@@ -10,7 +7,10 @@ import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 
+import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 
@@ -126,7 +126,7 @@ public class PlayerComponent extends Component {
         - 1s / 60frames = 0.16 seconds per frame
          */
         if (boostLevel > 0) {
-            playerSpeed *= 2;
+            playerSpeed = 10;
             boostDecreaseTimer += 0.016; // ~60 FPS
             if (boostDecreaseTimer >= 0.5) {
                 --boostLevel;
