@@ -8,18 +8,31 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.ui.ProgressBar;
 
 import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.UI.GameOverComponent;
+import org.group1.GamePackage.Components.UI.TimerComponent;
+import org.group1.GamePackage.Music.AudioManager;
 
 public class BossLevelManager extends Component {
 
+    private static int BOSS_HEALTH = 100;
+
     // Needed score to spawn boss
     private int SCORE_TO_SPAWN = 100;
-    private static int BOSS_HEALTH = 100;
     private ProgressBar healthBar;
 
+    private PlayerComponent player;
+    private TimerComponent timerComponent;
+    private AudioManager audioManager;
+    private boolean bossSpawned = false;
+    private static boolean bossLevel = false;
+    private boolean gameOverTriggered = false;
 
-    private static final double FLASH_DURATION = 0.3; // seconds
-    private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
-    private boolean visible = true;
+    public BossLevelManager(PlayerComponent player, TimerComponent timerComponent, AudioManager audioManager) {
+        this.player = player;
+        this.timerComponent = timerComponent;
+        this.audioManager = audioManager;
+
+    }
 
     @Override
     public void onAdded() {
@@ -33,7 +46,51 @@ public class BossLevelManager extends Component {
         healthBar.setMinValue(0);
         healthBar.setMaxValue(BOSS_HEALTH);
         healthBar.currentValueProperty().setValue(BOSS_HEALTH);
+        // set it to false first then on bossSpawn make it visible
+        healthBar.setVisible(false);
         FXGL.addUINode(healthBar);
+    }
+
+    // Override onUpdate and call this class methods
+    @Override
+    public void onUpdate(double tpf) {
+        checkWinCondition();
+        checkBossSpawn();
+        checkGameOver();
+    }
+
+    private void checkWinCondition() {
+        if(dead()) {
+            GameOverComponent.winGame();
+        }
+    }
+
+    // check if inBossLevel and boss is not spawned 
+    // then sets the booleans to true, spawn boss and set the healthBar visible
+    private void checkBossSpawn() {
+        if (inBossLevel() && !bossSpawned) {
+            bossLevel = true;
+            bossSpawned = true;
+            spawnBoss();
+            healthBar.setVisible(true);
+        }
+    }
+
+
+    // if gameOverTriggered return so it only updates one time
+    // if live 0 or timer ended, trigger game over
+    private void checkGameOver() {
+        if (gameOverTriggered) return;
+
+        if (player.getLives() == 0 || timerComponent.timeEnded()) {
+            gameOverTriggered = true;
+            FXGL.spawn("death_overlay");
+            FXGL.getGameTimer().runOnceAfter(() -> {
+                audioManager.playGameOver();
+                player.die();
+                FXGL.getGameController().pauseEngine();
+            }, Duration.seconds(3));
+        }
     }
 
     public void spawnBoss() {
@@ -50,28 +107,18 @@ public class BossLevelManager extends Component {
     public void takeDamage() {
         BOSS_HEALTH--;
         healthBar.currentValueProperty().setValue(BOSS_HEALTH);
-        triggerDamage();
 
         if (dead()) {
             FXGL.removeUINode(healthBar);
         }
     }
 
-    public boolean dead() {
+    private boolean dead() {
         return BOSS_HEALTH <= 0;
-        }
+    }
 
-    // ABSOLUTELY COPIED FROM WREN THE GOAT
-    private void triggerDamage() {
-        var flashTask = FXGL.getGameTimer().runAtInterval(() -> {
-            visible = !visible;
-            entity.getViewComponent().setOpacity(visible ? 1.0 : 0.3);
-        }, Duration.seconds(FLASH_INTERVAL));
-
-        FXGL.getGameTimer().runOnceAfter(() -> {
-            flashTask.expire();
-            entity.getViewComponent().setOpacity(1.0);
-        }, Duration.seconds(FLASH_DURATION));
+    public static boolean getBossLevel(){
+        return bossLevel;
     }
 }
 

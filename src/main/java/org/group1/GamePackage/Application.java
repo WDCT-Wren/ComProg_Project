@@ -1,14 +1,12 @@
 package org.group1.GamePackage;
 
 import org.group1.GamePackage.Components.Player.PlayerComponent;
-import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Components.UI.TimerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
 import org.group1.GamePackage.Factory.BossFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
 import org.group1.GamePackage.Factory.MainSceneFactory;
 import org.group1.GamePackage.Handlers.CollisionManager;
-import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Handlers.LevelManager;
 import org.group1.GamePackage.Handlers.BossLevelManager;
@@ -32,7 +30,6 @@ public class Application extends GameApplication {
 
     private TimerComponent timerComponent;
 
-    BossLevelManager bossLevelManager = new BossLevelManager();
     private boolean bossLevel = false;
     private boolean bossSpawned = false;
 
@@ -118,7 +115,7 @@ public class Application extends GameApplication {
     protected void spawnEnemies() {
         TimerAction normalEnemy = FXGL.getGameTimer().runAtInterval(() -> {
             // Don't spawn at bossLevel
-            if (bossLevel) return;
+            if (BossLevelManager.getBossLevel()) return;
             // Generate random position within 2 /3 of screen bounds
             double enemyBounds = (double) (FXGL.getAppHeight() * 2) / 3;
             double y = FXGLMath.random(0, enemyBounds);
@@ -154,41 +151,19 @@ public class Application extends GameApplication {
         player = FXGL.spawn("player", playerSpawnPoint);
         // Player Component
         playerMainComponent = player.getComponent(PlayerComponent.class);
+
+        FXGL.entityBuilder()
+            .with(new BossLevelManager(playerMainComponent, timerComponent, audioManager))
+            .buildAndAttach();
         spawnEnemies();
     }
 
     @Override
     protected void onUpdate(double update) {
-        // WINGAME
-        if (bossLevelManager.dead()) {
-            GameOverComponent.winGame();
-        }
-
-        if (bossLevelManager.inBossLevel() == true && !bossSpawned) {
-            bossLevel = true;
-            bossLevelManager.spawnBoss();
-            bossSpawned = true;
-        }
-
-        //TODO: Complete game over logic
-        // Added some logic but its ragebait and honestly incomplete
-        if (playerMainComponent.getLives() == 0 ||
-                timerComponent.timeEnded()) {
-
-            FXGL.spawn("death_overlay");
-            FXGL.getGameTimer().runOnceAfter(() -> {
-                audioManager.playGameOver();
-                playerMainComponent.die();
-                FXGL.getGameController().pauseEngine(); // pause here, not before
-            }, Duration.seconds(3));
-        }
-        
-        //Updates HUD texts if player attributes change
-        var pc = player.getComponent(PlayerComponent.class);
-        livesText.setText("Lives: " + pc.getLives());
-        boostText.setText("Boost: " + pc.getBoostLevel());
-        
-        // Becoz I changed it to static idk if we should implement this for the methods
+       
+        // Display static getters in PlayerComponent
+        livesText.setText("Lives: " + PlayerComponent.getLives());
+        boostText.setText("Boost: " + PlayerComponent.getBoostLevel());
         scoreText.setText("Score: " + PlayerComponent.getScore());
     }
 

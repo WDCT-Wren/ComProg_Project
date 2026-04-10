@@ -63,9 +63,14 @@ public class CollisionManager {
                 {
                     @Override
                     protected void onCollisionBegin(Entity boss, Entity bullet) {
-                    var BOSS = boss.getComponent(BossLevelManager.class);
                         bullet.removeFromWorld();
-                        BOSS.takeDamage();
+
+                        // get boss from the gameWorld and call it's method
+                        FXGL.getGameWorld()
+                            .getEntitiesByComponent(BossLevelManager.class)
+                            .stream()
+                            .findFirst()
+                            .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage());
 
                         // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
                         POWER_UP_DROP_RATE = 0.01;

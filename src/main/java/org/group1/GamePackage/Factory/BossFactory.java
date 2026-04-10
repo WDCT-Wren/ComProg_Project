@@ -25,7 +25,6 @@ public class BossFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
             .type(BossType.BOSS)
             .viewWithBBox(FXGL.texture("boss_placeholder.png", BOSS_HITBOX, BOSS_HITBOX))
-            .with(new BossLevelManager())
             .with(new BossComponent())
             .with(new CollidableComponent(true))
             .build();

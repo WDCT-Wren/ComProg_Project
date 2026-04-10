@@ -1,12 +1,14 @@
 package org.group1.GamePackage.Components.Enemy;
 
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
+import org.group1.GamePackage.Handlers.BossLevelManager;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 
 import javafx.geometry.Point2D;
+import javafx.util.Duration;
 
 public class BossComponent extends Component {
 
@@ -44,6 +46,10 @@ public class BossComponent extends Component {
     private static final double CHARGE_CHANCE = 0.005;
     private double CHARGE_TARGET_X;
     private double CHARGE_TARGET_Y;
+
+    private static final double FLASH_DURATION = 0.3; // seconds
+    private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
+    private boolean visible = true;
 
 
     @Override
@@ -157,6 +163,23 @@ public class BossComponent extends Component {
         } else {
             entity.translateX((ORIGINAL_X > 0 ? 1 : -1) * RECOVER_SPEED * update);
         }
+    }
 
+
+    public void takeDamage(BossLevelManager boss) {
+        boss.takeDamage();
+        triggerDamage();
+    }
+
+    private void triggerDamage() {
+        var flashTask = FXGL.getGameTimer().runAtInterval(() -> {
+            visible = !visible;
+            entity.getViewComponent().setOpacity(visible ? 1.0 : 0.3);
+        }, Duration.seconds(FLASH_INTERVAL));
+
+        FXGL.getGameTimer().runOnceAfter(() -> {
+            flashTask.expire();
+            entity.getViewComponent().setOpacity(1.0);
+        }, Duration.seconds(FLASH_DURATION));
     }
 }

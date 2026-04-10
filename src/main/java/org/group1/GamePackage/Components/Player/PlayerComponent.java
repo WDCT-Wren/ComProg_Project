@@ -29,8 +29,8 @@ public class PlayerComponent extends Component {
     private double boostDecreaseTimer = 0;
 
 
-    private int lives = 9;
-    private int boostLevel = 0;
+    private static int lives = 9;
+    private static int boostLevel = 0;
     private int playerSpeed = 5;
 
     private static int score = 0;
@@ -216,16 +216,22 @@ public class PlayerComponent extends Component {
     }
 
     // getters
-    public int getLives() {
+    public static int getLives() {
         return lives;
     }
-    public boolean isInvincible() {return isInvincible;}
+
     public static int getScore() {
         return score;
-    }// static as well so that getScore keeps updating in this class
-    public int getBoostLevel() {
+    }
+
+    public static int getBoostLevel() {
         return boostLevel;
     }
+
+    public boolean isInvincible() {
+        return isInvincible;
+    }
+
 
     // setters
     public void setBoostLevel (int amount) {
