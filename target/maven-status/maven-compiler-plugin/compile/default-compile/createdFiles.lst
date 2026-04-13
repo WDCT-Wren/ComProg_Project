@@ -1,4 +1,5 @@
 org/group1/GamePackage/Handlers/InputManager.class
+org/group1/GamePackage/Components/Projectiles/BulletAnimationComponent$1.class
 org/group1/GamePackage/Factory/BackgroundFactory$EntityType.class
 org/group1/GamePackage/Application.class
 org/group1/GamePackage/Handlers/InputManager$2.class

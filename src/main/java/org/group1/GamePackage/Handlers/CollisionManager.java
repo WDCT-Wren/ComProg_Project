@@ -19,6 +19,7 @@ public class CollisionManager {
     // RNG for chance extra life drops
     private static final Random random = new Random();
     private static double POWER_UP_DROP_RATE = 0.10;
+    private static double BOSS_POWER_UP_DROP_RATE = 0.05;
     private int randomIndex;
 
     AudioManager audioManager = new AudioManager();
@@ -26,9 +27,13 @@ public class CollisionManager {
 
     public void init() {
         enemyVSbullet();
+        enemyVSfire();
+        enemyVSice();
         enemyVSplayer();
         playerVSpowerUp();
         bossVSbullet();
+        bossVSice();
+        bossVSfire();
         playerVSboss();
     }
 
@@ -41,6 +46,51 @@ public class CollisionManager {
                 @Override
                 protected void onCollisionBegin(Entity bullet, Entity enemy){
                     bullet.removeFromWorld();
+                    var enemyComponent = FXGL.getGameWorld()
+                        .getSingleton(EntityType.PLAYER)
+                        .getComponent(PlayerComponent.class);
+
+                    enemyComponent.addScore();
+                    dropPowerUp(enemy);
+
+                    // your existing explosion code here
+                    audioManager.playDeathSound();
+                    enemy.getComponent(EnemyAnimationComponent.class).explode();
+                }
+            });
+    }
+
+    // basic fire and ice bullet collsionhandler, removed the removeFromWorld if hit the enemy for piercing effect
+    public void enemyVSfire () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                EntityType.FIRE_BULLET,
+                EntityType.ENEMY
+                )
+            {
+                @Override
+                protected void onCollisionBegin(Entity bullet, Entity enemy){
+                    var enemyComponent = FXGL.getGameWorld()
+                        .getSingleton(EntityType.PLAYER)
+                        .getComponent(PlayerComponent.class);
+
+                    enemyComponent.addScore();
+                    dropPowerUp(enemy);
+
+                    // your existing explosion code here
+                    audioManager.playDeathSound();
+                    enemy.getComponent(EnemyAnimationComponent.class).explode();
+                }
+            });
+    }
+
+    public void enemyVSice () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                EntityType.ICE_BULLET,
+                EntityType.ENEMY
+                )
+            {
+                @Override
+                protected void onCollisionBegin(Entity bullet, Entity enemy){
                     var enemyComponent = FXGL.getGameWorld()
                         .getSingleton(EntityType.PLAYER)
                         .getComponent(PlayerComponent.class);
@@ -73,13 +123,62 @@ public class CollisionManager {
                             .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage());
 
                         // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
-                        POWER_UP_DROP_RATE = 0.01;
-                        System.out.println(POWER_UP_DROP_RATE);
+                        POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
                         dropPowerUp(boss);
                     }
         });
-
     }
+
+    // boss collision logic removes piercing effect
+    public void bossVSice () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    BossType.BOSS,
+                    EntityType.ICE_BULLET
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity boss, Entity bullet) {
+                        bullet.removeFromWorld();
+
+                        // get boss from the gameWorld and call it's method
+                        FXGL.getGameWorld()
+                            .getEntitiesByComponent(BossLevelManager.class)
+                            .stream()
+                            .findFirst()
+                            .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage());
+
+                        // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
+                        POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
+                        dropPowerUp(boss);
+                    }
+        });
+    }
+
+
+    public void bossVSfire () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    BossType.BOSS,
+                    EntityType.FIRE_BULLET
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity boss, Entity bullet) {
+                        bullet.removeFromWorld();
+
+                        // get boss from the gameWorld and call it's method
+                        FXGL.getGameWorld()
+                            .getEntitiesByComponent(BossLevelManager.class)
+                            .stream()
+                            .findFirst()
+                            .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage());
+
+                        // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
+                        POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
+                        dropPowerUp(boss);
+                    }
+        });
+    }
+
 
     public void playerVSboss () {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
@@ -114,7 +213,7 @@ public class CollisionManager {
                         enemy.getComponent(EnemyAnimationComponent.class).explode();
                     }
 
-                    if (playerComponent.getLives() == 0) {
+                    if (PlayerComponent.getLives() == 0) {
                         // IDK ANIMATE IT IDK
                         player.getViewComponent().setVisible(false);
                     }

@@ -20,6 +20,8 @@ public class InputManager {
         moveDown();
         moveUp();
         shoot();
+        switchToFireBullet();
+        switchToIceBullet();
     }
 
     public void shoot() {
@@ -36,6 +38,28 @@ public class InputManager {
                 }
             },
             KeyCode.SPACE
+        );
+    }
+
+    private void switchToFireBullet() {
+        FXGL.getInput().addAction(new UserAction("Switch to Fire Bullet") {
+                @Override
+                protected void onActionBegin() {
+                    GameMechanics.setFireBullet();
+                }
+            },
+            KeyCode.Q
+        );
+    }
+
+    private void switchToIceBullet() {
+        FXGL.getInput().addAction(new UserAction("Switch to Ice Bullet") {
+                @Override
+                protected void onActionBegin() {
+                    GameMechanics.setIceBullet();
+                }
+            },
+            KeyCode.E
         );
     }
 

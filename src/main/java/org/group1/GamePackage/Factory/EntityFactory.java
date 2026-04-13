@@ -26,22 +26,51 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         PLAYER, 
         ENEMY, 
         BULLET,
+        FIRE_BULLET,
+        ICE_BULLET,
         POWER_UP
     }
 
     private final double BULLET_HITBOX = 60;
     private final double LIFE_HITBOX = 60;
+
     @Spawns("bullet")
 
     public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(EntityType.BULLET)
                 .bbox(new HitBox(BoundingShape.box(BULLET_HITBOX, BULLET_HITBOX)))
-                .with(new BulletAnimationComponent())
+                .with(new BulletAnimationComponent(EntityType.BULLET))
                 .with(new ProjectileComponent(new Point2D(1,0), 1000))
                 .with(new CollidableComponent(true))
                 .build();
     }
+
+    @Spawns("fire_bullet")
+
+    public Entity fireBullet(SpawnData data) {
+        return FXGL.entityBuilder(data)
+            .type(EntityType.FIRE_BULLET)
+            .bbox(new HitBox(BoundingShape.box(BULLET_HITBOX,BULLET_HITBOX)))
+            .with(new BulletAnimationComponent(EntityType.FIRE_BULLET))
+            .with(new ProjectileComponent(new Point2D(1,0), 1000))
+            .with(new CollidableComponent(true))
+            .build();
+    }
+
+    @Spawns("ice_bullet")
+
+    public Entity iceBullet(SpawnData data) {
+        return FXGL.entityBuilder(data)
+            .type(EntityType.ICE_BULLET)
+            .bbox(new HitBox(BoundingShape.box(BULLET_HITBOX,BULLET_HITBOX)))
+            .with(new BulletAnimationComponent(EntityType.ICE_BULLET))
+            .with(new ProjectileComponent(new Point2D(1,0), 1000))
+            .with(new CollidableComponent(true))
+            .build();
+    }
+
+
 
     @Spawns("player")
 
