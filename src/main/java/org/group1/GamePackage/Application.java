@@ -6,10 +6,11 @@ import org.group1.GamePackage.Factory.BackgroundFactory;
 import org.group1.GamePackage.Factory.BossFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
 import org.group1.GamePackage.Factory.MainSceneFactory;
+import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Handlers.CollisionManager;
+import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Handlers.LevelManager;
-import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Music.AudioManager;
 import org.group1.GamePackage.UI.HUDInterface;
 
@@ -61,12 +62,14 @@ public class Application extends GameApplication {
     private Text livesText;
     private Text timerText;
     private Text scoreText;
+    private Text bulletText;
 
     @Override
     protected void initUI() {
-        boostText = HUD.displayLives(player);
-        livesText = HUD.displayBoostLevel(player);
-        scoreText = HUD.displayScore(player);
+        boostText = HUD.displayLives();
+        livesText = HUD.displayBoostLevel();
+        scoreText = HUD.displayScore();
+        bulletText = HUD.displayBulletCount();
     }
 
     @Override
@@ -162,9 +165,22 @@ public class Application extends GameApplication {
     protected void onUpdate(double update) {
        
         // Display static getters in PlayerComponent
+        
         livesText.setText("Lives: " + PlayerComponent.getLives());
         boostText.setText("Boost: " + PlayerComponent.getBoostLevel());
         scoreText.setText("Score: " + PlayerComponent.getScore());
+        
+        switch (GameMechanics.getCurrentBulletType()) {
+            case "fire_bullet" -> {
+                bulletText.setText("Fire-Bullet Count: " + PlayerComponent.getFireBulletsCount());
+            }
+            case "ice_bullet" -> {
+                bulletText.setText("Ice-Bullet Count: " + PlayerComponent.getIceBulletsCount());
+            }
+            default -> {
+                bulletText.setText("");
+            }
+        }        
     }
 
     public static void main(String[] args) {

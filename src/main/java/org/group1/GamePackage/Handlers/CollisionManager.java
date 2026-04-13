@@ -231,22 +231,21 @@ public class CollisionManager {
             @Override
             protected void onCollisionBegin(Entity powerUp, Entity player) {
                 var playerComponent = player.getComponent(PlayerComponent.class);
-                
+
                 if (powerUp.hasComponent(BoostUpComponent.class)) {
                     boostUp(powerUp, player);
                 } else if (powerUp.hasComponent(IcePowerUpComponent.class)) {
-                    playerComponent.toggleIceBullet(true);
+                    enableIceBullet(powerUp, playerComponent);
                 } else if (powerUp.hasComponent(FirePowerUpComponent.class)) {
-                    playerComponent.toggleFireBullet(true);
+                    enableFireBullet(powerUp, playerComponent);
                 } else if (powerUp.hasComponent(EnemyDropsAnimationComponent.class)) {
-                    extraLives(powerUp, player);
+                    extraLives(powerUp, playerComponent);
                 }
             }
         });
     }
 
-    private void extraLives(Entity powerUp, Entity player) {
-        var playerComponent = player.getComponent(PlayerComponent.class);
+    private void extraLives(Entity powerUp, PlayerComponent playerComponent) {
         audioManager.playHeartGain();
 
         playerComponent.increaseLives();
@@ -257,6 +256,18 @@ public class CollisionManager {
     private void boostUp(Entity powerUp, Entity player) {
         powerUp.removeFromWorld();
         GameMechanics.speedUp(player);
+    }
+
+    private void enableIceBullet(Entity powerUp,  PlayerComponent playerComponent) {
+        playerComponent.toggleIceBullet(true);
+        PlayerComponent.iceBulletAdd(10);
+        powerUp.removeFromWorld();
+    }
+
+    private void enableFireBullet(Entity powerUp,  PlayerComponent playerComponent) {
+        playerComponent.toggleFireBullet(true);
+        PlayerComponent.fireBulletAdd(10);
+        powerUp.removeFromWorld();
     }
 
     // method takes an Entity parameter to get its center

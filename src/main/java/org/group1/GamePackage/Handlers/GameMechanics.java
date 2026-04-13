@@ -23,15 +23,32 @@ public class GameMechanics {
         if (!isInvincible && currentTime - firstBullet >= BULLET_COOLDOWN) {
             FXGL.spawn(currentBulletType, player.getX() + 120, player.getY() + 50);
             firstBullet = currentTime;
+
+            switch (currentBulletType) {
+            case "fire_bullet" ->
+                PlayerComponent.fireBulletAdd(-1);
+            case "ice_bullet" ->
+                PlayerComponent.iceBulletAdd(-1);
+            default -> {
+            }
+        }
         }
     }
 
+    public static String getCurrentBulletType() {
+        return currentBulletType;
+    }
+    
     public static void setFireBullet() {
         currentBulletType = "fire_bullet";
     }
     
     public static void setIceBullet() {
         currentBulletType = "ice_bullet";
+    }
+
+    public static void setDefaultBullet() {
+        currentBulletType = "bullet";
     }
 
     public static void speedUp(Entity player) {

@@ -34,7 +34,7 @@ public class HUDInterface {
         return timerText;
     }
 
-    public Text displayBoostLevel(Entity player) {
+    public Text displayBoostLevel() {
         String boostMessage = "Boost: " + PlayerComponent.getBoostLevel();
         Text boostText = FXGL.getUIFactoryService().newText(boostMessage, Color.AQUAMARINE, 24);
         boostText.setTranslateX(50);
@@ -43,7 +43,7 @@ public class HUDInterface {
         return boostText;
     }
 
-    public Text displayLives(Entity player) {
+    public Text displayLives() {
         String livesMessage = "Lives: " + PlayerComponent.getLives();
         Text livesText = FXGL.getUIFactoryService().newText(livesMessage, Color.AQUAMARINE, 24);
         livesText.setTranslateX(50);
@@ -52,7 +52,7 @@ public class HUDInterface {
         return livesText;
     }
 
-    public Text displayScore(Entity score) {
+    public Text displayScore() {
         String scoreMessage = "Score: " + PlayerComponent.getScore();
         Text scoreText = FXGL.getUIFactoryService().newText(scoreMessage, Color.AQUAMARINE, 24);
 
@@ -62,4 +62,16 @@ public class HUDInterface {
         FXGL.addUINode(scoreText);
         return scoreText;
     }
+
+    public Text displayBulletCount() {
+        String scoreMessage = "";
+        Text bulletText = FXGL.getUIFactoryService().newText(scoreMessage, Color.AQUAMARINE, 24);
+
+        bulletText.setTranslateX(200);
+        bulletText.setTranslateY(140);
+
+        FXGL.addUINode(bulletText);
+        return bulletText;
+    }
+
 }

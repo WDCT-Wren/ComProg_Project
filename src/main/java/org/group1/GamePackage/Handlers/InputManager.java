@@ -33,6 +33,7 @@ public class InputManager {
                     try {
                         Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
                         GameMechanics.shoot(player);
+
                     } catch (Exception e) {
                         // Player isn't found yet, ignore input
                     }
@@ -47,12 +48,16 @@ public class InputManager {
                 @Override
                 protected void onActionBegin() {
                     try {
-                        Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
-                        var playerComponent = player.getComponent(PlayerComponent.class);
-                        if (playerComponent.getFireBulletsStatus() == true) {
-                            GameMechanics.setFireBullet();
+                        if (GameMechanics.getCurrentBulletType().equals("fire_bullet")) {
+                            GameMechanics.setDefaultBullet();
                         } else {
-                            //TODO: Add notice for empty fire bullet store
+                            Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                            var playerComponent = player.getComponent(PlayerComponent.class);
+                            if (playerComponent.getFireBulletsStatus() == true) {
+                                GameMechanics.setFireBullet();
+                            } else {
+                                //TODO: Add notice for empty fire bullet store
+                            }
                         }
                     } catch (Exception e) {
                     }
@@ -67,12 +72,16 @@ public class InputManager {
                 @Override
                 protected void onActionBegin() {
                     try {
-                        Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
-                        var playerComponent = player.getComponent(PlayerComponent.class);
-                        if (playerComponent.getIceBulletsStatus() == true) {
-                            GameMechanics.setIceBullet();
+                        if (GameMechanics.getCurrentBulletType().equals("ice_bullet")) {
+                            GameMechanics.setDefaultBullet();
                         } else {
+                            Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                            var playerComponent = player.getComponent(PlayerComponent.class);
+                            if (playerComponent.getIceBulletsStatus() == true) {
+                                GameMechanics.setIceBullet();
+                            } else {
                             //TODO: Add notice for empty fire bullet store
+                            }
                         }
                     } catch (Exception e) {
                     }

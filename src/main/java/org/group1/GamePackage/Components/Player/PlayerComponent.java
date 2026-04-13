@@ -31,6 +31,8 @@ public class PlayerComponent extends Component {
 
     private static int lives = 9;
     private static int boostLevel = 0;
+    private static int fireBulletsCount = 0;
+    private static int iceBulletsCount = 0;
     private int playerSpeed = 5;
 
     private static int score = 0;
@@ -43,8 +45,8 @@ public class PlayerComponent extends Component {
     private AnimationChannel downChannel;
     private AnimationChannel upChannel;
 
-    private boolean hasFireBullets = false;
-    private boolean hasIceBullets = false;
+    private static boolean hasFireBullets = false;
+    private static boolean hasIceBullets = false;
 
     public PlayerComponent(InputManager inputManager) {
         this.inputManager = inputManager;
@@ -120,6 +122,7 @@ public class PlayerComponent extends Component {
         else {
             gameMechanics.offInvincible();
         }
+
 
         // Checks if boost is active and applies it if it is
         checkBoost(timePerFrame);
@@ -243,6 +246,14 @@ public class PlayerComponent extends Component {
         return hasIceBullets;
     }
 
+    public static int getFireBulletsCount() {
+        return fireBulletsCount;
+    }
+
+    public static int getIceBulletsCount() {
+        return iceBulletsCount;
+    }
+
     // setters
     public void setBoostLevel (int amount) {
         boostLevel = amount;
@@ -254,5 +265,29 @@ public class PlayerComponent extends Component {
 
     public void toggleIceBullet(boolean trigger) {
         hasIceBullets = trigger;
+    }
+
+    public static void fireBulletAdd(int amt) {
+        fireBulletsCount += amt;
+        fireBulletsCount = (fireBulletsCount > 60) ? 60 : fireBulletsCount;
+        fireBulletsCount = (fireBulletsCount <= 0) ? 0 : fireBulletsCount;
+
+        if (fireBulletsCount == 0) {
+            hasFireBullets = false;
+            GameMechanics.setDefaultBullet();
+        }
+
+        
+    }
+
+    public static void iceBulletAdd(int amt) {
+        iceBulletsCount += amt;
+        iceBulletsCount = (iceBulletsCount > 60) ? 60 : iceBulletsCount;
+        iceBulletsCount = (iceBulletsCount <= 0) ? 0 : iceBulletsCount;
+
+        if (iceBulletsCount == 0) {
+            hasIceBullets = false;
+            GameMechanics.setDefaultBullet();
+        }
     }
 }

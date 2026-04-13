@@ -5,6 +5,8 @@ import org.group1.GamePackage.Components.Enemy.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyDropsAnimationComponent;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.PowerUps.BoostUpComponent;
+import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
+import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Components.Projectiles.BulletAnimationComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
@@ -131,7 +133,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .viewWithBBox(new Circle(30, Color.BLUE))
-            .with(new BoostUpComponent())
+            .with(new IcePowerUpComponent())
             .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
@@ -145,7 +147,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .viewWithBBox(new Circle(30, Color.ORANGE))
-            .with(new BoostUpComponent())
+            .with(new FirePowerUpComponent())
             .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
