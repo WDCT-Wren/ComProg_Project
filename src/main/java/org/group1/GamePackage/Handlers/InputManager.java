@@ -1,5 +1,6 @@
 package org.group1.GamePackage.Handlers;
 
+import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 
 import com.almasb.fxgl.dsl.FXGL;
@@ -45,7 +46,16 @@ public class InputManager {
         FXGL.getInput().addAction(new UserAction("Switch to Fire Bullet") {
                 @Override
                 protected void onActionBegin() {
-                    GameMechanics.setFireBullet();
+                    try {
+                        Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                        var playerComponent = player.getComponent(PlayerComponent.class);
+                        if (playerComponent.getFireBulletsStatus() == true) {
+                            GameMechanics.setFireBullet();
+                        } else {
+                            //TODO: Add notice for empty fire bullet store
+                        }
+                    } catch (Exception e) {
+                    }
                 }
             },
             KeyCode.Q
@@ -56,7 +66,16 @@ public class InputManager {
         FXGL.getInput().addAction(new UserAction("Switch to Ice Bullet") {
                 @Override
                 protected void onActionBegin() {
-                    GameMechanics.setIceBullet();
+                    try {
+                        Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                        var playerComponent = player.getComponent(PlayerComponent.class);
+                        if (playerComponent.getIceBulletsStatus() == true) {
+                            GameMechanics.setIceBullet();
+                        } else {
+                            //TODO: Add notice for empty fire bullet store
+                        }
+                    } catch (Exception e) {
+                    }
                 }
             },
             KeyCode.E

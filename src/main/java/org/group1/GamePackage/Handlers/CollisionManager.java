@@ -3,10 +3,12 @@ package org.group1.GamePackage.Handlers;
 import java.util.Random;
 
 import org.group1.GamePackage.Application;
-import org.group1.GamePackage.Components.UI.BoostUpComponent;
-import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyDropsAnimationComponent;
+import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.PowerUps.BoostUpComponent;
+import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
+import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Factory.BossFactory.BossType;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
@@ -228,8 +230,14 @@ public class CollisionManager {
         {
             @Override
             protected void onCollisionBegin(Entity powerUp, Entity player) {
+                var playerComponent = player.getComponent(PlayerComponent.class);
+                
                 if (powerUp.hasComponent(BoostUpComponent.class)) {
                     boostUp(powerUp, player);
+                } else if (powerUp.hasComponent(IcePowerUpComponent.class)) {
+                    playerComponent.toggleIceBullet(true);
+                } else if (powerUp.hasComponent(FirePowerUpComponent.class)) {
+                    playerComponent.toggleFireBullet(true);
                 } else if (powerUp.hasComponent(EnemyDropsAnimationComponent.class)) {
                     extraLives(powerUp, player);
                 }
@@ -256,8 +264,8 @@ public class CollisionManager {
     // 10% chance for powerup, then 50/50 split between boostUp and extraLife
     private void dropPowerUp(Entity entity) {
         if (random.nextDouble() < POWER_UP_DROP_RATE) {
-            String[] powerUps = {"extraLife", "boostUp"};
-            randomIndex = random.nextInt(2);
+            String[] powerUps = {"extraLife", "boostUp", "ice_powerUp", "fire_powerUp"};
+            randomIndex = random.nextInt(4);
 
             String powerUpType = powerUps[randomIndex];
             System.out.println(powerUpType);

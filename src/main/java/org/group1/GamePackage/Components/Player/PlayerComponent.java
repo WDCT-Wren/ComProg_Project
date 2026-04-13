@@ -43,6 +43,9 @@ public class PlayerComponent extends Component {
     private AnimationChannel downChannel;
     private AnimationChannel upChannel;
 
+    private boolean hasFireBullets = false;
+    private boolean hasIceBullets = false;
+
     public PlayerComponent(InputManager inputManager) {
         this.inputManager = inputManager;
     }
@@ -232,9 +235,24 @@ public class PlayerComponent extends Component {
         return isInvincible;
     }
 
+    public boolean getFireBulletsStatus() {
+        return hasFireBullets;
+    }
+
+    public boolean getIceBulletsStatus() {
+        return hasIceBullets;
+    }
 
     // setters
     public void setBoostLevel (int amount) {
         boostLevel = amount;
+    }
+
+    public void toggleFireBullet(boolean trigger) {
+        hasFireBullets = trigger;
+    }
+
+    public void toggleIceBullet(boolean trigger) {
+        hasIceBullets = trigger;
     }
 }

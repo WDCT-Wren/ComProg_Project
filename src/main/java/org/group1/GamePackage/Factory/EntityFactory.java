@@ -4,6 +4,8 @@ import org.group1.GamePackage.Application;
 import org.group1.GamePackage.Components.Enemy.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyDropsAnimationComponent;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.PowerUps.BoostUpComponent;
+import org.group1.GamePackage.Components.Projectiles.BulletAnimationComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.KeepOnScreenComponent;
@@ -18,8 +20,6 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import org.group1.GamePackage.Components.Projectiles.BulletAnimationComponent;
-import org.group1.GamePackage.Components.UI.BoostUpComponent;
 
 public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     public enum EntityType {
@@ -70,8 +70,6 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
             .build();
     }
 
-
-
     @Spawns("player")
 
     public Entity newPlayer(SpawnData data) {
@@ -119,6 +117,34 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .viewWithBBox(new Circle(30, Color.AZURE))
+            .with(new BoostUpComponent())
+            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
+            .with(new ProjectileComponent(new Point2D(-1,0), 300))
+            .with(new CollidableComponent(true))
+            .build();
+    }
+
+    @Spawns("ice_powerUp")
+
+    public Entity icePowerUp(SpawnData data) {
+        
+        return FXGL.entityBuilder(data)
+            .type(EntityType.POWER_UP)
+            .viewWithBBox(new Circle(30, Color.BLUE))
+            .with(new BoostUpComponent())
+            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
+            .with(new ProjectileComponent(new Point2D(-1,0), 300))
+            .with(new CollidableComponent(true))
+            .build();
+    }
+
+    @Spawns("fire_powerUp")
+
+    public Entity firePowerUp(SpawnData data) {
+        
+        return FXGL.entityBuilder(data)
+            .type(EntityType.POWER_UP)
+            .viewWithBBox(new Circle(30, Color.ORANGE))
             .with(new BoostUpComponent())
             .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
