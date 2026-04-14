@@ -67,8 +67,8 @@ public class HUDInterface {
         String scoreMessage = "";
         Text bulletText = FXGL.getUIFactoryService().newText(scoreMessage, Color.AQUAMARINE, 24);
 
-        bulletText.setTranslateX(200);
-        bulletText.setTranslateY(140);
+        bulletText.setTranslateX(230);
+        bulletText.setTranslateY(600);
 
         FXGL.addUINode(bulletText);
         return bulletText;

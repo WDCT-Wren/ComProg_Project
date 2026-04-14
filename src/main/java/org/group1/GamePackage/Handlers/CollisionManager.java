@@ -21,7 +21,7 @@ import com.almasb.fxgl.physics.CollisionHandler;
 public class CollisionManager {
     // RNG for chance extra life drops
     private static final Random random = new Random();
-    private static double POWER_UP_DROP_RATE = 0.10;
+    private static double POWER_UP_DROP_RATE = 1;
     private static double BOSS_POWER_UP_DROP_RATE = 0.05;
     private int randomIndex;
 

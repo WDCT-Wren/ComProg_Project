@@ -45,51 +45,69 @@ public class InputManager {
 
     private void switchToFireBullet() {
         FXGL.getInput().addAction(new UserAction("Switch to Fire Bullet") {
-                @Override
-                protected void onActionBegin() {
-                    try {
-                        if (GameMechanics.getCurrentBulletType().equals("fire_bullet")) {
-                            GameMechanics.setDefaultBullet();
-                        } else {
-                            Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
-                            var playerComponent = player.getComponent(PlayerComponent.class);
-                            if (playerComponent.getFireBulletsStatus() == true) {
-                                GameMechanics.setFireBullet();
-                            } else {
-                                //TODO: Add notice for empty fire bullet store
-                            }
+            @Override
+            protected void onActionBegin() {
+                try {
+                    Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                    var playerComponent = player.getComponent(PlayerComponent.class);
+
+                    if (GameMechanics.getCurrentBulletType().equals("fire_bullet")) {
+                        GameMechanics.setDefaultBullet();
+                        replaceHud("default_hud");
+                    } else {
+                        if (playerComponent.getFireBulletsStatus()) {
+                            GameMechanics.setFireBullet();
+                            replaceHud("fire_hud");
                         }
-                    } catch (Exception e) {
                     }
-                }
-            },
-            KeyCode.Q
+                } catch (Exception e) {}
+            }
+        },
+        KeyCode.Q
         );
     }
 
     private void switchToIceBullet() {
         FXGL.getInput().addAction(new UserAction("Switch to Ice Bullet") {
-                @Override
-                protected void onActionBegin() {
-                    try {
-                        if (GameMechanics.getCurrentBulletType().equals("ice_bullet")) {
-                            GameMechanics.setDefaultBullet();
-                        } else {
-                            Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
-                            var playerComponent = player.getComponent(PlayerComponent.class);
-                            if (playerComponent.getIceBulletsStatus() == true) {
-                                GameMechanics.setIceBullet();
-                            } else {
-                            //TODO: Add notice for empty fire bullet store
-                            }
+            @Override
+            protected void onActionBegin() {
+                try {
+                    Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                    var playerComponent = player.getComponent(PlayerComponent.class);
+
+                    if (GameMechanics.getCurrentBulletType().equals("ice_bullet")) {
+                        GameMechanics.setDefaultBullet();
+                        replaceHud("default_hud");
+                    } else {
+                        if (playerComponent.getIceBulletsStatus()) {
+                            GameMechanics.setIceBullet();
+                            replaceHud("ice_hud");
                         }
-                    } catch (Exception e) {
                     }
-                }
-            },
-            KeyCode.E
+                } catch (Exception e) {}
+            }
+        },
+        KeyCode.E
         );
     }
+
+    public static void replaceHud(String hudName) {
+        try {
+            FXGL.getGameWorld().getSingleton(
+                    e -> e.getComponents().stream()
+                    .anyMatch(c -> c.getClass().getSimpleName().equals("SwitchBulletAnimationComponent"))
+                    ).removeFromWorld();
+        } catch (Exception e) {
+            e.printStackTrace(); 
+        }
+
+        try {
+            FXGL.spawn(hudName);
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
+    }   
+
 
     private void moveLeft() {
         FXGL.getInput().addAction(new UserAction("Move left") {
@@ -102,26 +120,26 @@ public class InputManager {
             protected void onActionEnd() {
                 movingLeft = false;
             }
-            },
-            KeyCode.A
+        },
+        KeyCode.A
         );
     }
 
     private void moveRight() {
         FXGL.getInput().addAction(
-            new UserAction("Move right") {
+                new UserAction("Move right") {
 
-                @Override
-                protected void onActionBegin() {
-                    movingRight = true;
-                }
+                    @Override
+                    protected void onActionBegin() {
+                        movingRight = true;
+                    }
 
-                @Override
-                protected void onActionEnd() {
-                    movingRight = false;
-                }
-            },
-            KeyCode.D
+                    @Override
+                    protected void onActionEnd() {
+                        movingRight = false;
+                    }
+                },
+                KeyCode.D
         );
     }
 

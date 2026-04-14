@@ -5,6 +5,7 @@ import org.group1.GamePackage.Components.UI.TimerComponent;
 import org.group1.GamePackage.Factory.BackgroundFactory;
 import org.group1.GamePackage.Factory.BossFactory;
 import org.group1.GamePackage.Factory.EntityFactory;
+import org.group1.GamePackage.Factory.InterfaceFactory;
 import org.group1.GamePackage.Factory.MainSceneFactory;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Handlers.CollisionManager;
@@ -109,6 +110,7 @@ public class Application extends GameApplication {
         FXGL.getGameWorld().addEntityFactory(new EntityFactory());
         FXGL.getGameWorld().addEntityFactory(new BackgroundFactory());
         FXGL.getGameWorld().addEntityFactory(new BossFactory());
+        FXGL.getGameWorld().addEntityFactory(new InterfaceFactory());
     }
 
     /**
@@ -154,6 +156,9 @@ public class Application extends GameApplication {
         player = FXGL.spawn("player", playerSpawnPoint);
         // Player Component
         playerMainComponent = player.getComponent(PlayerComponent.class);
+
+        // Spawns the default switching hud 
+        FXGL.spawn("default_hud");
 
         FXGL.entityBuilder()
             .with(new BossLevelManager(playerMainComponent, timerComponent, audioManager))

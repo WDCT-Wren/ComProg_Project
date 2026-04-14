@@ -275,6 +275,7 @@ public class PlayerComponent extends Component {
         if (fireBulletsCount == 0) {
             hasFireBullets = false;
             GameMechanics.setDefaultBullet();
+            InputManager.replaceHud("default_hud");
         }
 
         
@@ -288,6 +289,7 @@ public class PlayerComponent extends Component {
         if (iceBulletsCount == 0) {
             hasIceBullets = false;
             GameMechanics.setDefaultBullet();
+            InputManager.replaceHud("default_hud");
         }
     }
 }
