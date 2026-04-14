@@ -70,5 +70,9 @@ public class BulletAnimationComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         texture.loopAnimationChannel(bulletAnimation);
+
+        if (bulletType == EntityType.FIRE_BULLET) {
+            texture.setTranslateY(-65); // shift flame visual up to align with other bullets
+        }
     }
 }
