@@ -3,6 +3,7 @@ package org.group1.GamePackage.Handlers;
 import java.util.Random;
 
 import org.group1.GamePackage.Application;
+import org.group1.GamePackage.Components.Enemy.BossComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyDropsAnimationComponent;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
@@ -149,6 +150,7 @@ public class CollisionManager {
                             .findFirst()
                             .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage());
 
+                        boss.getComponent(BossComponent.class).slowEffect();
                         // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
                         POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
                         dropPowerUp(boss);

@@ -41,11 +41,12 @@ public class BossComponent extends Component {
      * CHARGE_CHANCE: chance to attack determined by randomBoolean
      * CHARGE_TARGET_X CHARGE_TARGET_Y: player position
      * */
-    private static final double CHARGE_SPEED = 1200;
+    private static double CHARGE_SPEED = 1200;
     private static final double RECOVER_SPEED = 800;
     private static final double CHARGE_CHANCE = 0.005;
     private double CHARGE_TARGET_X;
     private double CHARGE_TARGET_Y;
+    private final double SLOW_DURATION = 8;
 
     private static final double FLASH_DURATION = 0.3; // seconds
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
@@ -165,10 +166,19 @@ public class BossComponent extends Component {
         }
     }
 
-
     public void takeDamage(BossLevelManager boss) {
         boss.takeDamage();
         triggerDamage();
+    }
+
+    public void slowEffect() {
+        SPEED_Y = 100;
+        CHARGE_SPEED = 800;
+
+        FXGL.getGameTimer().runOnceAfter(() -> {
+            SPEED_Y = 200;
+            CHARGE_SPEED = 1200;
+        }, Duration.seconds(SLOW_DURATION));
     }
 
     private void triggerDamage() {
