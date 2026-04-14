@@ -65,7 +65,7 @@ public class BossLevelManager extends Component {
         }
     }
 
-    // check if inBossLevel and boss is not spawned 
+    // check if inBossLevel and boss is not spawned,
     // then sets the booleans to true, spawn boss and set the healthBar visible
     private void checkBossSpawn() {
         if (inBossLevel() && !bossSpawned) {

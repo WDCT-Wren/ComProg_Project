@@ -13,6 +13,7 @@ open module org.group.game {
     requires transitive com.almasb.fxgl.all;
     requires com.almasb.fxgl.core;
     requires javafx.graphics;
+    requires java.desktop;
 
     exports org.group1.GamePackage;
     exports org.group1.GamePackage.Factory;

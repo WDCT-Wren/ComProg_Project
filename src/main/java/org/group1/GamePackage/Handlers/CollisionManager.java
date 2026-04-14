@@ -38,6 +38,7 @@ public class CollisionManager {
         bossVSice();
         bossVSfire();
         playerVSboss();
+        playerVsLaser();
     }
 
     public void enemyVSbullet () {
@@ -242,6 +243,27 @@ public class CollisionManager {
                     enableFireBullet(powerUp, playerComponent);
                 } else if (powerUp.hasComponent(EnemyDropsAnimationComponent.class)) {
                     extraLives(powerUp, playerComponent);
+                }
+            }
+        });
+    }
+
+    public void playerVsLaser() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                BossType.BOSS_LASER,
+                EntityType.PLAYER)
+        {
+            @Override
+            protected void onCollisionBegin(Entity laser, Entity player) {
+                var playerComponent = player.getComponent(PlayerComponent.class);
+                if (!playerComponent.isInvincible()) {
+                    audioManager.playDeathSound();
+                    playerComponent.takeDamage();;
+                }
+
+                if (PlayerComponent.getLives() == 0) {
+                    // IDK ANIMATE IT IDK
+                    player.getViewComponent().setVisible(false);
                 }
             }
         });

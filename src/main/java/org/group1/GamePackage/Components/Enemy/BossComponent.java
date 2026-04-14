@@ -1,5 +1,7 @@
 package org.group1.GamePackage.Components.Enemy;
 
+import com.almasb.fxgl.time.TimerAction;
+import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 
@@ -16,6 +18,7 @@ public class BossComponent extends Component {
     // State of the BOSS initial state IDLE
     private enum State {
         IDLE,
+        SHOOTING,
         CHARGING,
         RECOVERING
     }
@@ -52,6 +55,10 @@ public class BossComponent extends Component {
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
     private boolean visible = true;
 
+    private static final double BOSS_SHOOTING_RATE = 0.5;
+    private static final double SHOOT_CHANCE = 0.003;   // 0.3% per frame from IDLE
+    private static final double SHOOT_DURATION = 4.0;   // seconds spent in SHOOTING state
+
 
     @Override
     public void onAdded(){
@@ -68,56 +75,91 @@ public class BossComponent extends Component {
         // switch states that updates all the time by overriding FXGL onUpdate(double)
         switch (state) {
             case IDLE -> onIdle(update);
+            case SHOOTING -> shoot(update);
             case CHARGING -> currentlyCharging(update);
             case RECOVERING -> currentlyRecovering(update);
         }
     }
 
+    /**
+     * Tracks the player's position
+     */
+    private void trackPlayer() {
+        var player = FXGL.getGameWorld()
+                .getSingleton(e -> e.isType(EntityType.PLAYER));
 
-    // IDLE logic, with the update parameter to constantly translateY
-    private void onIdle(double update) {
+        CHARGE_TARGET_X = player.getX();
+        CHARGE_TARGET_Y = player.getY();
+    }
+
+    /**
+     * BOSS MOVEMENT LOGIC
+     * <br><br>
+     * if INITIAL_BOSS_Y + MOVE_RANGE is greater than the current Y
+     * set it to INITIAL_BOSS_Y + MOVE_RANGE
+     * and CHANGE THE DIRECTION by multiplying to -1
+     * else if it's less than INITIAL_BOSS_Y - MOVE_RANGE
+     * set it to INITIAL_BOSS_Y - MOVE_RANGE
+     * change the direction again
+     */
+    private void bossMovement(double update) {
         entity.translateY(SPEED_Y * DIRECTION * update);
 
-        /* if INITIAL_BOSS_Y + MOVE_RANGE is greater than the current Y
-         * set it to INITIAL_BOSS_Y + MOVE_RANGE
-         * and CHANGE THE DIRECTION by multiplying to -1
-         * else if its less than INITIAL_BOSS_Y - MOVE_RANGE
-         * set it to INITIAL_BOSS_Y - MOVE_RANGE
-         * change the direction again
-         */
         if (entity.getY() > INITIAL_BOSS_Y + MOVE_RANGE){
-            entity.setY(INITIAL_BOSS_Y + MOVE_RANGE); 
+            entity.setY(INITIAL_BOSS_Y + MOVE_RANGE);
             DIRECTION *= -1;
         }
         else if (entity.getY() < INITIAL_BOSS_Y - MOVE_RANGE){
-            entity.setY(INITIAL_BOSS_Y - MOVE_RANGE); 
+            entity.setY(INITIAL_BOSS_Y - MOVE_RANGE);
             DIRECTION *= -1;
         }
-
 
         // Randomly change directions
-        if (FXGLMath.randomBoolean(RANDOM_DIRECTION_CHANCE)){ 
+        if (FXGLMath.randomBoolean(RANDOM_DIRECTION_CHANCE)){
             DIRECTION *= -1;
-        }
-
-        // Randomly charge attacks
-        if (FXGLMath.randomBoolean(CHARGE_CHANCE)) {
-            chargeAttack();
         }
     }
 
+    // IDLE logic, with the update parameter to constantly translateY
+    private void onIdle(double update) {
+        bossMovement(update);
+
+        // Randomly charge or shoot
+        if (FXGLMath.randomBoolean(CHARGE_CHANCE)) {
+            chargeAttack();
+        } else if (FXGLMath.randomBoolean(SHOOT_CHANCE)) {
+            enterShootingState();
+        }
+    }
+
+    // Maintains the boss's movement while in shooting phase while tracking the player's position
+    private void shoot(double update) {
+        trackPlayer();
+        bossMovement(update);
+    }
+
+    // Transitions boss into SHOOTING state, fires lasers on interval, then returns to IDLE
+    private void enterShootingState() {
+        state = State.SHOOTING;
+
+        TimerAction shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
+            double laserBounds = (double) (FXGL.getAppHeight() * 2) / 3;
+            double y = CHARGE_TARGET_Y;
+            FXGL.spawn("lasers", INITIAL_BOSS_X, y);
+        }, Duration.seconds(BOSS_SHOOTING_RATE));
+
+        FXGL.getGameTimer().runOnceAfter(() -> {
+            shootInterval.expire();
+            state = State.IDLE;
+        }, Duration.seconds(SHOOT_DURATION));
+    }
 
     /* Charge attack logic
      * doesnt have the update parameter because this initializes the CHARGING state
      * gets the play current position
      * */
     private void chargeAttack() {
-        var player = FXGL.getGameWorld()
-            .getSingleton(e -> e.isType(EntityType.PLAYER));
-
-        CHARGE_TARGET_X = player.getX();
-        CHARGE_TARGET_Y = player.getY();
-
+        trackPlayer();
         state = State.CHARGING;
     }
 
