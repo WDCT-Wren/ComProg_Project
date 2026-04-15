@@ -120,11 +120,7 @@ public class CollisionManager {
                         bullet.removeFromWorld();
 
                         // get boss from the gameWorld and call it's method
-                        FXGL.getGameWorld()
-                            .getEntitiesByComponent(BossLevelManager.class)
-                            .stream()
-                            .findFirst()
-                            .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage(5));
+                        boss.getComponent(BossComponent.class).takeDamage(5);
 
                         // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
                         POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
@@ -145,12 +141,7 @@ public class CollisionManager {
                         bullet.removeFromWorld();
 
                         // get boss from the gameWorld and call it's method
-                        FXGL.getGameWorld()
-                            .getEntitiesByComponent(BossLevelManager.class)
-                            .stream()
-                            .findFirst()
-                            .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage(IcePowerUpComponent.ICE_DAMAGE));
-
+                        boss.getComponent(BossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
                         boss.getComponent(BossComponent.class).slowEffect();
                         // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
                         POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
@@ -171,11 +162,8 @@ public class CollisionManager {
                         bullet.removeFromWorld();
 
                         // get boss from the gameWorld and call it's method
-                        FXGL.getGameWorld()
-                            .getEntitiesByComponent(BossLevelManager.class)
-                            .stream()
-                            .findFirst()
-                            .ifPresent(e -> e.getComponent(BossLevelManager.class).takeDamage(FirePowerUpComponent.FIRE_DAMAGE));
+                        boss.getComponent(BossComponent.class).takeDamage(5);
+                        boss.getComponent(BossComponent.class).burnEffect();
 
                         // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
                         POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;

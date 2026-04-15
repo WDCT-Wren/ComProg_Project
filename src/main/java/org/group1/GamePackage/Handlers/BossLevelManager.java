@@ -1,5 +1,6 @@
 package org.group1.GamePackage.Handlers;
 
+import org.group1.GamePackage.Components.Enemy.BossComponent;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Components.UI.TimerComponent;
@@ -16,11 +17,9 @@ import javafx.util.Duration;
 
 public class BossLevelManager extends Component {
 
-    private static int BOSS_HEALTH = 100;
-
     // Needed score to spawn boss
     private int SCORE_TO_SPAWN = 100;
-    private ProgressBar healthBar;
+    private static ProgressBar healthBar;
 
     private PlayerComponent player;
     private TimerComponent timerComponent;
@@ -28,6 +27,7 @@ public class BossLevelManager extends Component {
     private boolean bossSpawned = false;
     private static boolean bossLevel = false;
     private boolean gameOverTriggered = false;
+
 
     public BossLevelManager(PlayerComponent player, TimerComponent timerComponent, AudioManager audioManager) {
         this.player = player;
@@ -46,8 +46,8 @@ public class BossLevelManager extends Component {
         healthBar.setTranslateX((FXGL.getAppWidth() - 400) / 2);
         healthBar.setTranslateY(20);
         healthBar.setMinValue(0);
-        healthBar.setMaxValue(BOSS_HEALTH);
-        healthBar.currentValueProperty().setValue(BOSS_HEALTH);
+        healthBar.setMaxValue(BossComponent.getBOSS_HEALTH());
+        healthBar.currentValueProperty().setValue(BossComponent.getBOSS_HEALTH());
         // set it to false first then on bossSpawn make it visible
         healthBar.setVisible(false);
         FXGL.addUINode(healthBar);
@@ -62,16 +62,22 @@ public class BossLevelManager extends Component {
     }
 
     private void checkWinCondition() {
-        if (gameOverTriggered) return;
-
-        if(dead()) {
-
-            var boss = FXGL.getGameWorld().getEntitiesByType(BossType.BOSS);
-            boss.forEach(Entity::removeFromWorld);
-
-            GameOverComponent.winGame();
-            gameOverTriggered = true;
+        if (gameOverTriggered) {
+            return;
         }
+        try {
+            Entity boss = FXGL.getGameWorld().getSingleton(BossType.BOSS);
+
+            if (boss.getComponent(BossComponent.class).dead()) {
+
+                boss.removeFromWorld();
+
+                GameOverComponent.winGame();
+                gameOverTriggered = true;
+            }
+        } catch (Exception e) {
+        }
+
     }
 
     // check if inBossLevel and boss is not spawned,
@@ -113,21 +119,13 @@ public class BossLevelManager extends Component {
         return PlayerComponent.getScore() >= SCORE_TO_SPAWN;
     }
 
-    public void takeDamage(int damage) {
-        BOSS_HEALTH-=damage;
-        healthBar.currentValueProperty().setValue(BOSS_HEALTH);
-
-        if (dead()) {
-            FXGL.removeUINode(healthBar);
-        }
-    }
-
-    private boolean dead() {
-        return BOSS_HEALTH <= 0;
-    }
-
     public static boolean getBossLevel(){
         return bossLevel;
     }
+
+    public static ProgressBar getHealthBar() {
+        return healthBar;
+    }
+
 }
 

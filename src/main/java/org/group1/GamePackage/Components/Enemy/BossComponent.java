@@ -1,6 +1,7 @@
 package org.group1.GamePackage.Components.Enemy;
 
 import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
+import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 
@@ -22,6 +23,8 @@ public class BossComponent extends Component {
         RECOVERING
     }
 
+    private static int BOSS_HEALTH = 200;
+
     private State state = State.IDLE;
 
     // Initial position of BOSS set by FXGL.spawn
@@ -33,7 +36,7 @@ public class BossComponent extends Component {
      * Initial DIRECTION is 1 (positive Y movement)
      * RANDOM_DIRECTION_CHANCE: chance to change determined by randomBoolean
      */
-    private double SPEED_Y = 200;
+    private double SPEED_Y = 300;
     private double MOVE_RANGE = 150;
     private double DIRECTION = 1;
     private double RANDOM_DIRECTION_CHANCE = 0.01;
@@ -51,7 +54,8 @@ public class BossComponent extends Component {
     private double CHARGE_TARGET_X;
     private double CHARGE_TARGET_Y;
     private final double SLOW_DURATION = 8;
-    private double BURN_DURATION = 3;
+    private final double BURN_RATE = 1;
+    private double BURN_DURATION = 5;
 
     private static final double FLASH_DURATION = 0.3; // seconds
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
@@ -79,7 +83,7 @@ public class BossComponent extends Component {
             case SHOOTING -> shoot(update);
             case CHARGING -> currentlyCharging(update);
             case RECOVERING -> currentlyRecovering(update);
-        }
+        } 
     }
 
     /**
@@ -217,14 +221,23 @@ public class BossComponent extends Component {
         }
     }
 
-    public void takeDamage(BossLevelManager boss) {
-        boss.takeDamage(5);
-        triggerDamage();
+    public void takeDamage(int damage) {
+        BOSS_HEALTH-=damage;
+        var healthBar = BossLevelManager.getHealthBar();
+        healthBar.currentValueProperty().setValue(BOSS_HEALTH);
+
+        if (dead()) {
+            FXGL.removeUINode(healthBar);
+        }
+    }
+
+    public boolean dead() {
+        return BOSS_HEALTH <= 0;
     }
 
     public void slowEffect() {
-        SPEED_Y = 100;
-        CHARGE_SPEED = 800;
+        SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();
+        CHARGE_SPEED =IcePowerUpComponent.getDASH_SLOW();
 
         FXGL.getGameTimer().runOnceAfter(() -> {
             SPEED_Y = 200;
@@ -232,10 +245,12 @@ public class BossComponent extends Component {
         }, Duration.seconds(SLOW_DURATION));
     }
 
-    public void burnEffect(BossLevelManager boss) {
-        FXGL.getGameTimer().runOnceAfter(() -> {
-            boss.takeDamage(FirePowerUpComponent.FIRE_DAMAGE);
-        }, Duration.seconds(BURN_DURATION));
+    public void burnEffect() {
+        var burnTask = FXGL.getGameTimer().runAtInterval(() -> {
+            takeDamage(FirePowerUpComponent.getFIRE_DAMAGE());
+        }, Duration.seconds(BURN_RATE));
+
+        FXGL.getGameTimer().runOnceAfter(burnTask::expire, Duration.seconds(BURN_DURATION));
     }
 
     private void triggerDamage() {
@@ -248,5 +263,9 @@ public class BossComponent extends Component {
             flashTask.expire();
             entity.getViewComponent().setOpacity(1.0);
         }, Duration.seconds(FLASH_DURATION));
+    }
+
+    public static int getBOSS_HEALTH() {
+        return BOSS_HEALTH;
     }
 }
