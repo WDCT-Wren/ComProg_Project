@@ -1,13 +1,13 @@
 package org.group1.GamePackage.Components.Enemy;
 
-import com.almasb.fxgl.time.TimerAction;
-import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.time.TimerAction;
 
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
@@ -51,6 +51,7 @@ public class BossComponent extends Component {
     private double CHARGE_TARGET_X;
     private double CHARGE_TARGET_Y;
     private final double SLOW_DURATION = 8;
+    private double BURN_DURATION = 3;
 
     private static final double FLASH_DURATION = 0.3; // seconds
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
@@ -217,7 +218,7 @@ public class BossComponent extends Component {
     }
 
     public void takeDamage(BossLevelManager boss) {
-        boss.takeDamage();
+        boss.takeDamage(5);
         triggerDamage();
     }
 
@@ -229,6 +230,12 @@ public class BossComponent extends Component {
             SPEED_Y = 200;
             CHARGE_SPEED = 1200;
         }, Duration.seconds(SLOW_DURATION));
+    }
+
+    public void burnEffect(BossLevelManager boss) {
+        FXGL.getGameTimer().runOnceAfter(() -> {
+            boss.takeDamage(FirePowerUpComponent.FIRE_DAMAGE);
+        }, Duration.seconds(BURN_DURATION));
     }
 
     private void triggerDamage() {

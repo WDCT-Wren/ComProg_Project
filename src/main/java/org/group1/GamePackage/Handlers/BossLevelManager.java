@@ -1,19 +1,18 @@
 package org.group1.GamePackage.Handlers;
 
+import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Components.UI.GameOverComponent;
+import org.group1.GamePackage.Components.UI.TimerComponent;
+import org.group1.GamePackage.Factory.BossFactory.BossType;
+import org.group1.GamePackage.Music.AudioManager;
+
 import com.almasb.fxgl.dsl.FXGL;
-
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
-
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.ui.ProgressBar;
 
-import org.group1.GamePackage.Components.Player.PlayerComponent;
-import org.group1.GamePackage.Components.UI.GameOverComponent;
-import org.group1.GamePackage.Components.UI.TimerComponent;
-import org.group1.GamePackage.Music.AudioManager;
-import org.group1.GamePackage.Factory.BossFactory.BossType;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class BossLevelManager extends Component {
 
@@ -114,8 +113,8 @@ public class BossLevelManager extends Component {
         return PlayerComponent.getScore() >= SCORE_TO_SPAWN;
     }
 
-    public void takeDamage() {
-        BOSS_HEALTH--;
+    public void takeDamage(int damage) {
+        BOSS_HEALTH-=damage;
         healthBar.currentValueProperty().setValue(BOSS_HEALTH);
 
         if (dead()) {

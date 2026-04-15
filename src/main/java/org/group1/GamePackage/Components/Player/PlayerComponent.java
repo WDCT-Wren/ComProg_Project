@@ -209,7 +209,7 @@ public class PlayerComponent extends Component {
             playerSpeed = boostedSpeed;
             GameMechanics.setBULLET_COOLDOWN(BOOST_FIRE_RATE);
             boostDecreaseTimer += timePerFrame;
-            if (boostDecreaseTimer >= 1.5) {
+            if (boostDecreaseTimer >= 1) {
                 boostLevel--;
                 boostDecreaseTimer = 0;
             }

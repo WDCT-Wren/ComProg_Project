@@ -48,7 +48,7 @@ public class Application extends GameApplication {
     private final Point2D playerSpawnPoint = new Point2D(100, 200);
 
     // Variables
-    private static final double NORMAL_ENEMY_SPAWN_RATE = 1; // every seconds
+    private static final double NORMAL_ENEMY_SPAWN_RATE = 0.7; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
 
     //Enemy presence manager
