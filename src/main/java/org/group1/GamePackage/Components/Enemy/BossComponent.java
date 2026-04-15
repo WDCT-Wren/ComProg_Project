@@ -14,7 +14,6 @@ import javafx.util.Duration;
 
 public class BossComponent extends Component {
 
-
     // State of the BOSS initial state IDLE
     private enum State {
         IDLE,
@@ -22,28 +21,30 @@ public class BossComponent extends Component {
         CHARGING,
         RECOVERING
     }
+
     private State state = State.IDLE;
 
     // Initial position of BOSS set by FXGL.spawn
     private double INITIAL_BOSS_Y;
     private double INITIAL_BOSS_X;
 
-    /* Y movement SPEED and MOVE_RANGE
+    /*
+     * Y movement SPEED and MOVE_RANGE
      * Initial DIRECTION is 1 (positive Y movement)
      * RANDOM_DIRECTION_CHANCE: chance to change determined by randomBoolean
-     * */
+     */
     private double SPEED_Y = 200;
     private double MOVE_RANGE = 150;
     private double DIRECTION = 1;
     private double RANDOM_DIRECTION_CHANCE = 0.01;
 
-
-    /* Charge Attack Variables
+    /*
+     * Charge Attack Variables
      * CHARGE_SPEED: How fast move to player
      * RECOVER_SPEED: How fast till boss goes back to initial X position
      * CHARGE_CHANCE: chance to attack determined by randomBoolean
      * CHARGE_TARGET_X CHARGE_TARGET_Y: player position
-     * */
+     */
     private static double CHARGE_SPEED = 1200;
     private static final double RECOVER_SPEED = 800;
     private static final double CHARGE_CHANCE = 0.005;
@@ -56,12 +57,11 @@ public class BossComponent extends Component {
     private boolean visible = true;
 
     private static final double BOSS_SHOOTING_RATE = 0.5;
-    private static final double SHOOT_CHANCE = 0.003;   // 0.3% per frame from IDLE
-    private static final double SHOOT_DURATION = 4.0;   // seconds spent in SHOOTING state
-
+    private static final double SHOOT_CHANCE = 0.003; // 0.3% per frame from IDLE
+    private static final double SHOOT_DURATION = 4.0; // seconds spent in SHOOTING state
 
     @Override
-    public void onAdded(){
+    public void onAdded() {
         // When boss spawns, get the position and initialize it
         INITIAL_BOSS_Y = entity.getY();
         INITIAL_BOSS_X = entity.getX();
@@ -94,7 +94,8 @@ public class BossComponent extends Component {
 
     /**
      * BOSS MOVEMENT LOGIC
-     * <br><br>
+     * <br>
+     * <br>
      * if INITIAL_BOSS_Y + MOVE_RANGE is greater than the current Y
      * set it to INITIAL_BOSS_Y + MOVE_RANGE
      * and CHANGE THE DIRECTION by multiplying to -1
@@ -105,17 +106,16 @@ public class BossComponent extends Component {
     private void bossMovement(double update) {
         entity.translateY(SPEED_Y * DIRECTION * update);
 
-        if (entity.getY() > INITIAL_BOSS_Y + MOVE_RANGE){
+        if (entity.getY() > INITIAL_BOSS_Y + MOVE_RANGE) {
             entity.setY(INITIAL_BOSS_Y + MOVE_RANGE);
             DIRECTION *= -1;
-        }
-        else if (entity.getY() < INITIAL_BOSS_Y - MOVE_RANGE){
+        } else if (entity.getY() < INITIAL_BOSS_Y - MOVE_RANGE) {
             entity.setY(INITIAL_BOSS_Y - MOVE_RANGE);
             DIRECTION *= -1;
         }
 
         // Randomly change directions
-        if (FXGLMath.randomBoolean(RANDOM_DIRECTION_CHANCE)){
+        if (FXGLMath.randomBoolean(RANDOM_DIRECTION_CHANCE)) {
             DIRECTION *= -1;
         }
     }
@@ -132,13 +132,15 @@ public class BossComponent extends Component {
         }
     }
 
-    // Maintains the boss's movement while in shooting phase while tracking the player's position
+    // Maintains the boss's movement while in shooting phase while tracking the
+    // player's position
     private void shoot(double update) {
         trackPlayer();
         bossMovement(update);
     }
 
-    // Transitions boss into SHOOTING state, fires lasers on interval, then returns to IDLE
+    // Transitions boss into SHOOTING state, fires lasers on interval, then returns
+    // to IDLE
     private void enterShootingState() {
         state = State.SHOOTING;
 
@@ -154,25 +156,30 @@ public class BossComponent extends Component {
         }, Duration.seconds(SHOOT_DURATION));
     }
 
-    /* Charge attack logic
+    /*
+     * Charge attack logic
      * doesnt have the update parameter because this initializes the CHARGING state
      * gets the play current position
-     * */
+     */
     private void chargeAttack() {
         trackPlayer();
         state = State.CHARGING;
     }
 
-    /* if state = CHARGING -> run this method
+    /*
+     * if state = CHARGING -> run this method
      * Point2D position: gets the current position of boss
      * Point2D target: gets the current position of player
      * Point2D direction: subtracts the target to postion
      * Essentially creates a vector from position to target or idk
      * I think of it like if boss X = 700 & boss Y = 160
      * then player X = 100, player Y = 200
-     * subtracts (100, 200) to (700, 160) = (-600, 40) = 601.33... < vector magnitude
-     * .normalize() just divides by the magnitude so it gets the right distance to player
-     * (-600 / 601.33, 40 / 601.33) = (-0.998, 0.066) this is the distance to player = direction
+     * subtracts (100, 200) to (700, 160) = (-600, 40) = 601.33... < vector
+     * magnitude
+     * .normalize() just divides by the magnitude so it gets the right distance to
+     * player
+     * (-600 / 601.33, 40 / 601.33) = (-0.998, 0.066) this is the distance to player
+     * = direction
      */
     private void currentlyCharging(double update) {
         Point2D position = new Point2D(entity.getX(), entity.getY());
@@ -190,13 +197,14 @@ public class BossComponent extends Component {
         }
     }
 
-    /* RECOVERING logic
+    /*
+     * RECOVERING logic
      * ORIGINAL_X: how far current x position from initial position
      * if the absolute value of ORIGINAL_X is less than RECOVER_SPEED * onUpdate
      * it means that its close enough to snap back to INITIAL_BOSS_X position
      * returns to IDLE state
      * else keep moving back
-     * */
+     */
     private void currentlyRecovering(double update) {
         double ORIGINAL_X = INITIAL_BOSS_X - entity.getX();
 

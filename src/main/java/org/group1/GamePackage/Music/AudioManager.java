@@ -25,6 +25,14 @@ public class AudioManager {
         sound.getAudio().setVolume(20.0);
     }
 
+    public static void bossDie() {
+        FXGL.play("boss_die.wav");
+    }
+
+    public static void switchBullet() {
+        FXGL.play("switch_bullet.wav");
+    }
+
     public void playGameOver() {
         //TODO: Sound effect for gameover
     }

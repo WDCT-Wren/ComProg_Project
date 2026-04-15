@@ -37,8 +37,8 @@ public class InterfaceFactory implements EntityFactory {
     @Spawns("default_hud")
     public Entity defaultHud(SpawnData data) {
         return FXGL.entityBuilder(data)
-            .at(20, 520)
-            .scale(0.8, 0.8) 
+            .at(30, 540)
+            .scale(0.7, 0.7) 
             .with(new SwitchBulletAnimationComponent(EntityType.DEFAULT_SWITCH_HUD))
             .zIndex(100)
             .build();

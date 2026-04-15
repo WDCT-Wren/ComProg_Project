@@ -2,6 +2,7 @@ package org.group1.GamePackage.Handlers;
 
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
+import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -51,6 +52,7 @@ public class InputManager {
                     Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
                     var playerComponent = player.getComponent(PlayerComponent.class);
 
+                    AudioManager.switchBullet();
                     if (GameMechanics.getCurrentBulletType().equals("fire_bullet")) {
                         GameMechanics.setDefaultBullet();
                         replaceHud("default_hud");
@@ -75,6 +77,7 @@ public class InputManager {
                     Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
                     var playerComponent = player.getComponent(PlayerComponent.class);
 
+                    AudioManager.switchBullet();
                     if (GameMechanics.getCurrentBulletType().equals("ice_bullet")) {
                         GameMechanics.setDefaultBullet();
                         replaceHud("default_hud");

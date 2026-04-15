@@ -14,6 +14,7 @@ open module org.group.game {
     requires com.almasb.fxgl.core;
     requires javafx.graphics;
     requires java.desktop;
+	requires javafx.base;
 
     exports org.group1.GamePackage;
     exports org.group1.GamePackage.Factory;

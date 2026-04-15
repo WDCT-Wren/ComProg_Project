@@ -4,6 +4,8 @@ import com.almasb.fxgl.dsl.FXGL;
 
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.ui.ProgressBar;
 
@@ -11,6 +13,7 @@ import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Components.UI.TimerComponent;
 import org.group1.GamePackage.Music.AudioManager;
+import org.group1.GamePackage.Factory.BossFactory.BossType;
 
 public class BossLevelManager extends Component {
 
@@ -60,8 +63,15 @@ public class BossLevelManager extends Component {
     }
 
     private void checkWinCondition() {
+        if (gameOverTriggered) return;
+
         if(dead()) {
+
+            var boss = FXGL.getGameWorld().getEntitiesByType(BossType.BOSS);
+            boss.forEach(Entity::removeFromWorld);
+
             GameOverComponent.winGame();
+            gameOverTriggered = true;
         }
     }
 
@@ -82,7 +92,7 @@ public class BossLevelManager extends Component {
     private void checkGameOver() {
         if (gameOverTriggered) return;
 
-        if (player.getLives() == 0 || timerComponent.timeEnded()) {
+        if (PlayerComponent.getLives() == 0 || timerComponent.timeEnded()) {
             gameOverTriggered = true;
             FXGL.spawn("death_overlay");
             FXGL.getGameTimer().runOnceAfter(() -> {

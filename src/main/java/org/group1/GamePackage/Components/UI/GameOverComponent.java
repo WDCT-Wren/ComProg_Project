@@ -3,7 +3,12 @@ package org.group1.GamePackage.Components.UI;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Handlers.GameMechanics;
+
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+
+import javafx.util.Duration;
+
 import org.group1.GamePackage.Music.AudioManager;
 
 public class GameOverComponent extends Component {
@@ -16,7 +21,10 @@ public class GameOverComponent extends Component {
     }
 
     public static void winGame() {
-        GameMechanics.pauseGame();
+        AudioManager.bossDie();
+        FXGL.runOnce(() -> {
+                GameMechanics.pauseGame();
+        },Duration.seconds(3));
     }
 
     @Override

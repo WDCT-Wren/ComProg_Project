@@ -1,6 +1,7 @@
 package org.group1.GamePackage.Handlers;
 
 import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
