@@ -21,8 +21,10 @@ import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.time.TimerAction;
+import com.almasb.fxgl.ui.ProgressBar;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -62,15 +64,15 @@ public class Application extends GameApplication {
     private Text boostText;
     private Text livesText;
     private Text timerText;
-    private Text scoreText;
-    private Text bulletText;
+    private ProgressBar bulletProgress;
+    private ProgressBar scoreProgress;
 
     @Override
     protected void initUI() {
         boostText = HUD.displayLives();
         livesText = HUD.displayBoostLevel();
-        scoreText = HUD.displayScore();
-        bulletText = HUD.displayBulletCount();
+        bulletProgress = HUD.displayBulletCount();
+        scoreProgress = HUD.displayScore();
     }
 
     @Override
@@ -173,17 +175,21 @@ public class Application extends GameApplication {
         
         livesText.setText("Lives: " + PlayerComponent.getLives());
         boostText.setText("Boost: " + PlayerComponent.getBoostLevel());
-        scoreText.setText("Score: " + PlayerComponent.getScore());
+        scoreProgress.currentValueProperty().setValue(PlayerComponent.getScore());
         
         switch (GameMechanics.getCurrentBulletType()) {
             case "fire_bullet" -> {
-                bulletText.setText("Fire-Bullet Count: " + PlayerComponent.getFireBulletsCount());
+                bulletProgress.setVisible(true);
+                bulletProgress.setFill(Color.ORANGE);
+                bulletProgress.currentValueProperty().setValue(PlayerComponent.getFireBulletsCount());
             }
             case "ice_bullet" -> {
-                bulletText.setText("Ice-Bullet Count: " + PlayerComponent.getIceBulletsCount());
+                bulletProgress.setVisible(true);
+                bulletProgress.setFill(Color.LIGHTBLUE);
+                bulletProgress.currentValueProperty().setValue(PlayerComponent.getIceBulletsCount());
             }
             default -> {
-                bulletText.setText("");
+                bulletProgress.setVisible(false);
             }
         }        
     }

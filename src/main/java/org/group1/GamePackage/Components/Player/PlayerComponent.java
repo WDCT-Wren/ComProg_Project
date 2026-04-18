@@ -33,6 +33,7 @@ public class PlayerComponent extends Component {
     private static int boostLevel = 0;
     private static int fireBulletsCount = 0;
     private static int iceBulletsCount = 0;
+    private static int MAX_BULLET_COUNT = 60;
     private int playerSpeed = 5;
 
     private static int score = 0;
@@ -254,6 +255,10 @@ public class PlayerComponent extends Component {
         return iceBulletsCount;
     }
 
+    public static int getMaxBulletCount() {
+        return MAX_BULLET_COUNT;
+    }
+
     // setters
     public void setBoostLevel (int amount) {
         boostLevel = amount;
@@ -269,7 +274,7 @@ public class PlayerComponent extends Component {
 
     public static void fireBulletAdd(int amt) {
         fireBulletsCount += amt;
-        fireBulletsCount = (fireBulletsCount > 60) ? 60 : fireBulletsCount;
+        fireBulletsCount = (fireBulletsCount > MAX_BULLET_COUNT) ? MAX_BULLET_COUNT: fireBulletsCount;
         fireBulletsCount = (fireBulletsCount <= 0) ? 0 : fireBulletsCount;
 
         if (fireBulletsCount == 0) {
@@ -283,7 +288,7 @@ public class PlayerComponent extends Component {
 
     public static void iceBulletAdd(int amt) {
         iceBulletsCount += amt;
-        iceBulletsCount = (iceBulletsCount > 60) ? 60 : iceBulletsCount;
+        iceBulletsCount = (iceBulletsCount > MAX_BULLET_COUNT) ? MAX_BULLET_COUNT : iceBulletsCount;
         iceBulletsCount = (iceBulletsCount <= 0) ? 0 : iceBulletsCount;
 
         if (iceBulletsCount == 0) {

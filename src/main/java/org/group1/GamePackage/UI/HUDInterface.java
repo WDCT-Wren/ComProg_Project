@@ -2,9 +2,11 @@ package org.group1.GamePackage.UI;
 
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.UI.TimerComponent;
+import org.group1.GamePackage.Handlers.BossLevelManager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.ui.ProgressBar;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.paint.Color;
@@ -52,26 +54,32 @@ public class HUDInterface {
         return livesText;
     }
 
-    public Text displayScore() {
-        String scoreMessage = "Score: " + PlayerComponent.getScore();
-        Text scoreText = FXGL.getUIFactoryService().newText(scoreMessage, Color.AQUAMARINE, 24);
+    public ProgressBar displayScore() {
+        ProgressBar scoreProgress = new ProgressBar();
 
-        scoreText.setTranslateX(50);
-        scoreText.setTranslateY(140);
+        scoreProgress.setMinValue(0);
+        scoreProgress.setMaxValue(BossLevelManager.getScoreToSpawn());
 
-        FXGL.addUINode(scoreText);
-        return scoreText;
+        scoreProgress.setTranslateX(50);
+        scoreProgress.setTranslateY(140);
+
+        FXGL.addUINode(scoreProgress);
+        return scoreProgress;
     }
 
-    public Text displayBulletCount() {
-        String scoreMessage = "";
-        Text bulletText = FXGL.getUIFactoryService().newText(scoreMessage, Color.AQUAMARINE, 24);
+    public ProgressBar displayBulletCount() {
+        // ProgressBar(false) with the boolean parameter to remove the add or subtract messages
+        ProgressBar bulletProgress = new ProgressBar(false);
 
-        bulletText.setTranslateX(230);
-        bulletText.setTranslateY(600);
+        bulletProgress.setMinValue(0);
+        bulletProgress.setMaxValue(PlayerComponent.getMaxBulletCount());
 
-        FXGL.addUINode(bulletText);
-        return bulletText;
+        bulletProgress.setTranslateX(230);
+        bulletProgress.setTranslateY(600);
+        bulletProgress.setVisible(false);
+
+        FXGL.addUINode(bulletProgress);
+        return bulletProgress;
     }
 
 }

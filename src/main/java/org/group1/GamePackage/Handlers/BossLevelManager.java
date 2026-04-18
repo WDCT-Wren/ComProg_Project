@@ -18,7 +18,7 @@ import javafx.util.Duration;
 public class BossLevelManager extends Component {
 
     // Needed score to spawn boss
-    private int SCORE_TO_SPAWN = 100;
+    private static int SCORE_TO_SPAWN = 100;
     private static ProgressBar healthBar;
 
     private PlayerComponent player;
@@ -125,6 +125,10 @@ public class BossLevelManager extends Component {
 
     public static ProgressBar getHealthBar() {
         return healthBar;
+    }
+
+    public static int getScoreToSpawn() {
+        return SCORE_TO_SPAWN;
     }
 
 }
