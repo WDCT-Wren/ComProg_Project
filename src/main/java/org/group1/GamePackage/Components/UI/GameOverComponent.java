@@ -25,6 +25,7 @@ public class GameOverComponent extends Component {
         AudioManager.bossDie();
         FXGL.runOnce(() -> {
                 GameMechanics.getToMenuScreen();
+                AudioManager.stopAll();
         },Duration.seconds(3));
     }
 
