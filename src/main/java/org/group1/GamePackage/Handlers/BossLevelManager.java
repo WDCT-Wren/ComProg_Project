@@ -28,7 +28,6 @@ public class BossLevelManager extends Component {
     private static boolean bossLevel = false;
     private boolean gameOverTriggered = false;
 
-
     public BossLevelManager(PlayerComponent player, TimerComponent timerComponent, AudioManager audioManager) {
         this.player = player;
         this.timerComponent = timerComponent;
@@ -91,11 +90,11 @@ public class BossLevelManager extends Component {
         }
     }
 
-
     // if gameOverTriggered return so it only updates one time
     // if live 0 or timer ended, trigger game over
     private void checkGameOver() {
-        if (gameOverTriggered) return;
+        if (gameOverTriggered)
+            return;
 
         if (PlayerComponent.getLives() == 0 || timerComponent.timeEnded()) {
             gameOverTriggered = true;
@@ -103,7 +102,6 @@ public class BossLevelManager extends Component {
             FXGL.getGameTimer().runOnceAfter(() -> {
                 audioManager.playGameOver();
                 player.die();
-                FXGL.getGameController().pauseEngine();
             }, Duration.seconds(3));
         }
     }
@@ -116,14 +114,14 @@ public class BossLevelManager extends Component {
 
         // kill mini bosses on boss spawn
         FXGL.getGameWorld().getEntitiesByType(BossType.MINI_BOSS)
-            .forEach(Entity::removeFromWorld);
+                .forEach(Entity::removeFromWorld);
     }
 
     public boolean inBossLevel() {
         return PlayerComponent.getScore() >= SCORE_TO_SPAWN;
     }
 
-    public static boolean getBossLevel(){
+    public static boolean getBossLevel() {
         return bossLevel;
     }
 
@@ -135,5 +133,9 @@ public class BossLevelManager extends Component {
         return SCORE_TO_SPAWN;
     }
 
-}
+    // reset static fields coz FXGL doesnt reset those
+    public static void reset() {
+        bossLevel = false;
+    }
 
+}

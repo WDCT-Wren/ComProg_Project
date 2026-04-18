@@ -45,4 +45,10 @@ public class AudioManager {
         FXGL.play("fah.wav");
     }
 
+    // stop loop
+    public static void stopAll() {
+        FXGL.getAudioPlayer().stopAllMusic();
+        FXGL.getAudioPlayer().stopAllSounds();
+    }
+
 }

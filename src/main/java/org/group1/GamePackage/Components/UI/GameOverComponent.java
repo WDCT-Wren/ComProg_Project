@@ -17,13 +17,14 @@ public class GameOverComponent extends Component {
     // TODO: GUI OR LOGIC OF WHATEVER HAPPENS HERE
 
     public void gameOver() {
-        GameMechanics.pauseGame();
+        GameMechanics.getToMenuScreen();
+        AudioManager.stopAll();
     }
 
     public static void winGame() {
         AudioManager.bossDie();
         FXGL.runOnce(() -> {
-                GameMechanics.pauseGame();
+                GameMechanics.getToMenuScreen();
         },Duration.seconds(3));
     }
 

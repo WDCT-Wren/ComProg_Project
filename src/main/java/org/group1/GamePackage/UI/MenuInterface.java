@@ -1,5 +1,7 @@
 package org.group1.GamePackage.UI;
 
+import org.group1.GamePackage.Handlers.GameMechanics;
+
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
@@ -20,7 +22,7 @@ public class MenuInterface extends FXGLMenu {
         pressPlay.setPrefHeight(60);
 
         pressPlay.setOnAction(click ->
-                fireNewGame()
+                GameMechanics.restartGame()
                 );
 
         VBox menuLayout = new VBox(20, pressPlay);

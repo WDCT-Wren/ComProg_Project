@@ -36,6 +36,7 @@ public class CollisionManager {
         miniBossVSbullet();
         miniBossVSfire();
         miniBossVSice();
+        miniBossVSplayer();
         playerVSpowerUp();
         bossVSbullet();
         bossVSice();
@@ -167,8 +168,22 @@ public class CollisionManager {
         });
     }
 
+    public void miniBossVSplayer () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    EntityType.PLAYER,
+                    BossType.MINI_BOSS
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity player, Entity miniBoss){
+                        var playerComponent = player.getComponent(PlayerComponent.class);
+                        audioManager.playDeathSound();
+                        playerComponent.takeDamage();
+                    }
+            
+        });
 
-
+    }
 
     public void bossVSbullet () {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(

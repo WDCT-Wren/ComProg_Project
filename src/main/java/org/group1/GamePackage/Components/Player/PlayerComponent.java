@@ -298,4 +298,16 @@ public class PlayerComponent extends Component {
             InputManager.replaceHud("default_hud");
         }
     }
+
+
+    // reset static fields coz FXGL doesnt reset those
+    public static void reset() {
+        lives = 9;
+        score = 0;
+        boostLevel = 0;
+        fireBulletsCount = 0;
+        iceBulletsCount = 0;
+        hasFireBullets = false;
+        hasIceBullets = false;
+    }
 }

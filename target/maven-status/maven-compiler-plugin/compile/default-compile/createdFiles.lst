@@ -8,6 +8,7 @@ org/group1/GamePackage/Components/Projectiles/BulletAnimationComponent$1.class
 org/group1/GamePackage/Components/Enemy/EnemyAnimationComponent.class
 org/group1/GamePackage/Factory/BackgroundFactory$EntityType.class
 org/group1/GamePackage/Application.class
+org/group1/GamePackage/Handlers/CollisionManager$14.class
 org/group1/GamePackage/Components/Projectiles/BulletAnimationComponent.class
 org/group1/GamePackage/Components/Enemy/BossComponent$State.class
 org/group1/GamePackage/Handlers/CollisionManager$9.class

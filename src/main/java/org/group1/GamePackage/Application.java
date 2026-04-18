@@ -88,6 +88,7 @@ public class Application extends GameApplication {
 
     @Override
     protected void initPhysics() {
+        AudioManager.stopAll();
         audioManager.playBackgroundMusic();
 
         CollisionManager collisionManager = new CollisionManager();
@@ -146,6 +147,9 @@ public class Application extends GameApplication {
 
     @Override
     protected void initGame() {
+        // reset before starting a new game
+        PlayerComponent.reset();
+        BossLevelManager.reset();
         initFactory();
 
         // Initalize Level Handler

@@ -71,6 +71,14 @@ public class GameMechanics {
         FXGL.getGameController().resumeEngine();
     }
 
+    public static void getToMenuScreen() {
+        FXGL.getGameController().gotoMainMenu();
+    }
+
+    public static void restartGame() {
+        FXGL.getGameController().startNewGame();
+    }
+
     public static void setBULLET_COOLDOWN(long BULLET_COOLDOWN) {
         GameMechanics.BULLET_COOLDOWN = BULLET_COOLDOWN;
     }
