@@ -170,8 +170,9 @@ public class PlayerComponent extends Component {
         }
     }
 
-    public void addScore() {
-        score++;
+    // added a parameter for multiple points 
+    public static void addScore(int value) {
+        score += value;
     }
 
     /**

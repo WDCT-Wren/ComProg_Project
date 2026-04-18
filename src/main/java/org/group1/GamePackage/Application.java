@@ -52,6 +52,8 @@ public class Application extends GameApplication {
     // Variables
     private static final double NORMAL_ENEMY_SPAWN_RATE = 0.7; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
+    private static final double MINI_BOSS_SPAWN_DISTANCE = 1000;
+    private static final double MINI_BOSS_SPAWN_RATE = 10;
 
     //Enemy presence manager
     private boolean enemyPresent = false;
@@ -132,7 +134,15 @@ public class Application extends GameApplication {
 
             enemyPresent = true;
         }, Duration.seconds(NORMAL_ENEMY_SPAWN_RATE));
-    }
+
+        TimerAction miniBoss = FXGL.getGameTimer().runAtInterval(() -> {
+            if (BossLevelManager.getBossLevel()) return;
+            double enemyBounds = (double) (FXGL.getAppHeight() * 2) / 3;
+            double y = FXGLMath.random(0, enemyBounds);
+            FXGL.spawn("mini_boss", MINI_BOSS_SPAWN_DISTANCE, y);
+        }, Duration.seconds(MINI_BOSS_SPAWN_RATE)); 
+
+}
 
     @Override
     protected void initGame() {

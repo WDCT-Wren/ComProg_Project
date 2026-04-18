@@ -21,8 +21,8 @@ import com.almasb.fxgl.physics.CollisionHandler;
 public class CollisionManager {
     // RNG for chance extra life drops
     private static final Random random = new Random();
-    private static double POWER_UP_DROP_RATE = 1;
-    private static double BOSS_POWER_UP_DROP_RATE = 0.05;
+    private static double POWER_UP_DROP_RATE = 0.50;
+    private static double BOSS_POWER_UP_DROP_RATE = 0.10;
     private int randomIndex;
 
     AudioManager audioManager = new AudioManager();
@@ -33,6 +33,9 @@ public class CollisionManager {
         enemyVSfire();
         enemyVSice();
         enemyVSplayer();
+        miniBossVSbullet();
+        miniBossVSfire();
+        miniBossVSice();
         playerVSpowerUp();
         bossVSbullet();
         bossVSice();
@@ -50,11 +53,8 @@ public class CollisionManager {
                 @Override
                 protected void onCollisionBegin(Entity bullet, Entity enemy){
                     bullet.removeFromWorld();
-                    var enemyComponent = FXGL.getGameWorld()
-                        .getSingleton(EntityType.PLAYER)
-                        .getComponent(PlayerComponent.class);
 
-                    enemyComponent.addScore();
+                    PlayerComponent.addScore(1);
                     dropPowerUp(enemy);
 
                     // your existing explosion code here
@@ -73,11 +73,14 @@ public class CollisionManager {
             {
                 @Override
                 protected void onCollisionBegin(Entity bullet, Entity enemy){
-                    var enemyComponent = FXGL.getGameWorld()
+
+                    // why didn't we just make this method static maem
+                    /* var enemyComponent = FXGL.getGameWorld()
                         .getSingleton(EntityType.PLAYER)
                         .getComponent(PlayerComponent.class);
+                    */
 
-                    enemyComponent.addScore();
+                    PlayerComponent.addScore(1);
                     dropPowerUp(enemy);
 
                     // your existing explosion code here
@@ -95,11 +98,8 @@ public class CollisionManager {
             {
                 @Override
                 protected void onCollisionBegin(Entity bullet, Entity enemy){
-                    var enemyComponent = FXGL.getGameWorld()
-                        .getSingleton(EntityType.PLAYER)
-                        .getComponent(PlayerComponent.class);
 
-                    enemyComponent.addScore();
+                    PlayerComponent.addScore(1);
                     dropPowerUp(enemy);
 
                     // your existing explosion code here
@@ -108,6 +108,67 @@ public class CollisionManager {
                 }
             });
     }
+
+    public void miniBossVSbullet () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    BossType.MINI_BOSS,
+                    EntityType.BULLET
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
+                        bullet.removeFromWorld();
+
+                        miniBoss.getComponent(BossComponent.class).takeDamage(5);
+
+                        dropPowerUp(miniBoss);
+                    }
+
+                });
+
+    }
+
+    public void miniBossVSice () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    BossType.MINI_BOSS,
+                    EntityType.ICE_BULLET
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
+                        bullet.removeFromWorld();
+
+                        // get boss from the gameWorld and call it's method
+                        miniBoss.getComponent(BossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
+                        miniBoss.getComponent(BossComponent.class).slowEffect();
+
+                        dropPowerUp(miniBoss);
+                    }
+                });
+    }
+
+
+    public void miniBossVSfire () {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                    BossType.MINI_BOSS,
+                    EntityType.FIRE_BULLET
+                    ) 
+                {
+                    @Override
+                    protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
+                        bullet.removeFromWorld();
+
+                        // get boss from the gameWorld and call it's method
+                        miniBoss.getComponent(BossComponent.class).takeDamage(5);
+                        miniBoss.getComponent(BossComponent.class).burnEffect();
+
+                        dropPowerUp(miniBoss);
+                    }
+        });
+    }
+
+
+
 
     public void bossVSbullet () {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(

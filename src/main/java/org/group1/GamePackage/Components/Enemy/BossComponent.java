@@ -1,7 +1,9 @@
 package org.group1.GamePackage.Components.Enemy;
 
+import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
 import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
+import org.group1.GamePackage.Factory.BossFactory.BossType;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 
@@ -23,7 +25,10 @@ public class BossComponent extends Component {
         RECOVERING
     }
 
-    private static int BOSS_HEALTH = 200;
+    private static int BOSS_HEALTH = 1000;
+    private static int MINI_BOSS_HEALTH = 100;
+    private boolean miniBoss = false;
+    private int CURRENT_HEALTH;
 
     private State state = State.IDLE;
 
@@ -48,7 +53,7 @@ public class BossComponent extends Component {
      * CHARGE_CHANCE: chance to attack determined by randomBoolean
      * CHARGE_TARGET_X CHARGE_TARGET_Y: player position
      */
-    private static double CHARGE_SPEED = 1200;
+    private double CHARGE_SPEED = 1200;
     private static final double RECOVER_SPEED = 800;
     private static final double CHARGE_CHANCE = 0.005;
     private double CHARGE_TARGET_X;
@@ -70,6 +75,15 @@ public class BossComponent extends Component {
         // When boss spawns, get the position and initialize it
         INITIAL_BOSS_Y = entity.getY();
         INITIAL_BOSS_X = entity.getX();
+
+        miniBoss = entity.getType() == BossType.MINI_BOSS;
+        CURRENT_HEALTH = miniBoss ? MINI_BOSS_HEALTH : BOSS_HEALTH;
+
+        if (miniBoss) {
+            SPEED_Y = 250;
+            CHARGE_SPEED = 1500;
+            MOVE_RANGE = 100;
+        }
 
         // Picks a random Y movement direction
         DIRECTION = FXGLMath.randomBoolean() ? 1 : -1;
@@ -222,17 +236,28 @@ public class BossComponent extends Component {
     }
 
     public void takeDamage(int damage) {
-        BOSS_HEALTH-=damage;
-        var healthBar = BossLevelManager.getHealthBar();
-        healthBar.currentValueProperty().setValue(BOSS_HEALTH);
+        // guarding runtime errors lel 
+        if (entity == null || !entity.isActive()) return;
 
-        if (dead()) {
-            FXGL.removeUINode(healthBar);
+        CURRENT_HEALTH -= damage;
+
+        if (!miniBoss) {
+            var healthBar = BossLevelManager.getHealthBar();
+            healthBar.currentValueProperty().setValue(CURRENT_HEALTH);
+            if (dead()) {
+                FXGL.removeUINode(healthBar);
+            }
+        } else {
+            // Mini boss just dies silently with no health bar
+            if (dead()) {
+                PlayerComponent.addScore(10);
+                entity.removeFromWorld();
+            }
         }
     }
 
     public boolean dead() {
-        return BOSS_HEALTH <= 0;
+        return CURRENT_HEALTH <= 0;
     }
 
     public void slowEffect() {
@@ -240,13 +265,15 @@ public class BossComponent extends Component {
         CHARGE_SPEED =IcePowerUpComponent.getDASH_SLOW();
 
         FXGL.getGameTimer().runOnceAfter(() -> {
-            SPEED_Y = 200;
-            CHARGE_SPEED = 1200;
+        SPEED_Y = miniBoss ? 250 : 300;
+        CHARGE_SPEED = miniBoss ? 1500 : 1200;
         }, Duration.seconds(SLOW_DURATION));
     }
 
     public void burnEffect() {
         var burnTask = FXGL.getGameTimer().runAtInterval(() -> {
+            // if theres no entity dont do this
+            if (entity == null || !entity.isActive()) return;
             takeDamage(FirePowerUpComponent.getFIRE_DAMAGE());
         }, Duration.seconds(BURN_RATE));
 

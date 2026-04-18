@@ -1,5 +1,6 @@
 org/group1/GamePackage/Components/PowerUps/IcePowerUpComponent.class
 org/group1/GamePackage/Components/UI/SwitchBulletAnimationComponent.class
+org/group1/GamePackage/Handlers/CollisionManager$11.class
 org/group1/GamePackage/Components/UI/GameOverComponent.class
 org/group1/GamePackage/Handlers/CollisionManager$6.class
 org/group1/GamePackage/Handlers/InputManager.class
@@ -19,6 +20,7 @@ org/group1/GamePackage/Handlers/CollisionManager$10.class
 org/group1/GamePackage/Factory/BossFactory$BossType.class
 org/group1/GamePackage/Handlers/CollisionManager$2.class
 org/group1/GamePackage/Handlers/CollisionManager$8.class
+org/group1/GamePackage/Handlers/CollisionManager$13.class
 org/group1/GamePackage/Components/Enemy/BossComponent.class
 org/group1/GamePackage/Handlers/CollisionManager.class
 org/group1/GamePackage/Music/AudioManager.class
@@ -35,6 +37,7 @@ org/group1/GamePackage/Handlers/InputManager$7.class
 org/group1/GamePackage/UI/HUDInterface.class
 org/group1/GamePackage/Factory/BackgroundFactory.class
 org/group1/GamePackage/Factory/InterfaceFactory$EntityType.class
+org/group1/GamePackage/Handlers/CollisionManager$12.class
 org/group1/GamePackage/Factory/BossFactory.class
 org/group1/GamePackage/Factory/EntityFactory.class
 org/group1/GamePackage/Handlers/InputManager$5.class

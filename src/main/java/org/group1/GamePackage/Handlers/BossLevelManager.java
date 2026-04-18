@@ -113,6 +113,10 @@ public class BossLevelManager extends Component {
         int X_LOCATION = 700;
         int Y_LOCATION = 160;
         FXGL.spawn("boss", X_LOCATION, Y_LOCATION);
+
+        // kill mini bosses on boss spawn
+        FXGL.getGameWorld().getEntitiesByType(BossType.MINI_BOSS)
+            .forEach(Entity::removeFromWorld);
     }
 
     public boolean inBossLevel() {
