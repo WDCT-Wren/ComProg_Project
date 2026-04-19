@@ -6,6 +6,7 @@ import org.group1.GamePackage.Application;
 import org.group1.GamePackage.Components.Enemy.BossComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyAnimationComponent;
 import org.group1.GamePackage.Components.Enemy.EnemyDropsAnimationComponent;
+import org.group1.GamePackage.Components.Enemy.MiniBossComponent;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.PowerUps.BoostUpComponent;
 import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
@@ -42,7 +43,8 @@ public class CollisionManager {
         bossVSice();
         bossVSfire();
         playerVSboss();
-        playerVsLaser();
+        playerVSLaser();
+        playerVSMiniLaser();
     }
 
     public void enemyVSbullet () {
@@ -120,7 +122,7 @@ public class CollisionManager {
                     protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
                         bullet.removeFromWorld();
 
-                        miniBoss.getComponent(BossComponent.class).takeDamage(5);
+                        miniBoss.getComponent(MiniBossComponent.class).takeDamage(5);
 
                         dropPowerUp(miniBoss);
                     }
@@ -140,8 +142,8 @@ public class CollisionManager {
                         bullet.removeFromWorld();
 
                         // get boss from the gameWorld and call it's method
-                        miniBoss.getComponent(BossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
-                        miniBoss.getComponent(BossComponent.class).slowEffect();
+                        miniBoss.getComponent(MiniBossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
+                        miniBoss.getComponent(MiniBossComponent.class).slowEffect();
 
                         dropPowerUp(miniBoss);
                     }
@@ -160,8 +162,8 @@ public class CollisionManager {
                         bullet.removeFromWorld();
 
                         // get boss from the gameWorld and call it's method
-                        miniBoss.getComponent(BossComponent.class).takeDamage(5);
-                        miniBoss.getComponent(BossComponent.class).burnEffect();
+                        miniBoss.getComponent(MiniBossComponent.class).takeDamage(5);
+                        miniBoss.getComponent(MiniBossComponent.class).burnEffect();
 
                         dropPowerUp(miniBoss);
                     }
@@ -312,7 +314,7 @@ public class CollisionManager {
         });
     }
 
-    public void playerVsLaser() {
+    public void playerVSLaser() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 BossType.BOSS_LASER,
                 EntityType.PLAYER)
@@ -332,6 +334,29 @@ public class CollisionManager {
             }
         });
     }
+
+    public void playerVSMiniLaser() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                BossType.MINI_BOSS_LASER,
+                EntityType.PLAYER)
+        {
+            @Override
+            protected void onCollisionBegin(Entity laser, Entity player) {
+                var playerComponent = player.getComponent(PlayerComponent.class);
+                if (!playerComponent.isInvincible()) {
+                    audioManager.playDeathSound();
+                    playerComponent.takeDamage();;
+                }
+
+                if (PlayerComponent.getLives() == 0) {
+                    // IDK ANIMATE IT IDK
+                    player.getViewComponent().setVisible(false);
+                }
+            }
+        });
+    }
+
+
 
     private void extraLives(Entity powerUp, PlayerComponent playerComponent) {
         audioManager.playHeartGain();

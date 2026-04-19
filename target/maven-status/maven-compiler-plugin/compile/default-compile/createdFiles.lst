@@ -45,6 +45,7 @@ org/group1/GamePackage/Factory/EntityFactory.class
 org/group1/GamePackage/Handlers/InputManager$5.class
 org/group1/GamePackage/Handlers/CollisionManager$3.class
 org/group1/GamePackage/Components/UI/TimerComponent.class
+org/group1/GamePackage/Handlers/CollisionManager$15.class
 org/group1/GamePackage/Components/UI/SwitchBulletAnimationComponent$1.class
 org/group1/GamePackage/Components/Enemy/EnemyDropsAnimationComponent.class
 org/group1/GamePackage/Handlers/CollisionManager$7.class

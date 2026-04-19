@@ -18,11 +18,10 @@ public class MiniBossComponent extends BossComponent {
     private static final double MINI_BOSS_BURN_RATE = 1;
     private static final double MINI_BOSS_BURN_DURATION = 3;
 
-    private int CURRENT_HEALTH = MINI_BOSS_HEALTH; 
-
     @Override 
     public void onAdded() {
         super.onAdded();
+        CURRENT_HEALTH = MINI_BOSS_HEALTH;
         SPEED_Y = MINI_BOSS_SPEED;
         CHARGE_SPEED = MINI_BOSS_CHARGE_SPEED;
         MOVE_RANGE = MINI_BOSS_MOVE_RANGE;
@@ -30,6 +29,7 @@ public class MiniBossComponent extends BossComponent {
 
     @Override
     public void takeDamage(int damage) {
+        System.out.println("BOSS takeDamage called, damage=" + damage + " health=" + CURRENT_HEALTH);
         if (entity == null || !entity.isActive()) return;
 
         CURRENT_HEALTH -= damage;
@@ -65,6 +65,11 @@ public class MiniBossComponent extends BossComponent {
         }, Duration.seconds(MINI_BOSS_BURN_RATE));
 
         FXGL.getGameTimer().runOnceAfter(burnTask::expire, Duration.seconds(MINI_BOSS_BURN_DURATION));
+    }
+
+    @Override 
+    protected String getLaser() {
+        return "mini_lasers";
     }
 
 }

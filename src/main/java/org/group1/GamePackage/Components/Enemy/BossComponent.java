@@ -4,6 +4,7 @@ import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
 import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
+import org.group1.GamePackage.Handlers.BossLevelManager;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -24,7 +25,7 @@ public class BossComponent extends Component {
     }
 
     private static int BOSS_HEALTH = 1000;
-    private int CURRENT_HEALTH;
+    protected int CURRENT_HEALTH;
 
     private State state = State.IDLE;
 
@@ -158,7 +159,7 @@ public class BossComponent extends Component {
         TimerAction shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
             double laserBounds = (double) (FXGL.getAppHeight() * 2) / 3;
             double y = CHARGE_TARGET_Y;
-            FXGL.spawn("lasers", INITIAL_BOSS_X, y);
+            FXGL.spawn(getLaser(), INITIAL_BOSS_X, y);
         }, Duration.seconds(BOSS_SHOOTING_RATE));
 
         FXGL.getGameTimer().runOnceAfter(() -> {
@@ -233,6 +234,11 @@ public class BossComponent extends Component {
 
         CURRENT_HEALTH -= damage;
 
+        // UPDATES HEALTH BAR
+        var healthBar = BossLevelManager.getHealthBar();
+        if (healthBar != null)
+            healthBar.currentValueProperty().setValue(CURRENT_HEALTH);
+
         if (dead()) {
             PlayerComponent.addScore(10);
             entity.removeFromWorld();
@@ -279,4 +285,7 @@ public class BossComponent extends Component {
         return BOSS_HEALTH;
     }
 
+    protected String getLaser() {
+        return "lasers";
+    } 
 }

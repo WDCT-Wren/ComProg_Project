@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 import org.group1.GamePackage.Components.Enemy.BossComponent;
+import org.group1.GamePackage.Components.Enemy.MiniBossComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -17,8 +18,9 @@ public class BossFactory implements EntityFactory {
 
     public enum BossType {
         BOSS,
+        BOSS_LASER,
         MINI_BOSS,
-        BOSS_LASER
+        MINI_BOSS_LASER
     }
 
     private int BOSS_HITBOX = 400;
@@ -42,7 +44,7 @@ public class BossFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
             .type(BossType.MINI_BOSS)
             .viewWithBBox(FXGL.texture("boss_placeholder.png", MINI_BOSS_HITBOX, MINI_BOSS_HITBOX))
-            .with(new BossComponent())
+            .with(new MiniBossComponent())
             .with(new CollidableComponent(true))
             .build();
     }
@@ -54,6 +56,16 @@ public class BossFactory implements EntityFactory {
                 .type(BossType.BOSS_LASER)
                 .viewWithBBox(new Rectangle(70, 40))
                 .with(new ProjectileComponent(new Point2D(-1,0), 500))
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("mini_lasers")
+    public Entity newMiniLasers(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(BossType.MINI_BOSS_LASER)
+                .viewWithBBox(new Rectangle(40, 20))
+                .with(new ProjectileComponent(new Point2D(-1, 0), 600))
                 .with(new CollidableComponent(true))
                 .build();
     }
