@@ -9,6 +9,7 @@
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/PowerUps/FirePowerUpComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/PowerUps/IcePowerUpComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/Projectiles/BulletAnimationComponent.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/Projectiles/LaserAnimationComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/UI/GameOverComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/UI/OverlayAnimationComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/UI/SwitchBulletAnimationComponent.java

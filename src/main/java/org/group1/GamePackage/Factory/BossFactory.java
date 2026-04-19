@@ -5,6 +5,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 import org.group1.GamePackage.Components.Enemy.BossComponent;
 import org.group1.GamePackage.Components.Enemy.MiniBossComponent;
+import org.group1.GamePackage.Components.Projectiles.LaserAnimationComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -12,6 +13,8 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
 
 
 public class BossFactory implements EntityFactory {
@@ -54,7 +57,8 @@ public class BossFactory implements EntityFactory {
     public Entity newLasers(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(BossType.BOSS_LASER)
-                .viewWithBBox(new Rectangle(70, 40))
+                .bbox(new HitBox(BoundingShape.box(70, 40)))
+                .with(new LaserAnimationComponent()) 
                 .with(new ProjectileComponent(new Point2D(-1,0), 500))
                 .with(new CollidableComponent(true))
                 .build();
@@ -64,7 +68,8 @@ public class BossFactory implements EntityFactory {
     public Entity newMiniLasers(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(BossType.MINI_BOSS_LASER)
-                .viewWithBBox(new Rectangle(40, 20))
+                .bbox(new HitBox(BoundingShape.box(40, 20)))
+                .with(new LaserAnimationComponent()) 
                 .with(new ProjectileComponent(new Point2D(-1, 0), 600))
                 .with(new CollidableComponent(true))
                 .build();

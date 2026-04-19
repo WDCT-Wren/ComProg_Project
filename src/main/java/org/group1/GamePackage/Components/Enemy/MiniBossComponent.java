@@ -29,7 +29,6 @@ public class MiniBossComponent extends BossComponent {
 
     @Override
     public void takeDamage(int damage) {
-        System.out.println("BOSS takeDamage called, damage=" + damage + " health=" + CURRENT_HEALTH);
         if (entity == null || !entity.isActive()) return;
 
         CURRENT_HEALTH -= damage;

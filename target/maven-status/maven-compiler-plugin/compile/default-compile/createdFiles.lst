@@ -39,6 +39,7 @@ org/group1/GamePackage/Handlers/InputManager$7.class
 org/group1/GamePackage/UI/HUDInterface.class
 org/group1/GamePackage/Factory/BackgroundFactory.class
 org/group1/GamePackage/Factory/InterfaceFactory$EntityType.class
+org/group1/GamePackage/Components/Projectiles/LaserAnimationComponent.class
 org/group1/GamePackage/Handlers/CollisionManager$12.class
 org/group1/GamePackage/Factory/BossFactory.class
 org/group1/GamePackage/Factory/EntityFactory.class
