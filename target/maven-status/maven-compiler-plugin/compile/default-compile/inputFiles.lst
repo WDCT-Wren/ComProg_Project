@@ -3,6 +3,7 @@
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/Enemy/BossComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/Enemy/EnemyAnimationComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/Enemy/EnemyDropsAnimationComponent.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/Enemy/MiniBossComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/Player/PlayerComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/PowerUps/BoostUpComponent.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Components/PowerUps/FirePowerUpComponent.java

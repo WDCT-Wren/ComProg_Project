@@ -3,9 +3,7 @@ package org.group1.GamePackage.Components.Enemy;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
 import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
-import org.group1.GamePackage.Factory.BossFactory.BossType;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
-import org.group1.GamePackage.Handlers.BossLevelManager;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -26,8 +24,6 @@ public class BossComponent extends Component {
     }
 
     private static int BOSS_HEALTH = 1000;
-    private static int MINI_BOSS_HEALTH = 100;
-    private boolean miniBoss = false;
     private int CURRENT_HEALTH;
 
     private State state = State.IDLE;
@@ -41,10 +37,10 @@ public class BossComponent extends Component {
      * Initial DIRECTION is 1 (positive Y movement)
      * RANDOM_DIRECTION_CHANCE: chance to change determined by randomBoolean
      */
-    private double SPEED_Y = 300;
-    private double MOVE_RANGE = 150;
-    private double DIRECTION = 1;
-    private double RANDOM_DIRECTION_CHANCE = 0.01;
+    protected double SPEED_Y = 300;
+    protected double MOVE_RANGE = 150;
+    protected double DIRECTION = 1;
+    protected double RANDOM_DIRECTION_CHANCE = 0.01;
 
     /*
      * Charge Attack Variables
@@ -53,13 +49,16 @@ public class BossComponent extends Component {
      * CHARGE_CHANCE: chance to attack determined by randomBoolean
      * CHARGE_TARGET_X CHARGE_TARGET_Y: player position
      */
-    private double CHARGE_SPEED = 1200;
+    protected double CHARGE_SPEED = 1200;
+
     private static final double RECOVER_SPEED = 800;
     private static final double CHARGE_CHANCE = 0.005;
     private double CHARGE_TARGET_X;
     private double CHARGE_TARGET_Y;
-    private final double SLOW_DURATION = 8;
-    private final double BURN_RATE = 1;
+    protected final double SLOW_DURATION = 8;
+    protected final int SLOW_SPEED_Y = 300;
+    protected final int SLOW_CHARGE_SPEED = 1200;
+    protected final double BURN_RATE = 1;
     private double BURN_DURATION = 5;
 
     private static final double FLASH_DURATION = 0.3; // seconds
@@ -76,14 +75,7 @@ public class BossComponent extends Component {
         INITIAL_BOSS_Y = entity.getY();
         INITIAL_BOSS_X = entity.getX();
 
-        miniBoss = entity.getType() == BossType.MINI_BOSS;
-        CURRENT_HEALTH = miniBoss ? MINI_BOSS_HEALTH : BOSS_HEALTH;
-
-        if (miniBoss) {
-            SPEED_Y = 250;
-            CHARGE_SPEED = 1500;
-            MOVE_RANGE = 100;
-        }
+        CURRENT_HEALTH = BOSS_HEALTH;
 
         // Picks a random Y movement direction
         DIRECTION = FXGLMath.randomBoolean() ? 1 : -1;
@@ -241,18 +233,9 @@ public class BossComponent extends Component {
 
         CURRENT_HEALTH -= damage;
 
-        if (!miniBoss) {
-            var healthBar = BossLevelManager.getHealthBar();
-            healthBar.currentValueProperty().setValue(CURRENT_HEALTH);
-            if (dead()) {
-                FXGL.removeUINode(healthBar);
-            }
-        } else {
-            // Mini boss just dies silently with no health bar
-            if (dead()) {
-                PlayerComponent.addScore(10);
-                entity.removeFromWorld();
-            }
+        if (dead()) {
+            PlayerComponent.addScore(10);
+            entity.removeFromWorld();
         }
     }
 
@@ -265,8 +248,8 @@ public class BossComponent extends Component {
         CHARGE_SPEED =IcePowerUpComponent.getDASH_SLOW();
 
         FXGL.getGameTimer().runOnceAfter(() -> {
-        SPEED_Y = miniBoss ? 250 : 300;
-        CHARGE_SPEED = miniBoss ? 1500 : 1200;
+        SPEED_Y = SLOW_SPEED_Y;
+        CHARGE_SPEED = SLOW_CHARGE_SPEED;
         }, Duration.seconds(SLOW_DURATION));
     }
 
@@ -295,4 +278,5 @@ public class BossComponent extends Component {
     public static int getBOSS_HEALTH() {
         return BOSS_HEALTH;
     }
+
 }
