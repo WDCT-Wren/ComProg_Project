@@ -11,36 +11,54 @@ This is a sample "alpha" test for Group 1's 2d <b>Space Impact</b> style arcade 
 | `W A S D`   | Move |
 | `Space Bar` | Shoot |
 | `ESC`       | Pause |
+| `Q`         | Fire Bullet|
+| `E`         | Ice Bullet |
 
 ### Project Structure
 ```
-src/
-├── main/
-│   └── java/
-│       ├── org.group1.GamePackage/
-│       │   ├── Components/         # Entity components (behavior, animation, timers)
-│       │   │   ├── AnimationComponent
-│       │   │   ├── BulletAnimationComponent
-│       │   │   ├── CupHeadComponent
-│       │   │   ├── EnemyAnimationComponent
-│       │   │   ├── EnemyDropsAnimationComponent
-│       │   │   └── TimerComponent
-│       │   ├── Factory/            # Entity and scene factories
-│       │   │   ├── BackgroundFactory
-│       │   │   ├── EntityFactory
-│       │   │   └── MainSceneFactory
-│       │   ├── Handlers/           # Game logic and input management
-│       │   │   ├── CollisionManager
-│       │   │   ├── GameMechanics
-│       │   │   ├── InputManager
-│       │   │   └── LevelManager
-│       │   ├── Music/              # Audio management
-│       │   │   └── AudioManager
-│       │   ├── UI/                 # HUD and interface screens
-│       │   │   ├── HUDInterface
-│       │   │   ├── LoadingInterface
-│       │   │   └── MenuInterface
-│       │   └── Application         # Main entry point
+├── src/
+│   └── main/
+│       ├──java/
+│       │   ├── org.group1.GamePackage/
+│       │   │    ├── Application                   # Main entry point
+│       │   │    ├── Components/                   # Entity components (behavior, animation, timers)
+│       │   │    │   ├── Enemy/
+│       │   │    │   │   ├── BossComponent
+│       │   │    │   │   ├── EnemyAnimationComponent
+│       │   │    │   │   ├── EnemyDropsAnimationComponent
+│       │   │    │   │   └── MiniBossComponent
+│       │   │    │   ├── Player/
+│       │   │    │   │   └── PlayerComponent
+│       │   │    │   ├── PowerUps/
+│       │   │    │   │   ├── BoostUpComponent
+│       │   │    │   │   ├── FirePowerUpComponent
+│       │   │    │   │   └── IcePowerUpComponent
+│       │   │    │   ├── Projectiles/
+│       │   │    │   │   ├── BulletAnimationComponent
+│       │   │    │   │   └── LaserAnimationComponent
+│       │   │    │   └── UI/
+│       │   │    │       ├── GameOverComponent
+│       │   │    │       ├── OverlayAnimationComponent
+│       │   │    │       ├── SwitchBulletAnimationComponent
+│       │   │    │       └── TimerComponent
+│       │   │    ├── Factory/                        # Entity and scene factories
+│       │   │    │   ├── BackgroundFactory
+│       │   │    │   ├── BossFactory
+│       │   │    │   ├── EntityFactory
+│       │   │    │   ├── InterfaceFactory
+│       │   │    │   └── MainSceneFactory
+│       │   │    ├── Handlers/                       # Game logic and input management
+│       │   │    │   ├── BossLevelManager
+│       │   │    │   ├── CollisionManager
+│       │   │    │   ├── GameMechanics
+│       │   │    │   ├── InputManager
+│       │   │    │   └── LevelManager
+│       │   │    ├── Music/                          # Audio management
+│       │   │    │   └── AudioManager
+│       │   │    └── UI/                             # HUD and interface screens
+│       │   │        ├── HUDInterface
+│       │   │        ├── LoadingInterface
+│       │   │        └── MenuInterface
 │       └── Resources               # Project Resources
 │           └── Assets/             
 │               ├── music           # Game Music
