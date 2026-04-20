@@ -17,6 +17,7 @@ public class MiniBossComponent extends BossComponent {
 
     private static final double MINI_BOSS_BURN_RATE = 1;
     private static final double MINI_BOSS_BURN_DURATION = 3;
+    private static final double MINI_BOSS_SHOOTING_RATE = 0.5;
 
     @Override 
     public void onAdded() {
@@ -49,10 +50,20 @@ public class MiniBossComponent extends BossComponent {
     public void slowEffect() {
         SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();
         CHARGE_SPEED = IcePowerUpComponent.getDASH_SLOW();
+        BOSS_SHOOTING_RATE = IcePowerUpComponent.getSLOW_SHOOTING_EFFECT();
+
+        // overrides this logic
+        if (shootInterval != null && !shootInterval.isExpired()) {
+            shootInterval.expire();
+            shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
+                FXGL.spawn(getLaser(), INITIAL_BOSS_X, CHARGE_TARGET_Y);
+            }, Duration.seconds(BOSS_SHOOTING_RATE));
+        }
 
         FXGL.getGameTimer().runOnceAfter(() -> {
             SPEED_Y = MINI_BOSS_SPEED;
             CHARGE_SPEED = MINI_BOSS_CHARGE_SPEED;
+            BOSS_SHOOTING_RATE = MINI_BOSS_SHOOTING_RATE;
         }, javafx.util.Duration.seconds(SLOW_DURATION));
     }
 

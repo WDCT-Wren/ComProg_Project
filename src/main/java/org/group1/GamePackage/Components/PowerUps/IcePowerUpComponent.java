@@ -6,6 +6,7 @@ public class IcePowerUpComponent extends Component{
     private static final int ICE_DAMAGE = 2;
     private static final int SLOW_EFFECT = 100;
     private static final int DASH_SLOW = 950;
+    private static final double SLOW_SHOOTING_EFFECT = 1.2;
 
     public static int getDASH_SLOW() {
         return DASH_SLOW;
@@ -17,6 +18,10 @@ public class IcePowerUpComponent extends Component{
 
     public static int getICE_DAMAGE() {
         return ICE_DAMAGE;
+    }
+
+    public static double getSLOW_SHOOTING_EFFECT() {
+        return SLOW_SHOOTING_EFFECT;
     }
     
 }

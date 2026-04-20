@@ -55,28 +55,8 @@ public class BossLevelManager extends Component {
     // Override onUpdate and call this class methods
     @Override
     public void onUpdate(double tpf) {
-        checkWinCondition();
         checkBossSpawn();
         checkGameOver();
-    }
-
-    private void checkWinCondition() {
-        if (gameOverTriggered) {
-            return;
-        }
-        try {
-            Entity boss = FXGL.getGameWorld().getSingleton(BossType.BOSS);
-
-            if (boss.getComponent(BossComponent.class).dead()) {
-
-                boss.removeFromWorld();
-
-                GameOverComponent.winGame();
-                gameOverTriggered = true;
-            }
-        } catch (Exception e) {
-        }
-
     }
 
     // check if inBossLevel and boss is not spawned,

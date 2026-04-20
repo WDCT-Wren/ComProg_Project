@@ -3,6 +3,7 @@ package org.group1.GamePackage.Components.Enemy;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
 import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
+import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.BossLevelManager;
 
@@ -28,10 +29,11 @@ public class BossComponent extends Component {
     protected int CURRENT_HEALTH;
 
     private State state = State.IDLE;
+    protected TimerAction shootInterval;
 
     // Initial position of BOSS set by FXGL.spawn
-    private double INITIAL_BOSS_Y;
-    private double INITIAL_BOSS_X;
+    protected double INITIAL_BOSS_Y;
+    protected double INITIAL_BOSS_X;
 
     /*
      * Y movement SPEED and MOVE_RANGE
@@ -54,8 +56,8 @@ public class BossComponent extends Component {
 
     private static final double RECOVER_SPEED = 800;
     private static final double CHARGE_CHANCE = 0.005;
-    private double CHARGE_TARGET_X;
-    private double CHARGE_TARGET_Y;
+    protected double CHARGE_TARGET_X;
+    protected double CHARGE_TARGET_Y;
     protected final double SLOW_DURATION = 8;
     protected final int SLOW_SPEED_Y = 300;
     protected final int SLOW_CHARGE_SPEED = 1200;
@@ -66,9 +68,12 @@ public class BossComponent extends Component {
     private static final double FLASH_INTERVAL = 0.1; // seconds between flashes
     private boolean visible = true;
 
-    private static final double BOSS_SHOOTING_RATE = 0.5;
     private static final double SHOOT_CHANCE = 0.003; // 0.3% per frame from IDLE
     private static final double SHOOT_DURATION = 4.0; // seconds spent in SHOOTING state
+
+    protected double BOSS_SHOOTING_RATE = 0.5;
+    protected double SLOW_SHOOTING_RATE = 0.5;
+
 
     @Override
     public void onAdded() {
@@ -156,7 +161,7 @@ public class BossComponent extends Component {
     private void enterShootingState() {
         state = State.SHOOTING;
 
-        TimerAction shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
+        shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
             double laserBounds = (double) (FXGL.getAppHeight() * 2) / 3;
             double y = CHARGE_TARGET_Y;
             FXGL.spawn(getLaser(), INITIAL_BOSS_X, y);
@@ -242,6 +247,9 @@ public class BossComponent extends Component {
         if (dead()) {
             PlayerComponent.addScore(10);
             entity.removeFromWorld();
+
+            // actually win the game, removed from bossLevelManager
+            GameOverComponent.winGame();
         }
     }
 
@@ -251,11 +259,21 @@ public class BossComponent extends Component {
 
     public void slowEffect() {
         SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();
-        CHARGE_SPEED =IcePowerUpComponent.getDASH_SLOW();
+        CHARGE_SPEED = IcePowerUpComponent.getDASH_SLOW();
+        BOSS_SHOOTING_RATE = IcePowerUpComponent.getSLOW_SHOOTING_EFFECT();
+
+        // Slow shootInterval when already enterShootingState logic
+        if (shootInterval != null && !shootInterval.isExpired()) {
+            shootInterval.expire();
+            shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
+                FXGL.spawn(getLaser(), INITIAL_BOSS_X, CHARGE_TARGET_Y);
+            }, Duration.seconds(BOSS_SHOOTING_RATE));
+        }
 
         FXGL.getGameTimer().runOnceAfter(() -> {
         SPEED_Y = SLOW_SPEED_Y;
         CHARGE_SPEED = SLOW_CHARGE_SPEED;
+        BOSS_SHOOTING_RATE = SLOW_SHOOTING_RATE;
         }, Duration.seconds(SLOW_DURATION));
     }
 
