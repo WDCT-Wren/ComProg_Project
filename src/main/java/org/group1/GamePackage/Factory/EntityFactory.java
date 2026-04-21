@@ -95,6 +95,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
             .with(new EnemyAnimationComponent())
             .with(new CollidableComponent(true))
             .with(new KeepOnScreenComponent())
+            .scale(0.7, 0.7)
             .build();
 
     }

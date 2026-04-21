@@ -65,3 +65,20 @@
 .close-button:hover {
     -fx-background-color: rgba(220, 50, 0, 0.80);
 }
+
+
+.pagination .pagination-control {
+    -fx-opacity: 0;
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+}
+
+.pagination .pagination-control .bullet-button {
+    -fx-opacity: 0;
+    -fx-padding: 0;
+}
+
+.pagination .page-information {
+    -fx-opacity: 0;
+}
+

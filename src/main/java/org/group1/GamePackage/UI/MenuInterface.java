@@ -9,12 +9,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javafx.scene.image.Image;
 import java.util.Objects;
 
 public class MenuInterface extends FXGLMenu {
@@ -122,40 +126,117 @@ public class MenuInterface extends FXGLMenu {
         stage.show();
     }
 
+
+
     // INSTRUCTIONS 
     private void openInstructionsWindow() {
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Instructions");
 
-        Label titleLabel = new Label("How to Play");
+        Label titleLabel = new Label();
         titleLabel.getStyleClass().add("popup-title");
 
-        Label contentLabel = new Label(
-            "Controls:\n" +
-            "•   W    — Move Up\n" +
-            "•   S    — Move Down\n" +
-            "•   A    — Move Left\n" +
-            "•   D    — Move Right\n" +
-            "• SPACE  — Shoot \n" +
-            "•   Q    — Switch to Fire\n" +
-            "•   E    — Switch to Ice\n\n" +
-            "Objective:\n" +
-            "• Defeat the boss within the time\n" +
-            "• Goodluck."
-        );
-        contentLabel.getStyleClass().add("popup-content");
-        contentLabel.setWrapText(true);
-        contentLabel.setMaxWidth(400);
+
+        // PAGES LOGIC
+        Pagination pagination = new Pagination();
+
+        pagination.setPageFactory(pageIndex -> {
+            switch (pageIndex) {
+
+                case 0:
+                    titleLabel.setText("Controls - How To");
+                    Label controls = new Label(
+                            "Controls:\n\n" +
+                            "• W — Move Up\n" +
+                            "• S — Move Down\n" +
+                            "• A — Move Left\n" +
+                            "• D — Move Right\n" +
+                            "• SPACE — Shoot\n" +
+                            "• Q — Switch to Fire\n" +
+                            "• E — Switch to Ice"
+                            );
+                    controls.getStyleClass().add("popup-content");
+                    controls.setWrapText(true);
+                    controls.setMaxWidth(400);
+
+                    VBox page1 = new VBox(10, controls);
+                    page1.setAlignment(Pos.CENTER);
+                    return page1;
+
+                case 1:
+                    ImageView normal_enemy = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/normal_enemy.gif").toExternalForm())
+                            );
+                    Label objective = new Label(
+                            "Normal Enemy:\n\n" +
+                            "• Gives 1 point\n" +
+                            "• Chance to Drop PowerUps"
+                            );
+                    objective.getStyleClass().add("popup-content");
+                    objective.setWrapText(true);
+                    objective.setMaxWidth(400);
+
+                    titleLabel.setText("Normal Enemy - How To");
+
+                    VBox page2 = new VBox(10, normal_enemy, objective);
+                    page2.setAlignment(Pos.CENTER);
+                    return page2;
+
+                default:
+                    return null;
+            }
+        });
+
+        pagination.getStyleClass().add("popup-content");
+        pagination.setMaxPageIndicatorCount(0);
+        pagination.setMouseTransparent(true);
+        pagination.setMaxWidth(400);
+
+        Button btnNext = createButton("->");
+        Button btnPrev = createButton("<-");
+        btnNext.setMaxWidth(50);
+        btnNext.setMaxHeight(50);
+        btnPrev.setMaxWidth(50);
+        btnPrev.setMaxHeight(50);
+
+        btnNext.setOnAction(e -> {
+            int nextPage = pagination.getCurrentPageIndex() + 1;
+            if (nextPage < pagination.getPageCount()) {
+                pagination.setCurrentPageIndex(nextPage);
+            }
+        });
+
+        btnPrev.setOnAction(e -> {
+            int prevPage = pagination.getCurrentPageIndex() - 1;
+            if (prevPage >= 0) {
+                pagination.setCurrentPageIndex(prevPage);
+            }
+        });
+
+        VBox navButtons = new VBox(10, btnPrev, btnNext);
+        navButtons.setAlignment(Pos.CENTER);
+
 
         Button btnClose = createCloseButton(stage);
 
-        VBox layout = new VBox(20, titleLabel, contentLabel, btnClose);
-        layout.getStyleClass().add("popup-root");
-        layout.setAlignment(Pos.CENTER);
-        layout.setPrefSize(700, 550);
+        // Button HBOX in the bottom
+        HBox bottomButtons = new HBox(50, btnPrev, btnClose, btnNext);
+        bottomButtons.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(layout);
+
+        // Changed to border pane for consistency
+        BorderPane root = new BorderPane();
+        root.getStyleClass().add("popup-root");
+        root.setPrefSize(700, 550);
+        root.setCenter(pagination);
+        root.setTop(titleLabel);
+        root.setBottom(bottomButtons);
+
+        BorderPane.setAlignment(titleLabel, Pos.CENTER);
+        BorderPane.setAlignment(bottomButtons, Pos.CENTER);
+
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(
             getClass().getResource("/assets/styles.css").toExternalForm()
         );

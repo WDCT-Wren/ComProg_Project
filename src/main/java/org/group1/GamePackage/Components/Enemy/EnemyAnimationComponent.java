@@ -20,8 +20,8 @@ public class EnemyAnimationComponent extends Component {
         normalEnemy = new AnimationChannel(
                 enemy_sprite,
                 8,
-                104,
-                97,
+                200,
+                200,
                 Duration.seconds(0.3),
                 0,
                 7
