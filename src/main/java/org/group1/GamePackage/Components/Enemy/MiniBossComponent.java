@@ -10,7 +10,7 @@ import javafx.util.Duration;
 
 public class MiniBossComponent extends BossComponent {
 
-    private static int MINI_BOSS_HEALTH = 100;
+    private static int MINI_BOSS_HEALTH = 50;
     private static double MINI_BOSS_SPEED = 250;
     private static double MINI_BOSS_CHARGE_SPEED = 1500; 
     private static double MINI_BOSS_MOVE_RANGE = 100;
@@ -36,7 +36,7 @@ public class MiniBossComponent extends BossComponent {
 
         // Mini boss dies silently with no health bar
         if (dead()) {
-            PlayerComponent.addScore(10);
+            PlayerComponent.addScore(20);
             entity.removeFromWorld();
         }
     }

@@ -45,7 +45,7 @@ public class MenuInterface extends FXGLMenu {
         var forest      = scrollLayer("background_forest.png",      w, h, 10,  0, 550);
         var largeForest = scrollLayer("background_large_forest.png",w, h, 10,  0, 550);
 
-        Label TITLE = new Label("LUNA'S FOREST LARPING ADVENTURE");
+        Label TITLE = new Label("LARPATHON");
         TITLE.getStyleClass().add("title-text");
 
         Button START_BUTTON = createButton("Start Game");
@@ -139,7 +139,7 @@ public class MenuInterface extends FXGLMenu {
             "•   D    — Move Right\n" +
             "• SPACE  — Shoot \n" +
             "•   Q    — Switch to Fire\n" +
-            "•   Q    — Switch to Ice\n\n" +
+            "•   E    — Switch to Ice\n\n" +
             "Objective:\n" +
             "• Defeat the boss within the time\n" +
             "• Goodluck."

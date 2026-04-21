@@ -245,7 +245,6 @@ public class BossComponent extends Component {
             healthBar.currentValueProperty().setValue(CURRENT_HEALTH);
 
         if (dead()) {
-            PlayerComponent.addScore(10);
             entity.removeFromWorld();
 
             // actually win the game, removed from bossLevelManager
