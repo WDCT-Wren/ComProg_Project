@@ -1,5 +1,6 @@
 package org.group1.GamePackage.UI;
 
+import com.almasb.fxgl.dsl.views.SelfScrollingBackgroundView;
 import org.group1.GamePackage.Handlers.GameMechanics;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
@@ -8,9 +9,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.util.Objects;
 
 public class MenuInterface extends FXGLMenu {
 
@@ -18,8 +23,30 @@ public class MenuInterface extends FXGLMenu {
         super(MenuType.MAIN_MENU);
 
         getContentRoot().getStylesheets().add(
-            getClass().getResource("/assets/styles.css").toExternalForm()
+            Objects.requireNonNull(getClass().getResource("/assets/styles.css")).toExternalForm()
         );
+
+        int w = FXGL.getAppWidth();
+        int h = FXGL.getAppHeight();
+
+        ImageView bgImage = new ImageView(FXGL.getAssetLoader().loadTexture("background.png").getImage());
+        bgImage.setFitWidth(w);
+        bgImage.setFitHeight(h);
+        bgImage.setLayoutX(0);
+        bgImage.setLayoutY(0);
+
+        var stars1      = scrollLayer("background_stars1.png",      w, h, 10,  0,   0);
+        var stars2      = scrollLayer("background_stars2.png",      w, h, 15,  0,   0);
+        var stars3      = scrollLayer("background_stars3.png",      w, h, 13,  0,   0);
+        var cloud1      = scrollLayer("background_cloud1.png",      w, h, 20,  0,   0);
+        var cloud2      = scrollLayer("background_cloud2.png",      w, h, 30,  0, 100);
+        var mist1       = scrollLayer("background_mist1.png",       w, h, 30,  0, 500);
+        var hills       = scrollLayer("background_hills.png",       w, h,  5,  0, 500);
+        var forest      = scrollLayer("background_forest.png",      w, h, 10,  0, 550);
+        var largeForest = scrollLayer("background_large_forest.png",w, h, 10,  0, 550);
+
+        Label TITLE = new Label("LUNA'S FOREST LARPING ADVENTURE");
+        TITLE.getStyleClass().add("title-text");
 
         Button START_BUTTON = createButton("Start Game");
         START_BUTTON.setOnAction(click -> GameMechanics.restartGame());
@@ -34,16 +61,25 @@ public class MenuInterface extends FXGLMenu {
         EXIT_BUTTON.setOnAction(click -> FXGL.getGameController().exit());
 
         VBox menuLayout = new VBox(20,
+            TITLE,
             START_BUTTON,
             ABOUT_BUTTON,
             INSTRUCTIONS_BUTTON,
             EXIT_BUTTON
         );
         menuLayout.setAlignment(Pos.CENTER);
-        menuLayout.setPrefWidth(FXGL.getAppWidth());
-        menuLayout.setPrefHeight(FXGL.getAppHeight());
+        menuLayout.setPrefWidth(w);
+        menuLayout.setPrefHeight(h);
 
-        getContentRoot().getChildren().add(menuLayout);
+        Pane root = new Pane(
+            bgImage,
+            stars1, stars2, stars3,
+            cloud1, cloud2,
+            mist1, hills, forest, largeForest,
+            menuLayout
+        );
+
+        getContentRoot().getChildren().add(root);
     }
 
     // About
@@ -57,7 +93,7 @@ public class MenuInterface extends FXGLMenu {
 
         Label contentLabel = new Label(
             "Project: COMPROG FINALS PROJECT\n" +
-            "WRITTEN IN FXGL\n\n" +
+            "DEVELOPED WITH THE USE OF FXGL\n\n" +
             "Project Members:\n" +
             "• Josh Santeno - Leader\n" +
             "• Kherbin Buenaventura - Larper\n" +
@@ -126,6 +162,15 @@ public class MenuInterface extends FXGLMenu {
 
         stage.setScene(scene);
         stage.show();
+    }
+
+    private SelfScrollingBackgroundView scrollLayer(String texture, int w, int h, double speed, double x, double y) {
+        var view = new SelfScrollingBackgroundView(
+            FXGL.getAssetLoader().loadTexture(texture).getImage(), w, h, speed
+        );
+        view.setLayoutX(x);
+        view.setLayoutY(y);
+        return view;
     }
 
     // CREATE BUTTONS
