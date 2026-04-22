@@ -5,6 +5,8 @@ import org.group1.GamePackage.Handlers.GameMechanics;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -144,27 +146,145 @@ public class MenuInterface extends FXGLMenu {
         pagination.setPageFactory(pageIndex -> {
             switch (pageIndex) {
 
+                // first page
                 case 0:
+                    ImageView WASD_KEYS = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/WASD_KEYS.gif").toExternalForm())
+                            );
+                    WASD_KEYS.setFitWidth(200);  
+                    WASD_KEYS.setFitHeight(200);
+                    WASD_KEYS.setPreserveRatio(true);
+
+
                     titleLabel.setText("Controls - How To");
                     Label controls = new Label(
                             "Controls:\n\n" +
                             "• W — Move Up\n" +
                             "• S — Move Down\n" +
                             "• A — Move Left\n" +
-                            "• D — Move Right\n" +
-                            "• SPACE — Shoot\n" +
-                            "• Q — Switch to Fire\n" +
-                            "• E — Switch to Ice"
+                            "• D — Move Right\n"
                             );
                     controls.getStyleClass().add("popup-content");
                     controls.setWrapText(true);
                     controls.setMaxWidth(400);
 
-                    VBox page1 = new VBox(10, controls);
+                    VBox page1 = new VBox(5, WASD_KEYS, controls);
                     page1.setAlignment(Pos.CENTER);
                     return page1;
 
+                // second page
                 case 1:
+                    ImageView SPACE_KEY = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/SPACE_KEY.gif").toExternalForm())
+                            );
+
+                    ImageView NORMAL_BULLET = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/NORMAL_BULLET.gif").toExternalForm())
+                            );
+                    SPACE_KEY.setFitWidth(200);  
+                    SPACE_KEY.setFitHeight(200);
+                    SPACE_KEY.setPreserveRatio(true);
+
+                    NORMAL_BULLET.setScaleX(2);
+                    NORMAL_BULLET.setScaleY(2);
+
+                    HBox secondGifs= new HBox(50, SPACE_KEY, NORMAL_BULLET);
+                    secondGifs.setAlignment(Pos.CENTER);
+
+                    Label shoot = new Label(
+                            "| SPACE | Normal Bullet:\n" +
+                            "• Unlimited Ammo\n" +
+                            "• More damage than Ice Bullet\n" +
+                            "• Hold to Keep Firing"
+                            );
+                    shoot.getStyleClass().add("popup-content");
+                    shoot.setWrapText(true);
+                    shoot.setMaxWidth(400);
+
+
+
+                    titleLabel.setText("Normal Bullet - How To");
+
+                    VBox page2 = new VBox(10, secondGifs, shoot);
+                    page2.setAlignment(Pos.CENTER);
+                    return page2;
+
+                // third page
+                case 2: 
+                    ImageView S_KEY = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/S_KEY.gif").toExternalForm())
+                            );
+
+                    ImageView ICE_BULLET = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/ICE_BULLET.gif").toExternalForm())
+                            );
+                    S_KEY.setFitWidth(200);  
+                    S_KEY.setFitHeight(200);
+                    S_KEY.setPreserveRatio(true);
+
+                    ICE_BULLET.setScaleX(1);
+                    ICE_BULLET.setScaleY(1);
+
+                    HBox thirdGifs = new HBox(10, S_KEY, ICE_BULLET);
+                    thirdGifs.setAlignment(Pos.CENTER);
+
+                    Label switchIce = new Label(
+                            "| S | Switch to Ice Bullet:\n" +
+                            "• Pierces enemies\n" +
+                            "• Slows Enemies Down\n\n" +
+                            " Requirement: Ice Ammo\n" +
+                            " Maximum ammo: 60"
+                            );
+                    switchIce.getStyleClass().add("popup-content");
+                    switchIce.setWrapText(true);
+                    switchIce.setMaxWidth(400);
+
+                    titleLabel.setText("Ice Bullet - How To");
+
+                    VBox page3 = new VBox(5, thirdGifs, switchIce);
+                    page3.setAlignment(Pos.CENTER);
+                    return page3;
+
+
+                // fourth page
+                case 3:
+                    ImageView Q_KEY = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/Q_KEY.gif").toExternalForm())
+                            );
+
+                    ImageView FIRE_BULLET = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/FIRE_BULLET.gif").toExternalForm())
+                            );
+                    Q_KEY.setFitWidth(200);  
+                    Q_KEY.setFitHeight(200);
+                    Q_KEY.setPreserveRatio(true);
+
+                    FIRE_BULLET.setScaleX(1);
+                    FIRE_BULLET.setScaleY(1);
+
+                    HBox fourthGifs = new HBox(10, Q_KEY, FIRE_BULLET);
+                    fourthGifs.setAlignment(Pos.CENTER);
+
+                    Label switchFire = new Label(
+                            "| Q | Switch to Fire Bullet:\n" +
+                            "• Pierces enemies\n" +
+                            "• Gives Damage over Time Effect\n\n" +
+                            " Requirement: Fire Ammo\n" +
+                            " Maximum ammo: 60"
+                            );
+                    switchFire.getStyleClass().add("popup-content");
+                    switchFire.setWrapText(true);
+                    switchFire.setMaxWidth(400);
+
+                    titleLabel.setText("Fire Bullet - How To");
+
+                    VBox page4 = new VBox(5, fourthGifs, switchFire);
+                    page4.setAlignment(Pos.CENTER);
+                    return page4;
+
+
+                // fifth page
+                case 4:
                     ImageView normal_enemy = new ImageView(
                             new Image(getClass().getResource("/assets/GIF/normal_enemy.gif").toExternalForm())
                             );
@@ -179,9 +299,9 @@ public class MenuInterface extends FXGLMenu {
 
                     titleLabel.setText("Normal Enemy - How To");
 
-                    VBox page2 = new VBox(10, normal_enemy, objective);
-                    page2.setAlignment(Pos.CENTER);
-                    return page2;
+                    VBox page5 = new VBox(10, normal_enemy, objective);
+                    page5.setAlignment(Pos.CENTER);
+                    return page5;
 
                 default:
                     return null;
@@ -191,7 +311,8 @@ public class MenuInterface extends FXGLMenu {
         pagination.getStyleClass().add("popup-content");
         pagination.setMaxPageIndicatorCount(0);
         pagination.setMouseTransparent(true);
-        pagination.setMaxWidth(400);
+        pagination.setMaxWidth(650);
+        pagination.setMaxHeight(450);
 
         Button btnNext = createButton("->");
         Button btnPrev = createButton("<-");
@@ -228,11 +349,13 @@ public class MenuInterface extends FXGLMenu {
         // Changed to border pane for consistency
         BorderPane root = new BorderPane();
         root.getStyleClass().add("popup-root");
-        root.setPrefSize(700, 550);
+        root.setPrefSize(800, 650);
         root.setCenter(pagination);
         root.setTop(titleLabel);
         root.setBottom(bottomButtons);
 
+
+        BorderPane.setMargin(titleLabel, new Insets(0, 0, 0, 0));
         BorderPane.setAlignment(titleLabel, Pos.CENTER);
         BorderPane.setAlignment(bottomButtons, Pos.CENTER);
 

@@ -44,7 +44,7 @@
 
 .popup-content {
     -fx-text-fill: #c8dff0;
-    -fx-font-size: 16px;
+    -fx-font-size: 24px;
     -fx-font-family: "Courier New";
 }
 
@@ -71,10 +71,6 @@
     -fx-opacity: 0;
     -fx-max-height: 0;
     -fx-pref-height: 0;
-}
-
-.pagination .pagination-control .bullet-button {
-    -fx-opacity: 0;
     -fx-padding: 0;
 }
 
