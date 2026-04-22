@@ -14,6 +14,7 @@ import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Factory.BossFactory.BossType;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Music.AudioManager;
+import org.group1.GamePackage.UI.HUDInterface;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -364,6 +365,7 @@ public class CollisionManager {
         playerComponent.increaseLives();
 
         powerUp.getComponent(EnemyDropsAnimationComponent.class).explodeHeart();
+        HUDInterface.updateLivesSprite();
     }
 
     private void boostUp(Entity powerUp, Entity player) {

@@ -18,7 +18,7 @@ import javafx.util.Duration;
 public class BossLevelManager extends Component {
 
     // Needed score to spawn boss
-    private static int SCORE_TO_SPAWN = 100;
+    private static int SCORE_TO_SPAWN = 10;
     private static ProgressBar healthBar;
 
     private PlayerComponent player;
@@ -43,7 +43,7 @@ public class BossLevelManager extends Component {
         healthBar.setWidth(400);
         healthBar.setHeight(25);
         healthBar.setTranslateX((FXGL.getAppWidth() - 400) / 2);
-        healthBar.setTranslateY(20);
+        healthBar.setTranslateY(65);
         healthBar.setMinValue(0);
         healthBar.setMaxValue(BossComponent.getBOSS_HEALTH());
         healthBar.currentValueProperty().setValue(BossComponent.getBOSS_HEALTH());

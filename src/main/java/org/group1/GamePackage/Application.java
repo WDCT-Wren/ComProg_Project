@@ -63,18 +63,18 @@ public class Application extends GameApplication {
     Variables for HUD texts
      */
     HUDInterface HUD = new HUDInterface();
-    private Text boostText;
-    private Text livesText;
     private Text timerText;
+    private Text boostText;
     private ProgressBar bulletProgress;
     private ProgressBar scoreProgress;
 
     @Override
     protected void initUI() {
-        boostText = HUD.displayLives();
-        livesText = HUD.displayBoostLevel();
+        boostText = HUD.displayBoostLevel();
         bulletProgress = HUD.displayBulletCount();
         scoreProgress = HUD.displayScore();
+        //display lives
+        HUD.displayLives();
     }
 
     @Override
@@ -186,9 +186,18 @@ public class Application extends GameApplication {
     protected void onUpdate(double update) {
        
         // Display static getters in PlayerComponent
+        boostText.setText(" " + PlayerComponent.getBoostLevel());
+
+        // Hide when no boost
+        int boost = PlayerComponent.getBoostLevel();
+
+        if (boost > 0) {
+            boostText.setText(" " + boost);
+            boostText.setVisible(true);
+        } else {
+            boostText.setVisible(false);
+        }
         
-        livesText.setText("Lives: " + PlayerComponent.getLives());
-        boostText.setText("Boost: " + PlayerComponent.getBoostLevel());
         scoreProgress.currentValueProperty().setValue(PlayerComponent.getScore());
         
         switch (GameMechanics.getCurrentBulletType()) {

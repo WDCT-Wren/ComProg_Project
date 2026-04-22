@@ -1,6 +1,5 @@
 package org.group1.GamePackage.Components.Enemy;
 
-import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.PowerUps.FirePowerUpComponent;
 import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Components.UI.GameOverComponent;

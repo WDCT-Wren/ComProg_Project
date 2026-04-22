@@ -79,7 +79,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(EntityType.PLAYER)
                 .bbox(new HitBox(BoundingShape.box(100, 80)))
-                .with(new PlayerComponent(Application.inputManager))
+                .with(new PlayerComponent(Application.inputManager)) 
                 .with(new KeepOnScreenComponent())
                 .with(new CollidableComponent(true))
                 .build();

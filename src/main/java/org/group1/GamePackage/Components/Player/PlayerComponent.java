@@ -4,6 +4,7 @@ import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Music.AudioManager;
+import org.group1.GamePackage.UI.HUDInterface;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -27,7 +28,6 @@ public class PlayerComponent extends Component {
 
     // Boost level decrease timer
     private double boostDecreaseTimer = 0;
-
 
     private static int lives = 9;
     private static int boostLevel = 0;
@@ -154,6 +154,9 @@ public class PlayerComponent extends Component {
         if (!isInvincible && lives > 0) {
             audioManager.FAH();
             lives -= 1;
+
+            HUDInterface.updateLivesSprite();
+            HUDInterface.flashLivesHUD();
         } 
 
         triggerInvincibility();
