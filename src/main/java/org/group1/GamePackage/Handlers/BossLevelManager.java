@@ -2,7 +2,6 @@ package org.group1.GamePackage.Handlers;
 
 import org.group1.GamePackage.Components.Enemy.BossComponent;
 import org.group1.GamePackage.Components.Player.PlayerComponent;
-import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Components.UI.TimerComponent;
 import org.group1.GamePackage.Factory.BossFactory.BossType;
 import org.group1.GamePackage.Music.AudioManager;

@@ -40,6 +40,7 @@ org/group1/GamePackage/Factory/BackgroundFactory$EntityType.class
 org/group1/GamePackage/Components/Enemy/BossComponent$State.class
 org/group1/GamePackage/Handlers/CollisionManager$9.class
 org/group1/GamePackage/Handlers/InputManager$2.class
+org/group1/GamePackage/UI/PauseInterface.class
 org/group1/GamePackage/Handlers/LevelManager.class
 org/group1/GamePackage/Handlers/CollisionManager$10.class
 org/group1/GamePackage/Factory/BossFactory$BossType.class
@@ -52,6 +53,7 @@ org/group1/GamePackage/UI/HUDInterface.class
 org/group1/GamePackage/Factory/BackgroundFactory.class
 org/group1/GamePackage/Handlers/InputManager$5.class
 org/group1/GamePackage/Handlers/CollisionManager$15.class
+org/group1/GamePackage/UI/Controllers/PauseController.class
 org/group1/GamePackage/Components/Enemy/EnemyDropsAnimationComponent.class
 org/group1/GamePackage/Handlers/CollisionManager$7.class
 org/group1/GamePackage/UI/MenuInterface.class

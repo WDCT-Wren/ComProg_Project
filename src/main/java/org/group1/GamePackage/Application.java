@@ -200,6 +200,9 @@ public class Application extends GameApplication {
         }
         
         scoreProgress.currentValueProperty().setValue(PlayerComponent.getScore());
+        if (PlayerComponent.getScore() >= BossLevelManager.getScoreToSpawn()) {
+            playerMainComponent.setScore(BossLevelManager.getScoreToSpawn());
+        }
         
         switch (GameMechanics.getCurrentBulletType()) {
             case "fire_bullet" -> {

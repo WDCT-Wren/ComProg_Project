@@ -1,6 +1,7 @@
 package org.group1.GamePackage.Components.Player;
 
 import org.group1.GamePackage.Components.UI.GameOverComponent;
+import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Music.AudioManager;
@@ -266,6 +267,10 @@ public class PlayerComponent extends Component {
     // setters
     public void setBoostLevel (int amount) {
         boostLevel = amount;
+    }
+
+    public void setScore (int amount) {
+        score = amount;
     }
 
     public void toggleFireBullet(boolean trigger) {

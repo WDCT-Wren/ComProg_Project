@@ -212,21 +212,21 @@ public class MenuInterface extends FXGLMenu {
 
                 // third page
                 case 2: 
-                    ImageView S_KEY = new ImageView(
-                            new Image(getClass().getResource("/assets/GIF/S_KEY.gif").toExternalForm())
+                    ImageView E_KEY = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/E_KEY.gif").toExternalForm())
                             );
 
                     ImageView ICE_BULLET = new ImageView(
                             new Image(getClass().getResource("/assets/GIF/ICE_BULLET.gif").toExternalForm())
                             );
-                    S_KEY.setFitWidth(200);  
-                    S_KEY.setFitHeight(200);
-                    S_KEY.setPreserveRatio(true);
+                    E_KEY.setFitWidth(200);  
+                    E_KEY.setFitHeight(200);
+                    E_KEY.setPreserveRatio(true);
 
                     ICE_BULLET.setScaleX(1);
                     ICE_BULLET.setScaleY(1);
 
-                    HBox thirdGifs = new HBox(10, S_KEY, ICE_BULLET);
+                    HBox thirdGifs = new HBox(10, E_KEY, ICE_BULLET);
                     thirdGifs.setAlignment(Pos.CENTER);
 
                     Label switchIce = new Label(
