@@ -9,10 +9,13 @@ import org.group1.GamePackage.Handlers.BossLevelManager;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.TimerAction;
 
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
+import javafx.scene.image.Image;
 
 public class BossComponent extends Component {
 
@@ -73,9 +76,51 @@ public class BossComponent extends Component {
     protected double BOSS_SHOOTING_RATE = 0.5;
     protected double SLOW_SHOOTING_RATE = 0.5;
 
+    private final AnimatedTexture texture;
+    private final AnimationChannel idleAnimation;
+    private final AnimationChannel chargingAnimation;
+    private final AnimationChannel recoveringAnimation;
+
+    public BossComponent() {
+        Image idle_sprite = FXGL.image("boss_idle_sprite.png");
+        idleAnimation = new AnimationChannel(
+                idle_sprite,
+                5,
+                400,
+                400,
+                Duration.seconds(0.7),
+                0,
+                4
+                );
+
+        Image charging_sprite = FXGL.image("boss_charging_sprite.png");
+        chargingAnimation = new AnimationChannel(
+                charging_sprite,
+                5,
+                400,
+                400,
+                Duration.seconds(0.3),
+                0,
+                9
+                );
+
+        Image recovering_sprite = FXGL.image("boss_recovering_sprite.png");
+        recoveringAnimation = new AnimationChannel(
+                recovering_sprite,
+                5,
+                400,
+                400,
+                Duration.seconds(0.3),
+                0,
+                4
+                );
+        texture = new AnimatedTexture(idleAnimation);
+        texture.loopAnimationChannel(idleAnimation);
+    }
 
     @Override
     public void onAdded() {
+        entity.getViewComponent().addChild(texture);
         // When boss spawns, get the position and initialize it
         INITIAL_BOSS_Y = entity.getY();
         INITIAL_BOSS_X = entity.getX();
@@ -94,7 +139,21 @@ public class BossComponent extends Component {
             case SHOOTING -> shoot(update);
             case CHARGING -> currentlyCharging(update);
             case RECOVERING -> currentlyRecovering(update);
-        } 
+        }
+    }
+
+    private void setState(State newState) {
+        if (state == newState)
+            return;
+
+        state = newState;
+
+        switch (newState) {
+            case IDLE -> texture.loopAnimationChannel(idleAnimation);
+            case SHOOTING -> texture.loopAnimationChannel(idleAnimation);
+            case CHARGING -> texture.loopAnimationChannel(chargingAnimation);
+            case RECOVERING -> texture.playAnimationChannel(recoveringAnimation);
+        }
     }
 
     /**
@@ -158,7 +217,7 @@ public class BossComponent extends Component {
     // Transitions boss into SHOOTING state, fires lasers on interval, then returns
     // to IDLE
     private void enterShootingState() {
-        state = State.SHOOTING;
+        setState(State.SHOOTING);
 
         shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
             double laserBounds = (double) (FXGL.getAppHeight() * 2) / 3;
@@ -168,7 +227,7 @@ public class BossComponent extends Component {
 
         FXGL.getGameTimer().runOnceAfter(() -> {
             shootInterval.expire();
-            state = State.IDLE;
+            setState(State.IDLE);
         }, Duration.seconds(SHOOT_DURATION));
     }
 
@@ -179,7 +238,7 @@ public class BossComponent extends Component {
      */
     private void chargeAttack() {
         trackPlayer();
-        state = State.CHARGING;
+        setState(State.CHARGING);
     }
 
     /*
@@ -207,9 +266,8 @@ public class BossComponent extends Component {
 
         // if position reaches the target, set position to the CHARGE_TARGET
         if (position.distance(target) < CHARGE_SPEED * update) {
-            entity.setPosition(CHARGE_TARGET_X, CHARGE_TARGET_Y);
             // and then initialize RECOVERING state
-            state = State.RECOVERING;
+            setState(State.RECOVERING);
         }
     }
 
@@ -226,15 +284,16 @@ public class BossComponent extends Component {
 
         if (Math.abs(ORIGINAL_X) < RECOVER_SPEED * update) {
             entity.setX(INITIAL_BOSS_X);
-            state = State.IDLE;
+            setState(State.IDLE);
         } else {
             entity.translateX((ORIGINAL_X > 0 ? 1 : -1) * RECOVER_SPEED * update);
         }
     }
 
     public void takeDamage(int damage) {
-        // guarding runtime errors lel 
-        if (entity == null || !entity.isActive()) return;
+        // guarding runtime errors lel
+        if (entity == null || !entity.isActive())
+            return;
 
         CURRENT_HEALTH -= damage;
 
@@ -265,20 +324,22 @@ public class BossComponent extends Component {
             shootInterval.expire();
             shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
                 FXGL.spawn(getLaser(), INITIAL_BOSS_X, CHARGE_TARGET_Y);
+                setState(State.IDLE);
             }, Duration.seconds(BOSS_SHOOTING_RATE));
         }
 
         FXGL.getGameTimer().runOnceAfter(() -> {
-        SPEED_Y = SLOW_SPEED_Y;
-        CHARGE_SPEED = SLOW_CHARGE_SPEED;
-        BOSS_SHOOTING_RATE = SLOW_SHOOTING_RATE;
+            SPEED_Y = SLOW_SPEED_Y;
+            CHARGE_SPEED = SLOW_CHARGE_SPEED;
+            BOSS_SHOOTING_RATE = SLOW_SHOOTING_RATE;
         }, Duration.seconds(SLOW_DURATION));
     }
 
     public void burnEffect() {
         var burnTask = FXGL.getGameTimer().runAtInterval(() -> {
             // if theres no entity dont do this
-            if (entity == null || !entity.isActive()) return;
+            if (entity == null || !entity.isActive())
+                return;
             takeDamage(FirePowerUpComponent.getFIRE_DAMAGE());
         }, Duration.seconds(BURN_RATE));
 
@@ -303,5 +364,5 @@ public class BossComponent extends Component {
 
     protected String getLaser() {
         return "lasers";
-    } 
+    }
 }

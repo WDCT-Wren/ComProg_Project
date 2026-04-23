@@ -22,6 +22,8 @@ public class MiniBossComponent extends BossComponent {
     @Override 
     public void onAdded() {
         super.onAdded();
+        entity.setScaleX(0.5);
+        entity.setScaleY(0.5);
         CURRENT_HEALTH = MINI_BOSS_HEALTH;
         SPEED_Y = MINI_BOSS_SPEED;
         CHARGE_SPEED = MINI_BOSS_CHARGE_SPEED;
