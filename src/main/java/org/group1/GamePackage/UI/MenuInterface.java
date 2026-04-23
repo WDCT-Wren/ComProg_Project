@@ -29,7 +29,7 @@ public class MenuInterface extends FXGLMenu {
         super(MenuType.MAIN_MENU);
 
         getContentRoot().getStylesheets().add(
-            Objects.requireNonNull(getClass().getResource("/assets/styles.css")).toExternalForm()
+            Objects.requireNonNull(getClass().getResource("/StyleSheets/styles.css")).toExternalForm()
         );
 
         int w = FXGL.getAppWidth();
@@ -121,7 +121,7 @@ public class MenuInterface extends FXGLMenu {
 
         Scene scene = new Scene(layout);
         scene.getStylesheets().add(
-            getClass().getResource("/assets/styles.css").toExternalForm()
+            getClass().getResource("/StyleSheets/styles.css").toExternalForm()
         );
 
         stage.setScene(scene);
@@ -229,7 +229,7 @@ public class MenuInterface extends FXGLMenu {
                     thirdGifs.setAlignment(Pos.CENTER);
 
                     Label switchIce = new Label(
-                            "| S | Switch to Ice Bullet:\n" +
+                            "| E | Switch to Ice Bullet:\n" +
                             "• Pierces enemies\n" +
                             "• Slows Enemies Down\n\n" +
                             " Requirement: Ice Ammo\n" +
@@ -361,7 +361,7 @@ public class MenuInterface extends FXGLMenu {
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(
-            getClass().getResource("/assets/styles.css").toExternalForm()
+            getClass().getResource("/StyleSheets/styles.css").toExternalForm()
         );
 
         stage.setScene(scene);

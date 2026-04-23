@@ -15,6 +15,7 @@ open module org.group.game {
     requires javafx.graphics;
     requires java.desktop;
 	requires javafx.base;
+    requires annotations;
 
     exports org.group1.GamePackage;
     exports org.group1.GamePackage.Factory;
@@ -25,4 +26,5 @@ open module org.group.game {
     exports org.group1.GamePackage.Components.UI;
     exports org.group1.GamePackage.UI;
     exports org.group1.GamePackage.Music;
+    exports org.group1.GamePackage.UI.Controllers;
 }

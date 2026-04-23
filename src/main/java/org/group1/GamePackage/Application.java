@@ -27,6 +27,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import org.group1.GamePackage.UI.PauseInterface;
 
 //GameApplication is used to start the game instead of
 //JavaFX's native Application class
