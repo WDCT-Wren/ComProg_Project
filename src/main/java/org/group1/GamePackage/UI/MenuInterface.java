@@ -108,7 +108,7 @@ public class MenuInterface extends FXGLMenu {
             "• Jemima Pablo- Designer Animations\n" +
             "• Shane Calara - Designer Menu Layout\n"
         );
-        contentLabel.getStyleClass().add("popup-content");
+        contentLabel.getStyleClass().add("about-content");
         contentLabel.setWrapText(true);
         contentLabel.setMaxWidth(400);
 

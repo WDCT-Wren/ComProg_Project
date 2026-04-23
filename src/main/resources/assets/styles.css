@@ -48,6 +48,12 @@
     -fx-font-family: "Courier New";
 }
 
+.about-content {
+    -fx-text-fill: #c8dff0;
+    -fx-font-size: 20px;
+    -fx-font-family: "Courier New";
+}
+
 .close-button {
     -fx-background-color: rgba(180, 30, 0, 0.60);
     -fx-background-radius: 10;
