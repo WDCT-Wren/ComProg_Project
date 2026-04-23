@@ -156,12 +156,21 @@ public class MenuInterface extends FXGLMenu {
                     WASD_KEYS.setFitHeight(200);
                     WASD_KEYS.setPreserveRatio(true);
 
+                    ImageView ESC_KEY = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/ESC_KEY.gif").toExternalForm())
+                            );
+                    ESC_KEY.setFitHeight(200);
+                    ESC_KEY.setFitWidth(200);
+                    ESC_KEY.setPreserveRatio(true);
+
+                    HBox firstGifs = new HBox(50, WASD_KEYS, ESC_KEY);
+                    firstGifs.setAlignment(Pos.CENTER);
 
                     titleLabel.setText("Controls - How To");
                     Label controls = new Label(
                             "Controls:\n\n" +
-                            "• W — Move Up\n" +
-                            "• S — Move Down\n" +
+                            "• W — Move Up\t\t   • ESC\n" +
+                            "• S — Move Down\t\t —Pause—\n" +
                             "• A — Move Left\n" +
                             "• D — Move Right\n"
                             );
@@ -169,7 +178,7 @@ public class MenuInterface extends FXGLMenu {
                     controls.setWrapText(true);
                     controls.setMaxWidth(400);
 
-                    VBox page1 = new VBox(5, WASD_KEYS, controls);
+                    VBox page1 = new VBox(5, firstGifs, controls);
                     page1.setAlignment(Pos.CENTER);
                     return page1;
 
