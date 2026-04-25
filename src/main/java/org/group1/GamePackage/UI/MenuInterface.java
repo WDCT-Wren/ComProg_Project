@@ -313,6 +313,30 @@ public class MenuInterface extends FXGLMenu {
                     page5.setAlignment(Pos.CENTER);
                     return page5;
 
+                case 5:
+                    ImageView boss = new ImageView(
+                        new Image(getClass().getResource("/assets/GIF/boss.gif").toExternalForm())
+                        );
+                    boss.setFitWidth(200);  
+                    boss.setFitHeight(200);  
+                    boss.setPreserveRatio(true);
+
+                    Label bossLabel = new Label(
+                            "Boss:\n\n" +
+                            "• Defeat to Win the Game\n\n"+
+                            "Phases:\n" +
+                            "• IDLE • CHARGING • SHOOTING •\n"
+                            );
+                    bossLabel.getStyleClass().add("popup-content");
+                    bossLabel.setWrapText(true);
+                    bossLabel.setMaxWidth(400);
+
+                    titleLabel.setText("Boss - How To");
+
+                    VBox page6 = new VBox(10, boss, bossLabel);
+                    page6.setAlignment(Pos.CENTER);
+                    return page6;
+
                 default:
                     return null;
             }
