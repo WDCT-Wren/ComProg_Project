@@ -1,7 +1,6 @@
 package org.group1.GamePackage.Components.Player;
 
 import org.group1.GamePackage.Components.UI.GameOverComponent;
-import org.group1.GamePackage.Handlers.BossLevelManager;
 import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Music.AudioManager;
@@ -44,8 +43,6 @@ public class PlayerComponent extends Component {
 
     private AnimatedTexture texture;
     private AnimationChannel idleChannel;
-    private AnimationChannel downChannel;
-    private AnimationChannel upChannel;
 
     private static boolean hasFireBullets = false;
     private static boolean hasIceBullets = false;
@@ -60,34 +57,12 @@ public class PlayerComponent extends Component {
         Image idle_sprite = FXGL.image("idle_sprite.png"); //idle_sprite image in resource folder
         idleChannel = new AnimationChannel(
                 idle_sprite,
-                1,
-                112, //Width
-                98, //Height
-                Duration.seconds(0.1),
+                8,
+                120, //Width
+                120, //Height
+                Duration.seconds(1.3),
                 0,
-                3
-        );
-
-        Image down_sprite = FXGL.image("down_sprite.png"); //down_sprite image in resource folder
-        downChannel = new AnimationChannel(
-                down_sprite,
-                1,
-                110, // Width
-                103, // Total Height divided by amount of frames (4)
-                Duration.seconds(0.1),
-                0,
-                3
-        );
-
-        Image up_sprite = FXGL.image("up_sprite.png"); //image in resource folder
-        upChannel = new AnimationChannel(
-                up_sprite,
-                1,
-                114, // Width
-                92, // Total Height divided by amount of frames (4)
-                Duration.seconds(0.1),
-                0,
-                3
+                7
         );
 
         texture = new AnimatedTexture(idleChannel);
@@ -102,10 +77,10 @@ public class PlayerComponent extends Component {
             onIdle();
         } else if (inputManager.isMovingUp()) {
             entity.translateY(-playerSpeed);
-            onUp();
+            onIdle();
         } else if (inputManager.isMovingDown()) {
             entity.translateY(playerSpeed);
-            onDown();
+            onIdle();
         } else {
             onIdle();
         }
@@ -128,20 +103,6 @@ public class PlayerComponent extends Component {
 
         // Checks if boost is active and applies it if it is
         checkBoost(timePerFrame);
-    }
-
-    // Down Animation Loop
-    public void onDown() {
-        if (texture.getAnimationChannel() != downChannel) {
-            texture.loopAnimationChannel(downChannel);
-        }
-    }
-
-    // Up Animation Loop
-    public void onUp() {
-        if (texture.getAnimationChannel() != upChannel) {
-            texture.loopAnimationChannel(upChannel);
-        }
     }
 
     // Idle Animation Loop

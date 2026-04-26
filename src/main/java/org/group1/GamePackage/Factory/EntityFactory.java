@@ -22,6 +22,7 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     public enum EntityType {
@@ -34,18 +35,18 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     }
 
     private final double BULLET_HITBOX = 60;
-    private final double LIFE_HITBOX = 60;
+    private final double POWER_UP_HITBOX = 60;
 
     @Spawns("bullet")
 
     public Entity newBullet(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(EntityType.BULLET)
-                .bbox(new HitBox(BoundingShape.box(BULLET_HITBOX, BULLET_HITBOX)))
-                .with(new BulletAnimationComponent(EntityType.BULLET))
-                .with(new ProjectileComponent(new Point2D(1,0), 1000))
-                .with(new CollidableComponent(true))
-                .build();
+            .type(EntityType.BULLET)
+            .bbox(new HitBox(BoundingShape.box(BULLET_HITBOX, BULLET_HITBOX)))
+            .with(new BulletAnimationComponent(EntityType.BULLET))
+            .with(new ProjectileComponent(new Point2D(1,0), 1000))
+            .with(new CollidableComponent(true))
+            .build();
     }
 
     @Spawns("fire_bullet")
@@ -72,17 +73,30 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
             .build();
     }
 
+    private Rectangle hitboxVisual(double h, double w, double offsetX, double offsetY) {
+        Rectangle rect = new Rectangle(h, w);
+        rect.setFill(Color.TRANSPARENT);
+        rect.setStroke(Color.RED);
+        rect.setStrokeWidth(1);
+        rect.setTranslateX(offsetX);
+        rect.setTranslateY(offsetY);
+        return rect;
+
+    }    
+
     @Spawns("player")
 
     public Entity newPlayer(SpawnData data) {
-
         return FXGL.entityBuilder(data)
-                .type(EntityType.PLAYER)
-                .bbox(new HitBox(BoundingShape.box(100, 80)))
-                .with(new PlayerComponent(Application.inputManager)) 
-                .with(new KeepOnScreenComponent())
-                .with(new CollidableComponent(true))
-                .build();
+            .type(EntityType.PLAYER)
+            .view(hitboxVisual(100, 60, 10, 20))
+            .bbox(new HitBox(new Point2D(10, 20), BoundingShape.box(100, 60)))
+            .with(new PlayerComponent(Application.inputManager))
+            .with(new KeepOnScreenComponent())
+            .with(new CollidableComponent(true))
+            .scale(1.8 , 1.8)
+            .build();
+
     }
 
     @Spawns("enemy")
@@ -90,7 +104,8 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     public Entity enemy(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(EntityType.ENEMY)
-            .bbox(new HitBox(BoundingShape.box(80, 80)))
+            .view(hitboxVisual(100, 100, 50, 50))
+            .bbox(new HitBox(new Point2D(50, 50), BoundingShape.box(100, 100)))
             .with(new ProjectileComponent(new Point2D(-1,0), 500))
             .with(new EnemyAnimationComponent())
             .with(new CollidableComponent(true))
@@ -107,7 +122,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .with(new EnemyDropsAnimationComponent())
-            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
+            .bbox(new HitBox(BoundingShape.box(POWER_UP_HITBOX, POWER_UP_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
             .build();
@@ -116,12 +131,12 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     @Spawns("boostUp")
 
     public Entity boostUpPowerUp(SpawnData data) {
-        
+
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .viewWithBBox(new Circle(30, Color.AZURE))
             .with(new BoostUpComponent())
-            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
+            .bbox(new HitBox(BoundingShape.box(POWER_UP_HITBOX, POWER_UP_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
             .build();
@@ -130,12 +145,12 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     @Spawns("ice_powerUp")
 
     public Entity icePowerUp(SpawnData data) {
-        
+
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .viewWithBBox(new Circle(30, Color.BLUE))
             .with(new IcePowerUpComponent())
-            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
+            .bbox(new HitBox(BoundingShape.box(POWER_UP_HITBOX, POWER_UP_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
             .build();
@@ -144,18 +159,18 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     @Spawns("fire_powerUp")
 
     public Entity firePowerUp(SpawnData data) {
-        
+
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
             .viewWithBBox(new Circle(30, Color.ORANGE))
             .with(new FirePowerUpComponent())
-            .bbox(new HitBox(BoundingShape.box(LIFE_HITBOX, LIFE_HITBOX)))
+            .bbox(new HitBox(BoundingShape.box(POWER_UP_HITBOX, POWER_UP_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
             .with(new CollidableComponent(true))
             .build();
     }
 
     public double getLifeHitbox() {
-        return LIFE_HITBOX;
+        return POWER_UP_HITBOX;
     }
 }
