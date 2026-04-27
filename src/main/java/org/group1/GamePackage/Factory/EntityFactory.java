@@ -89,8 +89,8 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     public Entity newPlayer(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(EntityType.PLAYER)
-            .view(hitboxVisual(100, 60, 10, 20))
-            .bbox(new HitBox(new Point2D(10, 20), BoundingShape.box(100, 60)))
+            .view(hitboxVisual(120, 120, 0, 0))
+            .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(120, 120)))
             .with(new PlayerComponent(Application.inputManager))
             .with(new KeepOnScreenComponent())
             .with(new CollidableComponent(true))
