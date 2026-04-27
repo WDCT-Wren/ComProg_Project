@@ -100,9 +100,41 @@ public class PlayerComponent extends Component {
             gameMechanics.offInvincible();
         }
 
-
+        checkBoundaries();
         // Checks if boost is active and applies it if it is
         checkBoost(timePerFrame);
+    }
+
+    private void checkBoundaries() {
+        double screenWidth = FXGL.getAppWidth();
+        double screenHeight = FXGL.getAppHeight();
+        
+        // Account for scale factor and offset
+        double scale = entity.getScaleX();
+        double hitboxWidth = entity.getWidth();
+        double hitboxHeight = entity.getHeight();
+        double offsetX = 10.0;  // From EntityFactory hitbox offset
+        double offsetY = 20.0;  // From EntityFactory hitbox offset
+        
+        double playerWidth = (hitboxWidth + offsetX) * scale;
+        double playerHeight = (hitboxHeight + offsetY) * scale;
+        double x = entity.getX();
+        double y = entity.getY();
+
+        // Clamp position to screen bounds
+        if (x < 0) {
+            entity.setX(0);
+        } 
+        if ((x + playerWidth) >= screenWidth) {
+            entity.setX(screenWidth - playerWidth);
+        }
+
+        if (y < 0) {
+            entity.setY(0);
+        } 
+        if ((y + playerHeight) >= screenHeight) {
+            entity.setY(screenHeight - playerHeight);
+        }
     }
 
     // Idle Animation Loop
