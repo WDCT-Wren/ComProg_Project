@@ -94,7 +94,7 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
             .with(new PlayerComponent(Application.inputManager))
             .with(new KeepOnScreenComponent())
             .with(new CollidableComponent(true))
-            .scale(1.8 , 1.8)
+            .scale(1.3 , 1.3)
             .build();
 
     }
@@ -112,7 +112,6 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
             .with(new KeepOnScreenComponent())
             .scale(0.7, 0.7)
             .build();
-
     }
 
     @Spawns("extraLife")

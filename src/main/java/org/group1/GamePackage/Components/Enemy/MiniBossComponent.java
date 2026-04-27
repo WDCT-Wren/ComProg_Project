@@ -10,7 +10,7 @@ import javafx.util.Duration;
 
 public class MiniBossComponent extends BossComponent {
 
-    private static int MINI_BOSS_HEALTH = 50;
+    private static int MINI_BOSS_HEALTH = 75;
     private static double MINI_BOSS_SPEED = 250;
     private static double MINI_BOSS_CHARGE_SPEED = 1500; 
     private static double MINI_BOSS_MOVE_RANGE = 100;
@@ -22,8 +22,8 @@ public class MiniBossComponent extends BossComponent {
     @Override 
     public void onAdded() {
         super.onAdded();
-        entity.setScaleX(0.5);
-        entity.setScaleY(0.5);
+        entity.setScaleX(0.4);
+        entity.setScaleY(0.4);
         CURRENT_HEALTH = MINI_BOSS_HEALTH;
         SPEED_Y = MINI_BOSS_SPEED;
         CHARGE_SPEED = MINI_BOSS_CHARGE_SPEED;
