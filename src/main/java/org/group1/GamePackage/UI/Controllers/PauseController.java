@@ -43,6 +43,7 @@ public class PauseController {
             AudioManager.setGlobalSoundVolume(newVal.doubleValue());
         });
     }
+
     public void setMenu(PauseInterface menu) {
         this.menu = menu;
     }

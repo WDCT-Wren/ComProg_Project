@@ -1,7 +1,10 @@
 package org.group1.GamePackage.UI;
 
+import java.io.IOException;
 import java.util.Objects;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import org.group1.GamePackage.Handlers.GameMechanics;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -23,74 +26,31 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.group1.GamePackage.UI.Controllers.MainMenuController;
+import org.group1.GamePackage.UI.Controllers.PauseController;
 
 public class MenuInterface extends FXGLMenu {
 
-    public MenuInterface() {
+    public MenuInterface() throws IOException {
         super(MenuType.MAIN_MENU);
 
-        getContentRoot().getStylesheets().add(
-            Objects.requireNonNull(getClass().getResource("/StyleSheets/styles.css")).toExternalForm()
-        );
+        //call the fxml file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/MainMenu.fxml"));
+        Parent root = loader.load();
 
-        int w = FXGL.getAppWidth();
-        int h = FXGL.getAppHeight();
-
-        ImageView bgImage = new ImageView(FXGL.getAssetLoader().loadTexture("background.png").getImage());
-        bgImage.setFitWidth(w);
-        bgImage.setFitHeight(h);
-        bgImage.setLayoutX(0);
-        bgImage.setLayoutY(0);
-
-        var stars1      = scrollLayer("background_stars1.png",      w, h, 10,  0,   0);
-        var stars2      = scrollLayer("background_stars2.png",      w, h, 15,  0,   0);
-        var stars3      = scrollLayer("background_stars3.png",      w, h, 13,  0,   0);
-        var cloud1      = scrollLayer("background_cloud1.png",      w, h, 20,  0,   0);
-        var cloud2      = scrollLayer("background_cloud2.png",      w, h, 30,  0, 100);
-        var mist1       = scrollLayer("background_mist1.png",       w, h, 30,  0, 500);
-        var hills       = scrollLayer("background_hills.png",       w, h,  5,  0, 500);
-        var forest      = scrollLayer("background_forest.png",      w, h, 10,  0, 550);
-        var largeForest = scrollLayer("background_large_forest.png",w, h, 10,  0, 550);
-
-        Label TITLE = new Label("LARPATHON");
-        TITLE.getStyleClass().add("title-text");
-
-        Button START_BUTTON = createButton("Start Game");
-        START_BUTTON.setOnAction(click -> GameMechanics.restartGame());
-
-        Button ABOUT_BUTTON = createButton("About");
-        ABOUT_BUTTON.setOnAction(click -> openAboutWindow());
-
-        Button INSTRUCTIONS_BUTTON = createButton("Instructions");
-        INSTRUCTIONS_BUTTON.setOnAction(click -> openInstructionsWindow());
-
-        Button EXIT_BUTTON = createButton("Exit");
-        EXIT_BUTTON.setOnAction(click -> FXGL.getGameController().exit());
-
-        VBox menuLayout = new VBox(20,
-            TITLE,
-            START_BUTTON,
-            ABOUT_BUTTON,
-            INSTRUCTIONS_BUTTON,
-            EXIT_BUTTON
-        );
-        menuLayout.setAlignment(Pos.CENTER);
-        menuLayout.setPrefWidth(w);
-        menuLayout.setPrefHeight(h);
-
-        Pane root = new Pane(
-            bgImage,
-            stars1, stars2, stars3,
-            cloud1, cloud2,
-            mist1, hills, forest, largeForest,
-            menuLayout
-        );
+        //set the controller
+        MainMenuController controller = loader.getController();
+        controller.setMenu(this);
 
         getContentRoot().getChildren().add(root);
     }
 
-    // About
-    private void openAboutWindow() {
+    /**
+     * Method to open the about window
+     * <br><br>
+     * creates a new stage to make a popup window that shows the game's informations
+     */
+    public void openAboutWindow() {
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("About");
@@ -129,10 +89,15 @@ public class MenuInterface extends FXGLMenu {
         stage.show();
     }
 
-
-
-    // INSTRUCTIONS 
-    private void openInstructionsWindow() {
+    /**
+     * Method to open the instruction window
+     * <ul>creates a new stage to make a popup window that shows the game's controls as well as:
+     *      <li>How to play the game</li>
+     *      <li>Information about Bullets that the player can use</li>
+     *      <li>Information about enemies (i.e., normal enemies, miniboss, and the main boss)</li>
+     * </ul>
+     */
+    public void openInstructionsWindow() {
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Instructions");
@@ -400,15 +365,6 @@ public class MenuInterface extends FXGLMenu {
 
         stage.setScene(scene);
         stage.show();
-    }
-
-    private SelfScrollingBackgroundView scrollLayer(String texture, int w, int h, double speed, double x, double y) {
-        var view = new SelfScrollingBackgroundView(
-            FXGL.getAssetLoader().loadTexture(texture).getImage(), w, h, speed
-        );
-        view.setLayoutX(x);
-        view.setLayoutY(y);
-        return view;
     }
 
     // CREATE BUTTONS

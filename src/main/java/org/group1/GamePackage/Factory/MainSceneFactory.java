@@ -15,7 +15,11 @@ public class MainSceneFactory extends SceneFactory {
 
     @Override
     public FXGLMenu newMainMenu() {
-        return new MenuInterface();
+        try {
+            return new MenuInterface();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

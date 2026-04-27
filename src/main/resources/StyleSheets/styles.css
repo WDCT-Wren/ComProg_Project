@@ -1,3 +1,10 @@
+.background {
+    -fx-background-image: url("../assets/textures/background.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover; /* Use 'cover' to fill the area or 'stretch' */
+    -fx-background-position: center center;
+}
+
 .menu-root {
     -fx-background-color: #0a0f1a;
     -fx-background-size: cover;
@@ -21,11 +28,13 @@
     -fx-border-color: rgba(0, 170, 255, 0.8);
     -fx-border-width: 2;
     -fx-border-radius: 20;
-    -fx-cursor: hand;
+    -fx-pref-height: 75;
+    -fx-pref-width: 350;
 }
 
 .play-button:hover {
     -fx-background-color: rgba(0, 110, 200, 0.75);
+    -fx-cursor: hand;
 }
 
 /* POP UP WINDOWS */
