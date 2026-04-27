@@ -273,21 +273,24 @@ public class BossComponent extends Component {
 
     /*
      * RECOVERING logic
-     * ORIGINAL_X: how far current x position from initial position
-     * if the absolute value of ORIGINAL_X is less than RECOVER_SPEED * onUpdate
-     * it means that its close enough to snap back to INITIAL_BOSS_X position
+     * same with currentlyCharging but subtracts the distance to go to original position
      * returns to IDLE state
      * else keep moving back
      */
     private void currentlyRecovering(double update) {
-        double ORIGINAL_X = INITIAL_BOSS_X - entity.getX();
+        Point2D position = new Point2D(entity.getX(), entity.getY());
+        Point2D target = new Point2D(INITIAL_BOSS_X, INITIAL_BOSS_Y);
+        Point2D direction = target.subtract(position).normalize();
 
-        if (Math.abs(ORIGINAL_X) < RECOVER_SPEED * update) {
+        double distance = position.distance(target);
+
+        if (distance < RECOVER_SPEED * update) {
             entity.setX(INITIAL_BOSS_X);
+            entity.setY(INITIAL_BOSS_Y);
             setState(State.IDLE);
         } else {
-            entity.translateX((ORIGINAL_X > 0 ? 1 : -1) * RECOVER_SPEED * update);
-        }
+            entity.translate(direction.multiply(RECOVER_SPEED * update));
+        }    
     }
 
     public void takeDamage(int damage) {
