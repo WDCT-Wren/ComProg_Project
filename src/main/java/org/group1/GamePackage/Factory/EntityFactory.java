@@ -34,6 +34,17 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
         POWER_UP
     }
 
+    private Rectangle hitboxVisual(double h, double w, double offsetX, double offsetY) {
+        Rectangle rect = new Rectangle(h, w);
+        rect.setFill(Color.TRANSPARENT);
+        rect.setStroke(Color.RED);
+        rect.setStrokeWidth(1);
+        rect.setTranslateX(offsetX);
+        rect.setTranslateY(offsetY);
+        return rect;
+
+    }    
+
     private final double BULLET_HITBOX = 60;
     private final double POWER_UP_HITBOX = 60;
 
@@ -73,23 +84,11 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
             .build();
     }
 
-    private Rectangle hitboxVisual(double h, double w, double offsetX, double offsetY) {
-        Rectangle rect = new Rectangle(h, w);
-        rect.setFill(Color.TRANSPARENT);
-        rect.setStroke(Color.RED);
-        rect.setStrokeWidth(1);
-        rect.setTranslateX(offsetX);
-        rect.setTranslateY(offsetY);
-        return rect;
-
-    }    
-
     @Spawns("player")
 
     public Entity newPlayer(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(EntityType.PLAYER)
-            .view(hitboxVisual(100, 60, 10, 20))
             .bbox(new HitBox(new Point2D(10, 20), BoundingShape.box(100, 60)))
             .with(new PlayerComponent(Application.inputManager))
             .with(new KeepOnScreenComponent())
@@ -104,7 +103,6 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
     public Entity enemy(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(EntityType.ENEMY)
-            .view(hitboxVisual(100, 100, 50, 50))
             .bbox(new HitBox(new Point2D(50, 50), BoundingShape.box(100, 100)))
             .with(new ProjectileComponent(new Point2D(-1,0), 500))
             .with(new EnemyAnimationComponent())

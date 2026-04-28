@@ -6,7 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 
 public class AudioManager {
     private static double audioVolume = 20.0;
-    private static double musicVolume = 0.5;
+    private static double musicVolume = 0.1;
 
     public static void setGlobalSoundVolume(double newVolume) {
         audioVolume = newVolume;

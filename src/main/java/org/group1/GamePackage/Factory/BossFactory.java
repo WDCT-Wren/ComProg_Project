@@ -46,7 +46,6 @@ public class BossFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
             .type(BossType.BOSS)
-            .viewWithBBox(hitboxVisual(BOSS_HITBOX, BOSS_HITBOX))
             .bbox(new HitBox(BoundingShape.box(BOSS_HITBOX, BOSS_HITBOX)))
             .with(new BossComponent())
             .with(new CollidableComponent(true))
@@ -58,7 +57,6 @@ public class BossFactory implements EntityFactory {
     public Entity newMiniBoss(SpawnData data) {
         return FXGL.entityBuilder(data)
             .type(BossType.MINI_BOSS)
-            .viewWithBBox(hitboxVisual(MINI_BOSS_HITBOX, MINI_BOSS_HITBOX))
             .bbox(new HitBox(BoundingShape.box(MINI_BOSS_HITBOX, MINI_BOSS_HITBOX)))
             .with(new MiniBossComponent())
             .with(new CollidableComponent(true))
@@ -71,7 +69,6 @@ public class BossFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(BossType.BOSS_LASER)
-                .viewWithBBox(hitboxVisual(150, 15))
                 .bbox(new HitBox(BoundingShape.box(150, 15)))
                 .with(new LaserAnimationComponent()) 
                 .with(new ProjectileComponent(new Point2D(-1,0), 500))
@@ -84,7 +81,6 @@ public class BossFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(BossType.MINI_BOSS_LASER)
-                .viewWithBBox(hitboxVisual(80, 15))
                 .bbox(new HitBox(BoundingShape.box(80, 15)))
                 .with(new LaserAnimationComponent()) 
                 .with(new ProjectileComponent(new Point2D(-1, 0), 600))
