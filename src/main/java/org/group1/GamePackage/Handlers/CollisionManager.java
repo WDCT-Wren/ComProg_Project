@@ -369,7 +369,7 @@ public class CollisionManager {
     }
 
     private void boostUp(Entity powerUp, Entity player) {
-        powerUp.removeFromWorld();
+        powerUp.getComponent(BoostUpComponent.class).explode();
         GameMechanics.speedUp(player);
     }
 

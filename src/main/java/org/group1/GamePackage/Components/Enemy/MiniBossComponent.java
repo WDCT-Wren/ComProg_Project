@@ -31,16 +31,8 @@ public class MiniBossComponent extends BossComponent {
     }
 
     @Override
-    public void takeDamage(int damage) {
-        if (entity == null || !entity.isActive()) return;
-
-        CURRENT_HEALTH -= damage;
-
-        // Mini boss dies silently with no health bar
-        if (dead()) {
-            PlayerComponent.addScore(20);
-            entity.removeFromWorld();
-        }
+    protected void onDeathComplete() {
+        PlayerComponent.addScore(20);
     }
 
     @Override

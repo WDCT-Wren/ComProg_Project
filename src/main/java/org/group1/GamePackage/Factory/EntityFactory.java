@@ -133,7 +133,6 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
-            .viewWithBBox(new Circle(30, Color.AZURE))
             .with(new BoostUpComponent())
             .bbox(new HitBox(BoundingShape.box(POWER_UP_HITBOX, POWER_UP_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
@@ -147,7 +146,6 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
-            .viewWithBBox(new Circle(30, Color.BLUE))
             .with(new IcePowerUpComponent())
             .bbox(new HitBox(BoundingShape.box(POWER_UP_HITBOX, POWER_UP_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))
@@ -161,7 +159,6 @@ public class EntityFactory implements com.almasb.fxgl.entity.EntityFactory {
 
         return FXGL.entityBuilder(data)
             .type(EntityType.POWER_UP)
-            .viewWithBBox(new Circle(30, Color.ORANGE))
             .with(new FirePowerUpComponent())
             .bbox(new HitBox(BoundingShape.box(POWER_UP_HITBOX, POWER_UP_HITBOX)))
             .with(new ProjectileComponent(new Point2D(-1,0), 300))

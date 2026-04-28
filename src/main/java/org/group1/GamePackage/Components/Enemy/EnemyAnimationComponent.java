@@ -80,7 +80,7 @@ public class EnemyAnimationComponent extends Component {
                 entity.removeFromWorld();
                 exploding = false;
             }
-        }, Duration.seconds(0.1));
+        }, Duration.seconds(0.2));
     }
 
     // onUpdate Override to explode on wall

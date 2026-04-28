@@ -47,6 +47,7 @@ org/group1/GamePackage/Factory/BossFactory$BossType.class
 org/group1/GamePackage/Handlers/CollisionManager$13.class
 org/group1/GamePackage/Components/Enemy/BossComponent.class
 org/group1/GamePackage/Handlers/CollisionManager.class
+org/group1/GamePackage/UI/Controllers/MainMenuController.class
 org/group1/GamePackage/Handlers/InputManager$4.class
 org/group1/GamePackage/Handlers/CollisionManager$1.class
 org/group1/GamePackage/UI/HUDInterface.class

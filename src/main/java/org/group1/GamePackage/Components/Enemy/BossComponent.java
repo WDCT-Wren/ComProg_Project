@@ -24,7 +24,8 @@ public class BossComponent extends Component {
         IDLE,
         SHOOTING,
         CHARGING,
-        RECOVERING
+        RECOVERING,
+        DEAD
     }
 
     private static int BOSS_HEALTH = 1000;
@@ -80,6 +81,7 @@ public class BossComponent extends Component {
     private final AnimationChannel idleAnimation;
     private final AnimationChannel chargingAnimation;
     private final AnimationChannel recoveringAnimation;
+    private final AnimationChannel deathAnimation;
 
     public BossComponent() {
         Image idle_sprite = FXGL.image("boss_idle_sprite.png");
@@ -114,6 +116,18 @@ public class BossComponent extends Component {
                 0,
                 4
                 );
+
+        Image death_sprite = FXGL.image("boss_death.png");
+        deathAnimation = new AnimationChannel(
+                death_sprite,
+                2,
+                400,
+                400,
+                Duration.seconds(0.6),
+                0,
+                7
+                );
+
         texture = new AnimatedTexture(idleAnimation);
         texture.loopAnimationChannel(idleAnimation);
     }
@@ -139,6 +153,7 @@ public class BossComponent extends Component {
             case SHOOTING -> shoot(update);
             case CHARGING -> currentlyCharging(update);
             case RECOVERING -> currentlyRecovering(update);
+            case DEAD -> {}
         }
     }
 
@@ -153,6 +168,7 @@ public class BossComponent extends Component {
             case SHOOTING -> texture.loopAnimationChannel(idleAnimation);
             case CHARGING -> texture.loopAnimationChannel(chargingAnimation);
             case RECOVERING -> texture.playAnimationChannel(recoveringAnimation);
+            case DEAD -> texture.playAnimationChannel(deathAnimation);
         }
     }
 
@@ -273,29 +289,31 @@ public class BossComponent extends Component {
 
     /*
      * RECOVERING logic
-     * same with currentlyCharging but subtracts the distance to go to original position
+     * gets the initial boss position 
+     * and goes back to it
      * returns to IDLE state
      * else keep moving back
      */
     private void currentlyRecovering(double update) {
         Point2D position = new Point2D(entity.getX(), entity.getY());
         Point2D target = new Point2D(INITIAL_BOSS_X, INITIAL_BOSS_Y);
-        Point2D direction = target.subtract(position).normalize();
 
         double distance = position.distance(target);
+        double step = RECOVER_SPEED * update;
 
-        if (distance < RECOVER_SPEED * update) {
+        if (distance <= step) {
             entity.setX(INITIAL_BOSS_X);
             entity.setY(INITIAL_BOSS_Y);
             setState(State.IDLE);
         } else {
-            entity.translate(direction.multiply(RECOVER_SPEED * update));
-        }    
+            Point2D direction = target.subtract(position).normalize();
+            entity.translate(direction.multiply(step));
+        }
     }
 
     public void takeDamage(int damage) {
         // guarding runtime errors lel
-        if (entity == null || !entity.isActive())
+        if (entity == null || !entity.isActive() || state == State.DEAD)
             return;
 
         CURRENT_HEALTH -= damage;
@@ -306,16 +324,35 @@ public class BossComponent extends Component {
             healthBar.currentValueProperty().setValue(CURRENT_HEALTH);
 
         if (dead()) {
-            entity.removeFromWorld();
-
+            triggerDeath();
             // actually win the game, removed from bossLevelManager
-            GameOverComponent.winGame();
         }
     }
 
     public boolean dead() {
         return CURRENT_HEALTH <= 0;
     }
+
+    private void triggerDeath() {
+        // Cancel any active shoot interval so no more lasers are fired
+        if (shootInterval != null && !shootInterval.isExpired()) {
+            shootInterval.expire();
+        }
+ 
+        setState(State.DEAD);
+
+        FXGL.getGameTimer().runOnceAfter(() -> {
+            if (entity != null && entity.isActive()) {
+                entity.removeFromWorld();
+            }
+            onDeathComplete();
+        }, Duration.seconds(0.6));
+    }
+ 
+    protected void onDeathComplete() {
+        GameOverComponent.winGame();
+    }
+
 
     public void slowEffect() {
         SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();

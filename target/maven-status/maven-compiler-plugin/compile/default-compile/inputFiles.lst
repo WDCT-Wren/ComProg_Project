@@ -25,6 +25,7 @@
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/InputManager.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/LevelManager.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Music/AudioManager.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Controllers/MainMenuController.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Controllers/PauseController.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/HUDInterface.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/LoadingInterface.java
