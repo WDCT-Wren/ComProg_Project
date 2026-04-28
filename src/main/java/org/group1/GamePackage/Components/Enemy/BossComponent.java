@@ -363,8 +363,8 @@ public class BossComponent extends Component {
         if (shootInterval != null && !shootInterval.isExpired()) {
             shootInterval.expire();
             shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
-                FXGL.spawn(getLaser(), INITIAL_BOSS_X, CHARGE_TARGET_Y);
-                setState(State.IDLE);
+                double y = CHARGE_TARGET_Y;
+                FXGL.spawn(getLaser(), INITIAL_BOSS_X, y);
             }, Duration.seconds(BOSS_SHOOTING_RATE));
         }
 
