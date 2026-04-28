@@ -148,6 +148,7 @@ public class PlayerComponent extends Component {
         if (!isInvincible && lives > 0) {
             audioManager.FAH();
             lives -= 1;
+            boostLevel = 0;
 
             HUDInterface.updateLivesSprite();
             HUDInterface.flashLivesHUD();
