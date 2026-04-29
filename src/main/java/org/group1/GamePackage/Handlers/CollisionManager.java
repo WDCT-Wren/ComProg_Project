@@ -376,12 +376,14 @@ public class CollisionManager {
     private void enableIceBullet(Entity powerUp,  PlayerComponent playerComponent) {
         playerComponent.toggleIceBullet(true);
         PlayerComponent.iceBulletAdd(10);
+        audioManager.potionDrink();
         powerUp.removeFromWorld();
     }
 
     private void enableFireBullet(Entity powerUp,  PlayerComponent playerComponent) {
         playerComponent.toggleFireBullet(true);
         PlayerComponent.fireBulletAdd(10);
+        audioManager.potionDrink();
         powerUp.removeFromWorld();
     }
 

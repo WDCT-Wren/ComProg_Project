@@ -51,6 +51,11 @@ public class AudioManager {
         FXGL.play("speed.wav");
     }
 
+    public void potionDrink() {
+        FXGL.play("potion_drink.wav");
+    }
+
+
     public void FAH() {
         FXGL.play("fah.wav");
     }
