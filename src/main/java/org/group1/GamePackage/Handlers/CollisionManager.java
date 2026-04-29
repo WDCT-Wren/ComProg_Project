@@ -27,7 +27,6 @@ public class CollisionManager {
     private static double BOSS_POWER_UP_DROP_RATE = 0.10;
     private int randomIndex;
 
-    AudioManager audioManager = new AudioManager();
     PlayerComponent playerComponent = new PlayerComponent(Application.inputManager);
 
     public void init() {
@@ -62,7 +61,7 @@ public class CollisionManager {
                     dropPowerUp(enemy);
 
                     // your existing explosion code here
-                    audioManager.playDeathSound();
+                    AudioManager.playDeathSound();
                     enemy.getComponent(EnemyAnimationComponent.class).explode();
                 }
             });
@@ -88,7 +87,7 @@ public class CollisionManager {
                     dropPowerUp(enemy);
 
                     // your existing explosion code here
-                    audioManager.playDeathSound();
+                    AudioManager.playDeathSound();
                     enemy.getComponent(EnemyAnimationComponent.class).explode();
                 }
             });
@@ -107,7 +106,7 @@ public class CollisionManager {
                     dropPowerUp(enemy);
 
                     // your existing explosion code here
-                    audioManager.playDeathSound();
+                    AudioManager.playDeathSound();
                     enemy.getComponent(EnemyAnimationComponent.class).explode();
                 }
             });
@@ -180,7 +179,7 @@ public class CollisionManager {
                     @Override
                     protected void onCollisionBegin(Entity player, Entity miniBoss){
                         var playerComponent = player.getComponent(PlayerComponent.class);
-                        audioManager.playDeathSound();
+                        AudioManager.playDeathSound();
                         playerComponent.takeDamage();
                     }
             
@@ -261,7 +260,7 @@ public class CollisionManager {
                     @Override
                     protected void onCollisionBegin(Entity player, Entity boss){
                         var playerComponent = player.getComponent(PlayerComponent.class);
-                        audioManager.playDeathSound();
+                        AudioManager.playDeathSound();
                         playerComponent.takeDamage();
 
                     }
@@ -279,7 +278,7 @@ public class CollisionManager {
                 protected void onCollisionBegin(Entity enemy, Entity player) {
                     var playerComponent = player.getComponent(PlayerComponent.class);
                     if (!playerComponent.isInvincible()) {
-                        audioManager.playDeathSound();
+                        AudioManager.playDeathSound();
                         playerComponent.takeDamage();
 
                         enemy.getComponent(EnemyAnimationComponent.class).explode();
@@ -324,7 +323,7 @@ public class CollisionManager {
             protected void onCollisionBegin(Entity laser, Entity player) {
                 var playerComponent = player.getComponent(PlayerComponent.class);
                 if (!playerComponent.isInvincible()) {
-                    audioManager.playDeathSound();
+                    AudioManager.playDeathSound();
                     playerComponent.takeDamage();;
                 }
 
@@ -345,7 +344,7 @@ public class CollisionManager {
             protected void onCollisionBegin(Entity laser, Entity player) {
                 var playerComponent = player.getComponent(PlayerComponent.class);
                 if (!playerComponent.isInvincible()) {
-                    audioManager.playDeathSound();
+                    AudioManager.playDeathSound();
                     playerComponent.takeDamage();;
                 }
 
@@ -360,7 +359,7 @@ public class CollisionManager {
 
 
     private void extraLives(Entity powerUp, PlayerComponent playerComponent) {
-        audioManager.playHeartGain();
+        AudioManager.playHeartGain();
 
         playerComponent.increaseLives();
 
@@ -369,6 +368,7 @@ public class CollisionManager {
     }
 
     private void boostUp(Entity powerUp, Entity player) {
+        AudioManager.boostSound();
         powerUp.getComponent(BoostUpComponent.class).explode();
         GameMechanics.speedUp(player);
     }
@@ -376,14 +376,14 @@ public class CollisionManager {
     private void enableIceBullet(Entity powerUp,  PlayerComponent playerComponent) {
         playerComponent.toggleIceBullet(true);
         PlayerComponent.iceBulletAdd(10);
-        audioManager.potionDrink();
+        AudioManager.potionDrink();
         powerUp.removeFromWorld();
     }
 
     private void enableFireBullet(Entity powerUp,  PlayerComponent playerComponent) {
         playerComponent.toggleFireBullet(true);
         PlayerComponent.fireBulletAdd(10);
-        audioManager.potionDrink();
+        AudioManager.potionDrink();
         powerUp.removeFromWorld();
     }
 

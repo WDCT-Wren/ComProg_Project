@@ -146,7 +146,7 @@ public class PlayerComponent extends Component {
 
     public void takeDamage () {
         if (!isInvincible && lives > 0) {
-            audioManager.FAH();
+            AudioManager.FAH();
             lives -= 1;
             boostLevel = 0;
 

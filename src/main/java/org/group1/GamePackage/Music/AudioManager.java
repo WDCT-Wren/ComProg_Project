@@ -17,19 +17,19 @@ public class AudioManager {
         FXGL.getSettings().setGlobalMusicVolume(newVolume);
     }
 
-    public void playBackgroundMusic() {
+    public static void playBackgroundMusic() {
         Music music = FXGL.getAssetLoader().loadMusic("main_music.wav");
         FXGL.getAudioPlayer().loopMusic(music);
         music.getAudio().setVolume(musicVolume);
     }
 
-    public void playDeathSound() {
+    public static void playDeathSound() {
         Sound sound = FXGL.getAssetLoader().loadSound("death_sound.wav");
         FXGL.getAudioPlayer().playSound(sound);
         sound.getAudio().setVolume(audioVolume);
     }
 
-    public void playHeartGain() {
+    public static void playHeartGain() {
         Sound sound = FXGL.getAssetLoader().loadSound("heart_gain.wav");
         FXGL.getAudioPlayer().playSound(sound);
         sound.getAudio().setVolume(audioVolume);
@@ -43,20 +43,23 @@ public class AudioManager {
         FXGL.play("switch_bullet.wav");
     }
 
-    public void playGameOver() {
+    public static void playGameOver() {
         //TODO: Sound effect for gameover
     }
 
-    public void speedUpSound() {
+    public static void speedUpSound() {
         FXGL.play("speed.wav");
     }
 
-    public void potionDrink() {
+    public static void potionDrink() {
         FXGL.play("potion_drink.wav");
     }
 
+    public static void boostSound() {
+        FXGL.play("boost.wav");
+    }
 
-    public void FAH() {
+    public static void FAH() {
         FXGL.play("fah.wav");
     }
 
