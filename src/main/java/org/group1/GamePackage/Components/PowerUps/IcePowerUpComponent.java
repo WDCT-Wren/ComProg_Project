@@ -11,8 +11,9 @@ import javafx.util.Duration;
 public class IcePowerUpComponent extends Component{
     private static final int ICE_DAMAGE = 2;
     private static final int SLOW_EFFECT = 100;
-    private static final int DASH_SLOW = 950;
+    private static final int DASH_SLOW = 850;
     private static final double SLOW_SHOOTING_EFFECT = 1.2;
+    private static final double SLOW_ANIMATION_EFFECT = 5.0;
 
     private final AnimatedTexture texture;
     private final AnimationChannel IcePowerUp;
@@ -57,5 +58,8 @@ public class IcePowerUpComponent extends Component{
     public static double getSLOW_SHOOTING_EFFECT() {
         return SLOW_SHOOTING_EFFECT;
     }
-    
+
+    public static double getSLOW_ANIMATION_EFFECT() {
+        return SLOW_ANIMATION_EFFECT;
+    }
 }

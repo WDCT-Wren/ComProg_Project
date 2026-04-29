@@ -394,7 +394,6 @@ public class CollisionManager {
             randomIndex = random.nextInt(4);
 
             String powerUpType = powerUps[randomIndex];
-            System.out.println(powerUpType);
 
             FXGL.spawn(powerUpType, entity.getCenter());
         }

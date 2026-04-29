@@ -83,6 +83,11 @@ public class BossComponent extends Component {
     private final AnimationChannel recoveringAnimation;
     private final AnimationChannel deathAnimation;
 
+    private double normalAnimationSpeed = 0.3;
+    private double slowAnimationSpeed = 0.3;
+    private double normalIdleSpeed= 0.7;
+    private double slowIdleSpeed = 0.7;
+
     public BossComponent() {
         Image idle_sprite = FXGL.image("boss_idle_sprite.png");
         idleAnimation = new AnimationChannel(
@@ -90,7 +95,7 @@ public class BossComponent extends Component {
                 5,
                 400,
                 400,
-                Duration.seconds(0.7),
+                Duration.seconds(normalIdleSpeed),
                 0,
                 4
                 );
@@ -101,7 +106,7 @@ public class BossComponent extends Component {
                 5,
                 400,
                 400,
-                Duration.seconds(0.3),
+                Duration.seconds(normalAnimationSpeed),
                 0,
                 9
                 );
@@ -112,7 +117,7 @@ public class BossComponent extends Component {
                 5,
                 400,
                 400,
-                Duration.seconds(0.3),
+                Duration.seconds(normalAnimationSpeed),
                 0,
                 4
                 );
@@ -358,6 +363,8 @@ public class BossComponent extends Component {
         SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();
         CHARGE_SPEED = IcePowerUpComponent.getDASH_SLOW();
         BOSS_SHOOTING_RATE = IcePowerUpComponent.getSLOW_SHOOTING_EFFECT();
+        normalAnimationSpeed = IcePowerUpComponent.getSLOW_ANIMATION_EFFECT();
+        normalIdleSpeed = IcePowerUpComponent.getSLOW_ANIMATION_EFFECT();
 
         // Slow shootInterval when already enterShootingState logic
         if (shootInterval != null && !shootInterval.isExpired()) {
@@ -372,6 +379,8 @@ public class BossComponent extends Component {
             SPEED_Y = SLOW_SPEED_Y;
             CHARGE_SPEED = SLOW_CHARGE_SPEED;
             BOSS_SHOOTING_RATE = SLOW_SHOOTING_RATE;
+            normalAnimationSpeed = slowAnimationSpeed;
+            normalIdleSpeed = slowIdleSpeed;
         }, Duration.seconds(SLOW_DURATION));
     }
 
