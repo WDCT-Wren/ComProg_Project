@@ -284,15 +284,15 @@ public class MenuInterface extends FXGLMenu {
                     fire_potion.setFitWidth(50);
                     fire_potion.setPreserveRatio(true);
 
-                    HBox fifthGifs = new HBox(10, heart, boost, ice_potion, fire_potion);
+                    HBox fifthGifs = new HBox(20, heart, boost, ice_potion, fire_potion);
                     fifthGifs.setAlignment(Pos.CENTER);
 
                     Label powerups = new Label(
                             "Power Ups:\n\n" +
-                            "Heart: Adds One Life\n" +
-                            "Boost: Gets 10 Second of Boost\n" +
-                            "Ice Potion: Gets 10 Ice Ammo\n" +
-                            "Fire Potion: Gets 10 Fire Ammo\n"
+                            "• HEART: Adds One Life\n\n" +
+                            "• BOOST: Gives 10 Second of Boost\n\n" +
+                            "• ICE POTION: Gives 10 Ice Ammo\n\n" +
+                            "• FIRE POTION: Gives 10 Fire Ammo\n\n"
                             );
                     powerups.getStyleClass().add("popup-content");
                     powerups.setWrapText(true);
@@ -313,8 +313,8 @@ public class MenuInterface extends FXGLMenu {
                     boss.setPreserveRatio(true);
 
                     Label bossLabel = new Label(
-                            "Boss:\n\n" +
-                            "• Defeat to Win the Game\n"+
+                            "Boss:\n" +
+                            "• Defeat to Win the Game\n\n"+
                             "Phases:\n" +
                             "• IDLE • CHARGING • SHOOTING •\n"
                             );
