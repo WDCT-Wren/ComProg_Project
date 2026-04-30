@@ -41,6 +41,16 @@ public class MiniBossComponent extends BossComponent {
     }
 
     @Override
+    protected void shootLaser() {
+        if (entity == null) {
+            return;
+        }
+
+        double y = entity.getY();
+        FXGL.spawn(getLaser(), INITIAL_BOSS_X + 50, y+200);
+    }
+
+    @Override
     public void slowEffect() {
         SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();
         CHARGE_SPEED = IcePowerUpComponent.getDASH_SLOW();

@@ -14,8 +14,8 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.TimerAction;
 
 import javafx.geometry.Point2D;
-import javafx.util.Duration;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 public class BossComponent extends Component {
 
@@ -72,7 +72,7 @@ public class BossComponent extends Component {
     private boolean visible = true;
 
     private static final double SHOOT_CHANCE = 0.003; // 0.3% per frame from IDLE
-    private static final double SHOOT_DURATION = 4.0; // seconds spent in SHOOTING state
+    protected static final double SHOOT_DURATION = 4.0; // seconds spent in SHOOTING state
 
     protected double BOSS_SHOOTING_RATE = 0.5;
     protected double SLOW_SHOOTING_RATE = 0.5;
@@ -152,6 +152,7 @@ public class BossComponent extends Component {
 
     @Override
     public void onUpdate(double update) {
+        System.out.println(entity.getY());
         // switch states that updates all the time by overriding FXGL onUpdate(double)
         switch (state) {
             case IDLE -> onIdle(update);
@@ -235,6 +236,11 @@ public class BossComponent extends Component {
         bossMovement(update);
     }
 
+    //Spawns laser
+    protected void shootLaser() {
+        FXGL.spawn(getLaser(), INITIAL_BOSS_X, CHARGE_TARGET_Y);
+    }
+
     // Transitions boss into SHOOTING state, fires lasers on interval, then returns
     // to IDLE
     private void enterShootingState() {
@@ -242,8 +248,7 @@ public class BossComponent extends Component {
 
         shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
             double laserBounds = (double) (FXGL.getAppHeight() * 2) / 3;
-            double y = CHARGE_TARGET_Y;
-            FXGL.spawn(getLaser(), INITIAL_BOSS_X, y);
+            shootLaser();
         }, Duration.seconds(BOSS_SHOOTING_RATE));
 
         FXGL.getGameTimer().runOnceAfter(() -> {
