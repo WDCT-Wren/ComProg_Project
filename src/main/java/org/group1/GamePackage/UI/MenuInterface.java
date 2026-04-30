@@ -1,18 +1,14 @@
 package org.group1.GamePackage.UI;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Modality;
-import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.views.SelfScrollingBackgroundView;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,12 +20,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.group1.GamePackage.UI.Controllers.MainMenuController;
-import org.group1.GamePackage.UI.Controllers.PauseController;
 
 public class MenuInterface extends FXGLMenu {
 
@@ -261,16 +255,66 @@ public class MenuInterface extends FXGLMenu {
                     return page5;
 
                 case 5:
+                    ImageView heart = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/heart.gif").toExternalForm())
+                            );
+                    heart.setFitWidth(100);
+                    heart.setFitHeight(100);
+                    heart.setPreserveRatio(true);
+
+                    ImageView boost = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/boost.gif").toExternalForm())
+                            );
+                    boost.setFitHeight(100);
+                    boost.setFitWidth(100);
+                    boost.setPreserveRatio(true);
+
+                    ImageView ice_potion = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/ice_potion.gif").toExternalForm())
+                            );
+                    ice_potion.setFitWidth(50);
+                    ice_potion.setFitWidth(50);
+                    ice_potion.setPreserveRatio(true);
+
+
+                    ImageView fire_potion = new ImageView(
+                            new Image(getClass().getResource("/assets/GIF/fire_potion.gif").toExternalForm())
+                            );
+                    fire_potion.setFitWidth(50);
+                    fire_potion.setFitWidth(50);
+                    fire_potion.setPreserveRatio(true);
+
+                    HBox fifthGifs = new HBox(10, heart, boost, ice_potion, fire_potion);
+                    fifthGifs.setAlignment(Pos.CENTER);
+
+                    Label powerups = new Label(
+                            "Power Ups:\n\n" +
+                            "Heart: Adds One Life\n" +
+                            "Boost: Gets 10 Second of Boost\n" +
+                            "Ice Potion: Gets 10 Ice Ammo\n" +
+                            "Fire Potion: Gets 10 Fire Ammo\n"
+                            );
+                    powerups.getStyleClass().add("popup-content");
+                    powerups.setWrapText(true);
+                    powerups.setMaxWidth(400);
+
+                    titleLabel.setText("Power Ups - How To");
+
+                    VBox page6 = new VBox(fifthGifs, powerups);
+                    page6.setAlignment(Pos.CENTER);
+                    return page6;
+
+                case 6:
                     ImageView boss = new ImageView(
-                        new Image(getClass().getResource("/assets/GIF/boss.gif").toExternalForm())
-                        );
+                            new Image(getClass().getResource("/assets/GIF/boss.gif").toExternalForm())
+                            );
                     boss.setFitWidth(200);  
                     boss.setFitHeight(200);  
                     boss.setPreserveRatio(true);
 
                     Label bossLabel = new Label(
                             "Boss:\n\n" +
-                            "• Defeat to Win the Game\n\n"+
+                            "• Defeat to Win the Game\n"+
                             "Phases:\n" +
                             "• IDLE • CHARGING • SHOOTING •\n"
                             );
@@ -280,9 +324,10 @@ public class MenuInterface extends FXGLMenu {
 
                     titleLabel.setText("Boss - How To");
 
-                    VBox page6 = new VBox(10, boss, bossLabel);
-                    page6.setAlignment(Pos.CENTER);
-                    return page6;
+                    VBox page7 = new VBox(10, boss, bossLabel);
+                    page7.setAlignment(Pos.CENTER);
+                    return page7;
+
 
                 default:
                     return null;
