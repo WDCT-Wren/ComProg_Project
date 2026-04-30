@@ -341,7 +341,6 @@ public class BossComponent extends Component {
             return;
 
         CURRENT_HEALTH -= damage; 
-        triggerDamage();
 
         // UPDATES HEALTH BAR
         var healthBar = BossLevelManager.getHealthBar();
@@ -350,7 +349,8 @@ public class BossComponent extends Component {
 
         if (dead()) {
             triggerDeath();
-            // actually win the game, removed from bossLevelManager
+        } else {
+            triggerDamage();
         }
     }
 
@@ -421,7 +421,7 @@ public class BossComponent extends Component {
     public void burnEffect() {
         var burnTask = FXGL.getGameTimer().runAtInterval(() -> {
             // if theres no entity dont do this
-            if (entity == null || !entity.isActive())
+            if (entity == null || !entity.isActive() || state == State.DEAD)
                 return;
             takeDamage(FirePowerUpComponent.getFIRE_DAMAGE());
             triggerDamage();
@@ -437,13 +437,17 @@ public class BossComponent extends Component {
      * - After 0.3 (FLASH_DURATION), entity opacity is back to default value 1
      */
     protected void triggerDamage() {
+        if (entity == null || !entity.isActive() || state == State.DEAD) return;
+
         var flashTask = FXGL.getGameTimer().runAtInterval(() -> {
+            if (entity == null || !entity.isActive()) return;
             visible = !visible;
             entity.getViewComponent().setOpacity(visible ? 1.0 : 0.3);
         }, Duration.seconds(FLASH_INTERVAL));
 
         FXGL.getGameTimer().runOnceAfter(() -> {
             flashTask.expire();
+        if (entity != null && entity.isActive())
             entity.getViewComponent().setOpacity(1.0);
         }, Duration.seconds(FLASH_DURATION));
     }

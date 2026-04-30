@@ -17,6 +17,7 @@
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/BackgroundFactory.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/BossFactory.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/EntityFactory.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/InstructionPageFactory.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/InterfaceFactory.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Factory/MainSceneFactory.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/BossLevelManager.java
@@ -26,9 +27,10 @@
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Handlers/LevelManager.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/Music/AudioManager.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Controllers/AboutWindowController.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Controllers/InstructionController.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Controllers/MainMenuController.java
 /home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Controllers/PauseController.java
-/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/HUDInterface.java
-/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/LoadingInterface.java
-/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/MenuInterface.java
-/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/PauseInterface.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Interfaces/HUDInterface.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Interfaces/LoadingInterface.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Interfaces/MenuInterface.java
+/home/me/projects/ComProg_Project/src/main/java/org/group1/GamePackage/UI/Interfaces/PauseInterface.java
