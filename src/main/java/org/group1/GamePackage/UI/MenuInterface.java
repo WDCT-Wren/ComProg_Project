@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.stage.Modality;
 import org.group1.GamePackage.Handlers.GameMechanics;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -46,47 +47,26 @@ public class MenuInterface extends FXGLMenu {
     }
 
     /**
-     * Method to open the about window
+     * Opens the about window
      * <br><br>
-     * creates a new stage to make a popup window that shows the game's informations
+     * creates a new stage to make a popup window that shows the game's information
      */
-    public void openAboutWindow() {
-        Stage stage = new Stage();
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("About");
+    public void openAboutWindow() throws IOException {
+        // call the new FXML file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Scenes/AboutWindow.fxml"));
+        Parent root = loader.load();
 
-        Label titleLabel = new Label("About This Game");
-        titleLabel.getStyleClass().add("popup-title");
+        // Create the new Stage
+        Stage popupStage = new Stage();
+        popupStage.setTitle("About window");
+        popupStage.setScene(new Scene(root));
+        popupStage.initStyle(StageStyle.TRANSPARENT);
 
-        Label contentLabel = new Label(
-            "Project: COMPROG FINALS PROJECT\n" +
-            "DEVELOPED WITH THE USE OF FXGL\n\n" +
-            "Project Members:\n" +
-            "• Josh Santeno - Leader\n" +
-            "• Kherbin Buenaventura - Larper\n" +
-            "• Wren Tulio - Cleanup Crew\n" +
-            "• Renzo Diaz - Designer UI/UX\n" +
-            "• Jemima Pablo- Designer Animations\n" +
-            "• Shane Calara - Designer Menu Layout\n"
-        );
-        contentLabel.getStyleClass().add("about-content");
-        contentLabel.setWrapText(true);
-        contentLabel.setMaxWidth(400);
+        // Make it a modal window
+        popupStage.initModality(Modality.APPLICATION_MODAL);
 
-        Button btnClose = createCloseButton(stage);
-
-        VBox layout = new VBox(20, titleLabel, contentLabel, btnClose);
-        layout.getStyleClass().add("popup-root");
-        layout.setAlignment(Pos.CENTER);
-        layout.setPrefSize(700, 550);
-
-        Scene scene = new Scene(layout);
-        scene.getStylesheets().add(
-            getClass().getResource("/StyleSheets/styles.css").toExternalForm()
-        );
-
-        stage.setScene(scene);
-        stage.show();
+        // Show and wait for user action
+        popupStage.showAndWait();
     }
 
     /**
@@ -313,8 +293,8 @@ public class MenuInterface extends FXGLMenu {
         pagination.setMaxWidth(650);
         pagination.setMaxHeight(450);
 
-        Button btnNext = createButton("->");
-        Button btnPrev = createButton("<-");
+        Button btnNext = createButton("➡");
+        Button btnPrev = createButton("⬅");
         btnNext.setMaxWidth(50);
         btnNext.setMaxHeight(50);
         btnPrev.setMaxWidth(50);
@@ -335,6 +315,7 @@ public class MenuInterface extends FXGLMenu {
         });
 
         VBox navButtons = new VBox(10, btnPrev, btnNext);
+
         navButtons.setAlignment(Pos.CENTER);
 
 
@@ -360,7 +341,7 @@ public class MenuInterface extends FXGLMenu {
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(
-            getClass().getResource("/StyleSheets/styles.css").toExternalForm()
+            getClass().getResource("/StyleSheets/Window.css").toExternalForm()
         );
 
         stage.setScene(scene);

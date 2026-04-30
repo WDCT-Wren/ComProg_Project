@@ -18,6 +18,8 @@ import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.UI.MenuInterface;
 import org.group1.GamePackage.UI.PauseInterface;
 
+import java.io.IOException;
+
 public class MainMenuController {
     private MenuInterface menu;
     @FXML
@@ -98,7 +100,7 @@ public class MainMenuController {
      * Opens the AboutWindow by accessing the MenuInterface's openAboutWindow method
      */
     @FXML
-    void openAboutWindow() {
+    void openAboutWindow() throws IOException {
         menu.openAboutWindow();
     }
 
