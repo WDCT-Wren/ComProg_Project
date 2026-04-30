@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 import org.group1.GamePackage.Music.AudioManager;
-import org.group1.GamePackage.UI.PauseInterface;
+import org.group1.GamePackage.UI.Interfaces.PauseInterface;
 
 public class PauseController {
     private PauseInterface menu;

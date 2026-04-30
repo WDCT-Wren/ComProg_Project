@@ -19,10 +19,10 @@
                   <Insets top="-100.0" bottom="-80.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="startButton" mnemonicParsing="false" onAction="#playGame" styleClass="play-button" text="Start Game" />
-            <Button fx:id="aboutButton" mnemonicParsing="false" onAction="#openAboutWindow" styleClass="play-button" text="About" />
-            <Button fx:id="instructionButton" mnemonicParsing="false" onAction="#openInstructionsWindow" styleClass="play-button" text="Instructions" />
-            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#quitGame" styleClass="play-button" text="Exit" />
+            <Button mnemonicParsing="false" onAction="#playGame" styleClass="play-button" text="Start Game" />
+            <Button mnemonicParsing="false" onAction="#openAboutWindow" styleClass="play-button" text="About" />
+            <Button mnemonicParsing="false" onAction="#openInstructionsWindow" styleClass="play-button" text="Instructions" />
+            <Button mnemonicParsing="false" onAction="#quitGame" styleClass="play-button" text="Exit" />
          </children>
       </VBox>
    </children>

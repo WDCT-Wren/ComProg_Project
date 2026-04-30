@@ -24,7 +24,7 @@ open module org.group.game {
     exports org.group1.GamePackage.Components.Enemy;
     exports org.group1.GamePackage.Components.Projectiles;
     exports org.group1.GamePackage.Components.UI;
-    exports org.group1.GamePackage.UI;
     exports org.group1.GamePackage.Music;
     exports org.group1.GamePackage.UI.Controllers;
+    exports org.group1.GamePackage.UI.Interfaces;
 }

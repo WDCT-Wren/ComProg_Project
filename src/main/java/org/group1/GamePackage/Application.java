@@ -13,7 +13,7 @@ import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Handlers.LevelManager;
 import org.group1.GamePackage.Music.AudioManager;
-import org.group1.GamePackage.UI.HUDInterface;
+import org.group1.GamePackage.UI.Interfaces.HUDInterface;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;

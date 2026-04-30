@@ -3,39 +3,18 @@ package org.group1.GamePackage.UI.Controllers;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.views.SelfScrollingBackgroundView;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.group1.GamePackage.Handlers.GameMechanics;
-import org.group1.GamePackage.UI.MenuInterface;
-import org.group1.GamePackage.UI.PauseInterface;
+import org.group1.GamePackage.UI.Interfaces.MenuInterface;
 
 import java.io.IOException;
 
 public class MainMenuController {
     private MenuInterface menu;
-    @FXML
-    private Button aboutButton;
 
     @FXML
     private Pane backgroundContainer;
-
-    @FXML
-    private Button exitButton;
-
-    @FXML
-    private Button instructionButton;
-
-    @FXML
-    private Button startButton;
 
     private final int GAME_WIDTH = FXGL.getAppWidth();
     private final int GAME_HEIGHT = FXGL.getAppHeight();
@@ -108,7 +87,7 @@ public class MainMenuController {
      * Opens the InstructionsWindow by accessing the MenuInterface's openInstructionsWindow method
      */
     @FXML
-    void openInstructionsWindow() {
+    void openInstructionsWindow() throws IOException {
         menu.openInstructionsWindow();
     }
 }

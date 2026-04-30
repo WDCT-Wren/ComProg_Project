@@ -1,4 +1,4 @@
-package org.group1.GamePackage.UI;
+package org.group1.GamePackage.UI.Interfaces;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;

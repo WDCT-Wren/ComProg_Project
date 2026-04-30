@@ -4,7 +4,7 @@ import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Handlers.GameMechanics;
 import org.group1.GamePackage.Handlers.InputManager;
 import org.group1.GamePackage.Music.AudioManager;
-import org.group1.GamePackage.UI.HUDInterface;
+import org.group1.GamePackage.UI.Interfaces.HUDInterface;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;

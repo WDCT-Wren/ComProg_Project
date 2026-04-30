@@ -1,4 +1,4 @@
-package org.group1.GamePackage.UI;
+package org.group1.GamePackage.UI.Interfaces;
 
 import org.group1.GamePackage.Components.Player.PlayerComponent;
 import org.group1.GamePackage.Components.UI.TimerComponent;

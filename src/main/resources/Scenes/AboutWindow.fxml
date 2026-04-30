@@ -27,6 +27,6 @@
             <Insets left="40.0" right="40.0" />
          </padding>
       </TextFlow>
-      <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeWindow" styleClass="close-button" text="Button" />
+      <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeWindow" styleClass="close-button" text="Back" />
    </children>
 </VBox>

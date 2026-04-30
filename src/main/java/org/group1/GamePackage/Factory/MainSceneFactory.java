@@ -4,9 +4,9 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.LoadingScene;
 import com.almasb.fxgl.app.scene.SceneFactory;
 
-import org.group1.GamePackage.UI.MenuInterface;
-import org.group1.GamePackage.UI.LoadingInterface;
-import org.group1.GamePackage.UI.PauseInterface;
+import org.group1.GamePackage.UI.Interfaces.MenuInterface;
+import org.group1.GamePackage.UI.Interfaces.LoadingInterface;
+import org.group1.GamePackage.UI.Interfaces.PauseInterface;
 
 import java.io.IOException;
 
