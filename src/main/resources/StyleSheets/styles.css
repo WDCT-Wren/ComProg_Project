@@ -18,6 +18,17 @@
     -fx-effect: dropshadow(gaussian, #000000, 14, 0.6, 0, 0);
 }
 
+.title-logo {
+    -fx-background-image: url('../assets/interface/MoonLarp.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: contain;
+    -fx-min-width: 375px;
+    -fx-min-height: 375px;
+    -fx-pref-width: 375px;
+    -fx-pref-height: 375px;
+}
+
 .play-button {
      -fx-background-color: rgba(0, 80, 160, 0.55);
      -fx-background-radius: 20;

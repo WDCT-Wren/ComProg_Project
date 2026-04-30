@@ -12,6 +12,18 @@
     -fx-padding: 20;
 }
 
+
+.title-logo {
+    -fx-background-image: url('../assets/interface/MoonLarp.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: contain;
+    -fx-min-width: 375px;
+    -fx-min-height: 375px;
+    -fx-pref-width: 375px;
+    -fx-pref-height: 375px;
+}
+
 .sub-title {
     -fx-font-size: 20;
     -fx-text-fill: #ffffff;
