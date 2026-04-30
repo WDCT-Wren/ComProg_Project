@@ -30,6 +30,7 @@ public class CollisionManager {
     PlayerComponent playerComponent = new PlayerComponent(Application.inputManager);
 
     public void init() {
+        // Every Collision between entities will need a detector
         enemyVSbullet();
         enemyVSfire();
         enemyVSice();
@@ -47,256 +48,224 @@ public class CollisionManager {
         playerVSMiniLaser();
     }
 
-    public void enemyVSbullet () {
+    public void enemyVSbullet() {
+        // Collision Handler
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 EntityType.BULLET,
-                EntityType.ENEMY
-                )
-            {
-                @Override
-                protected void onCollisionBegin(Entity bullet, Entity enemy){
-                    bullet.removeFromWorld();
+                EntityType.ENEMY) {
+            // Override FXGL onCollisionBegin
+            @Override
+            protected void onCollisionBegin(Entity bullet, Entity enemy) {
+                // remove bullet 
+                bullet.removeFromWorld();
 
-                    PlayerComponent.addScore(1);
-                    dropPowerUp(enemy);
+                // add score and drop power up
+                PlayerComponent.addScore(1);
+                dropPowerUp(enemy);
 
-                    // your existing explosion code here
-                    AudioManager.playDeathSound();
-                    enemy.getComponent(EnemyAnimationComponent.class).explode();
-                }
-            });
+                AudioManager.playDeathSound();
+                enemy.getComponent(EnemyAnimationComponent.class).explode();
+            }
+        });
     }
 
-    // basic fire and ice bullet collsionhandler, removed the removeFromWorld if hit the enemy for piercing effect
-    public void enemyVSfire () {
+    public void enemyVSfire() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 EntityType.FIRE_BULLET,
-                EntityType.ENEMY
-                )
-            {
-                @Override
-                protected void onCollisionBegin(Entity bullet, Entity enemy){
+                EntityType.ENEMY) {
+            @Override
+            protected void onCollisionBegin(Entity bullet, Entity enemy) {
 
-                    // why didn't we just make this method static maem
-                    /* var enemyComponent = FXGL.getGameWorld()
-                        .getSingleton(EntityType.PLAYER)
-                        .getComponent(PlayerComponent.class);
-                    */
+                PlayerComponent.addScore(1);
+                dropPowerUp(enemy);
 
-                    PlayerComponent.addScore(1);
-                    dropPowerUp(enemy);
-
-                    // your existing explosion code here
-                    AudioManager.playDeathSound();
-                    enemy.getComponent(EnemyAnimationComponent.class).explode();
-                }
-            });
+                AudioManager.playDeathSound();
+                enemy.getComponent(EnemyAnimationComponent.class).explode();
+            }
+        });
     }
 
-    public void enemyVSice () {
+    public void enemyVSice() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 EntityType.ICE_BULLET,
-                EntityType.ENEMY
-                )
-            {
-                @Override
-                protected void onCollisionBegin(Entity bullet, Entity enemy){
+                EntityType.ENEMY) {
+            @Override
+            protected void onCollisionBegin(Entity bullet, Entity enemy) {
 
-                    PlayerComponent.addScore(1);
-                    dropPowerUp(enemy);
+                PlayerComponent.addScore(1);
+                dropPowerUp(enemy);
 
-                    // your existing explosion code here
-                    AudioManager.playDeathSound();
-                    enemy.getComponent(EnemyAnimationComponent.class).explode();
-                }
-            });
-    }
-
-    public void miniBossVSbullet () {
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    BossType.MINI_BOSS,
-                    EntityType.BULLET
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
-                        bullet.removeFromWorld();
-
-                        miniBoss.getComponent(MiniBossComponent.class).takeDamage(5);
-
-                        dropPowerUp(miniBoss);
-                    }
-
-                });
-
-    }
-
-    public void miniBossVSice () {
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    BossType.MINI_BOSS,
-                    EntityType.ICE_BULLET
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
-                        bullet.removeFromWorld();
-
-                        // get boss from the gameWorld and call it's method
-                        miniBoss.getComponent(MiniBossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
-                        miniBoss.getComponent(MiniBossComponent.class).slowEffect();
-
-                        dropPowerUp(miniBoss);
-                    }
-                });
-    }
-
-
-    public void miniBossVSfire () {
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    BossType.MINI_BOSS,
-                    EntityType.FIRE_BULLET
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
-                        bullet.removeFromWorld();
-
-                        // get boss from the gameWorld and call it's method
-                        miniBoss.getComponent(MiniBossComponent.class).takeDamage(5);
-                        miniBoss.getComponent(MiniBossComponent.class).burnEffect();
-
-                        dropPowerUp(miniBoss);
-                    }
+                // your existing explosion code here
+                AudioManager.playDeathSound();
+                enemy.getComponent(EnemyAnimationComponent.class).explode();
+            }
         });
     }
 
-    public void miniBossVSplayer () {
+    public void miniBossVSbullet() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.PLAYER,
-                    BossType.MINI_BOSS
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity player, Entity miniBoss){
-                        var playerComponent = player.getComponent(PlayerComponent.class);
-                        AudioManager.playDeathSound();
-                        playerComponent.takeDamage();
-                    }
-            
+                BossType.MINI_BOSS,
+                EntityType.BULLET) {
+            @Override
+            protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
+                bullet.removeFromWorld();
+
+                miniBoss.getComponent(MiniBossComponent.class).takeDamage(5);
+
+                dropPowerUp(miniBoss);
+            }
+
         });
 
     }
 
-    public void bossVSbullet () {
+    public void miniBossVSice() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    BossType.BOSS,
-                    EntityType.BULLET
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity boss, Entity bullet) {
-                        bullet.removeFromWorld();
+                BossType.MINI_BOSS,
+                EntityType.ICE_BULLET) {
+            @Override
+            protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
+                bullet.removeFromWorld();
 
-                        // get boss from the gameWorld and call it's method
-                        boss.getComponent(BossComponent.class).takeDamage(5);
+                // get boss from the gameWorld and call it's method
+                miniBoss.getComponent(MiniBossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
+                miniBoss.getComponent(MiniBossComponent.class).slowEffect();
 
-                        // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
-                        POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
-                        dropPowerUp(boss);
-                    }
+                dropPowerUp(miniBoss);
+            }
+        });
+    }
+
+    public void miniBossVSfire() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                BossType.MINI_BOSS,
+                EntityType.FIRE_BULLET) {
+            @Override
+            protected void onCollisionBegin(Entity miniBoss, Entity bullet) {
+                bullet.removeFromWorld();
+
+                // get boss from the gameWorld and call it's method
+                miniBoss.getComponent(MiniBossComponent.class).takeDamage(5);
+                miniBoss.getComponent(MiniBossComponent.class).burnEffect();
+
+                dropPowerUp(miniBoss);
+            }
+        });
+    }
+
+    public void miniBossVSplayer() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                EntityType.PLAYER,
+                BossType.MINI_BOSS) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity miniBoss) {
+                var playerComponent = player.getComponent(PlayerComponent.class);
+                AudioManager.playDeathSound();
+                playerComponent.takeDamage();
+            }
+
+        });
+
+    }
+
+    public void bossVSbullet() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
+                BossType.BOSS,
+                EntityType.BULLET) {
+            @Override
+            protected void onCollisionBegin(Entity boss, Entity bullet) {
+                bullet.removeFromWorld();
+
+                // get boss from the gameWorld and call it's method
+                boss.getComponent(BossComponent.class).takeDamage(5);
+
+                // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
+                POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
+                dropPowerUp(boss);
+            }
         });
     }
 
     // boss collision logic removes piercing effect
-    public void bossVSice () {
+    public void bossVSice() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    BossType.BOSS,
-                    EntityType.ICE_BULLET
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity boss, Entity bullet) {
-                        bullet.removeFromWorld();
+                BossType.BOSS,
+                EntityType.ICE_BULLET) {
+            @Override
+            protected void onCollisionBegin(Entity boss, Entity bullet) {
+                bullet.removeFromWorld();
 
-                        // get boss from the gameWorld and call it's method
-                        boss.getComponent(BossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
-                        boss.getComponent(BossComponent.class).slowEffect();
-                        // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
-                        POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
-                        dropPowerUp(boss);
-                    }
+                // get boss from the gameWorld and call it's method
+                boss.getComponent(BossComponent.class).takeDamage(IcePowerUpComponent.getICE_DAMAGE());
+                boss.getComponent(BossComponent.class).slowEffect();
+                // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
+                POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
+                dropPowerUp(boss);
+            }
         });
     }
 
-
-    public void bossVSfire () {
+    public void bossVSfire() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    BossType.BOSS,
-                    EntityType.FIRE_BULLET
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity boss, Entity bullet) {
-                        bullet.removeFromWorld();
+                BossType.BOSS,
+                EntityType.FIRE_BULLET) {
+            @Override
+            protected void onCollisionBegin(Entity boss, Entity bullet) {
+                bullet.removeFromWorld();
 
-                        // get boss from the gameWorld and call it's method
-                        boss.getComponent(BossComponent.class).takeDamage(5);
-                        boss.getComponent(BossComponent.class).burnEffect();
+                // get boss from the gameWorld and call it's method
+                boss.getComponent(BossComponent.class).takeDamage(5);
+                boss.getComponent(BossComponent.class).burnEffect();
 
-                        // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
-                        POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
-                        dropPowerUp(boss);
-                    }
+                // Sets the POWER_UP_DROP_RATE lower to avoid powerup exploit lmao
+                POWER_UP_DROP_RATE = BOSS_POWER_UP_DROP_RATE;
+                dropPowerUp(boss);
+            }
         });
     }
 
-
-    public void playerVSboss () {
+    public void playerVSboss() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
-                    EntityType.PLAYER,
-                    BossType.BOSS
-                    ) 
-                {
-                    @Override
-                    protected void onCollisionBegin(Entity player, Entity boss){
-                        var playerComponent = player.getComponent(PlayerComponent.class);
-                        AudioManager.playDeathSound();
-                        playerComponent.takeDamage();
+                EntityType.PLAYER,
+                BossType.BOSS) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity boss) {
+                var playerComponent = player.getComponent(PlayerComponent.class);
+                AudioManager.playDeathSound();
+                playerComponent.takeDamage();
 
-                    }
-            
+            }
+
         });
 
     }
 
-    public void enemyVSplayer () {
+    public void enemyVSplayer() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 EntityType.ENEMY,
-                EntityType.PLAYER)
-            {
-                @Override
-                protected void onCollisionBegin(Entity enemy, Entity player) {
-                    var playerComponent = player.getComponent(PlayerComponent.class);
-                    if (!playerComponent.isInvincible()) {
-                        AudioManager.playDeathSound();
-                        playerComponent.takeDamage();
+                EntityType.PLAYER) {
+            @Override
+            protected void onCollisionBegin(Entity enemy, Entity player) {
+                var playerComponent = player.getComponent(PlayerComponent.class);
+                if (!playerComponent.isInvincible()) {
+                    AudioManager.playDeathSound();
+                    playerComponent.takeDamage();
 
-                        enemy.getComponent(EnemyAnimationComponent.class).explode();
-                    }
-
-                    if (PlayerComponent.getLives() == 0) {
-                        // IDK ANIMATE IT IDK
-                        player.getViewComponent().setVisible(false);
-                    }
+                    enemy.getComponent(EnemyAnimationComponent.class).explode();
                 }
-            });
+
+                if (PlayerComponent.getLives() == 0) {
+                    // IDK ANIMATE IT IDK
+                    player.getViewComponent().setVisible(false);
+                }
+            }
+        });
     }
 
     public void playerVSpowerUp() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 EntityType.POWER_UP,
-                EntityType.PLAYER)
-        {
+                EntityType.PLAYER) {
             @Override
             protected void onCollisionBegin(Entity powerUp, Entity player) {
                 var playerComponent = player.getComponent(PlayerComponent.class);
@@ -317,14 +286,14 @@ public class CollisionManager {
     public void playerVSLaser() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 BossType.BOSS_LASER,
-                EntityType.PLAYER)
-        {
+                EntityType.PLAYER) {
             @Override
             protected void onCollisionBegin(Entity laser, Entity player) {
                 var playerComponent = player.getComponent(PlayerComponent.class);
                 if (!playerComponent.isInvincible()) {
                     AudioManager.playDeathSound();
-                    playerComponent.takeDamage();;
+                    playerComponent.takeDamage();
+                    ;
                 }
 
                 if (PlayerComponent.getLives() == 0) {
@@ -338,14 +307,14 @@ public class CollisionManager {
     public void playerVSMiniLaser() {
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(
                 BossType.MINI_BOSS_LASER,
-                EntityType.PLAYER)
-        {
+                EntityType.PLAYER) {
             @Override
             protected void onCollisionBegin(Entity laser, Entity player) {
                 var playerComponent = player.getComponent(PlayerComponent.class);
                 if (!playerComponent.isInvincible()) {
                     AudioManager.playDeathSound();
-                    playerComponent.takeDamage();;
+                    playerComponent.takeDamage();
+                    ;
                 }
 
                 if (PlayerComponent.getLives() == 0) {
@@ -355,8 +324,6 @@ public class CollisionManager {
             }
         });
     }
-
-
 
     private void extraLives(Entity powerUp, PlayerComponent playerComponent) {
         AudioManager.playHeartGain();
@@ -373,14 +340,14 @@ public class CollisionManager {
         GameMechanics.speedUp(player);
     }
 
-    private void enableIceBullet(Entity powerUp,  PlayerComponent playerComponent) {
+    private void enableIceBullet(Entity powerUp, PlayerComponent playerComponent) {
         playerComponent.toggleIceBullet(true);
         PlayerComponent.iceBulletAdd(10);
         AudioManager.potionDrink();
         powerUp.removeFromWorld();
     }
 
-    private void enableFireBullet(Entity powerUp,  PlayerComponent playerComponent) {
+    private void enableFireBullet(Entity powerUp, PlayerComponent playerComponent) {
         playerComponent.toggleFireBullet(true);
         PlayerComponent.fireBulletAdd(10);
         AudioManager.potionDrink();
@@ -388,11 +355,11 @@ public class CollisionManager {
     }
 
     // method takes an Entity parameter to get its center
-    // RNG powerup spawn at Center 
-    // 10% chance for powerup, then 50/50 split between boostUp and extraLife
+    // RNG powerup spawn at Center
+    // Chance for powerup, then split chances between all Power Up
     private void dropPowerUp(Entity entity) {
         if (random.nextDouble() < POWER_UP_DROP_RATE) {
-            String[] powerUps = {"extraLife", "boostUp", "ice_powerUp", "fire_powerUp"};
+            String[] powerUps = { "extraLife", "boostUp", "ice_powerUp", "fire_powerUp" };
             randomIndex = random.nextInt(4);
 
             String powerUpType = powerUps[randomIndex];

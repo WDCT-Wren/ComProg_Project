@@ -27,11 +27,11 @@ public class BossComponent extends Component {
         RECOVERING,
         DEAD
     }
+    private State state = State.IDLE;
 
     private static int BOSS_HEALTH = 1000;
     protected int CURRENT_HEALTH;
 
-    private State state = State.IDLE;
     protected TimerAction shootInterval;
 
     // Initial position of BOSS set by FXGL.spawn
@@ -379,7 +379,7 @@ public class BossComponent extends Component {
         }, Duration.seconds(0.6));
     }
  
-    //Wins the game
+    // Overriden in MiniBossComponent to change what happens on death
     protected void onDeathComplete() {
         GameOverComponent.winGame();
     }

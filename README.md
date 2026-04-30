@@ -45,6 +45,7 @@ This is a sample "alpha" test for Group 1's 2d <b>Space Impact</b> style arcade 
 │       │   │    │   ├── BackgroundFactory
 │       │   │    │   ├── BossFactory
 │       │   │    │   ├── EntityFactory
+│       │   │    │   ├── InstructionPageFactory 
 │       │   │    │   ├── InterfaceFactory
 │       │   │    │   └── MainSceneFactory
 │       │   │    ├── Handlers/                       # Game logic and input management
@@ -56,9 +57,25 @@ This is a sample "alpha" test for Group 1's 2d <b>Space Impact</b> style arcade 
 │       │   │    ├── Music/                          # Audio management
 │       │   │    │   └── AudioManager
 │       │   │    └── UI/                             # HUD and interface screens
-│       │   │        ├── HUDInterface
-│       │   │        ├── LoadingInterface
-│       │   │        └── MenuInterface
+│       │   │        ├── Controllers
+│       │   │        │   ├── AboutWindowController.class
+│       │   │        │   ├── InstructionController.class
+│       │   │        │   ├── MainMenuController.class
+│       │   │        │   └── PauseController.class
+│       │   │        └── Interfaces
+│       │   │            ├── HUDInterface.class
+│       │   │            ├── LoadingInterface.class
+│       │   │            ├── MenuInterface.class
+│       │   │            └── PauseInterface.class
+│       │   ├── Scenes #FXML
+│       │   │   ├── AboutWindow.fxml
+│       │   │   ├── InstructionsWindow.fxml
+│       │   │   ├── MainMenu.fxml
+│       │   │   └── PauseMenu.fxml
+│       │   ├── StyleSheets #CSS
+│       │   │   ├── PauseMenu.css
+│       │   │   ├── styles.css
+│       │   │   └── Window.css
 │       └── Resources               # Project Resources
 │           └── Assets/             
 │               ├── music           # Game Music

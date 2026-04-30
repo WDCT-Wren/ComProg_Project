@@ -85,7 +85,7 @@ public class BossLevelManager extends Component {
     }
 
     public void spawnBoss() {
-        // cant call FXGL without it initializing learned the hard way
+        // initialize FXGL
         int X_LOCATION = 700;
         int Y_LOCATION = 160;
         FXGL.spawn("boss", X_LOCATION, Y_LOCATION);

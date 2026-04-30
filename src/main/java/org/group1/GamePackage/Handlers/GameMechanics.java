@@ -26,24 +26,24 @@ public class GameMechanics {
             firstBullet = currentTime;
 
             switch (currentBulletType) {
-            case "fire_bullet" ->
-                PlayerComponent.fireBulletAdd(-1);
-            case "ice_bullet" ->
-                PlayerComponent.iceBulletAdd(-1);
-            default -> {
+                case "fire_bullet" ->
+                    PlayerComponent.fireBulletAdd(-1);
+                case "ice_bullet" ->
+                    PlayerComponent.iceBulletAdd(-1);
+                    default -> {
+                    }
             }
-        }
         }
     }
 
     public static String getCurrentBulletType() {
         return currentBulletType;
     }
-    
+
     public static void setFireBullet() {
         currentBulletType = "fire_bullet";
     }
-    
+
     public static void setIceBullet() {
         currentBulletType = "ice_bullet";
     }
