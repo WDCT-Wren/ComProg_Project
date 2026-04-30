@@ -5,6 +5,7 @@ import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.BossLevelManager;
+import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -152,7 +153,6 @@ public class BossComponent extends Component {
 
     @Override
     public void onUpdate(double update) {
-        System.out.println(entity.getY());
         // switch states that updates all the time by overriding FXGL onUpdate(double)
         switch (state) {
             case IDLE -> onIdle(update);

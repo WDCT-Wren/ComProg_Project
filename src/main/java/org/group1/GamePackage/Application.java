@@ -52,7 +52,7 @@ public class Application extends GameApplication {
     // Variables
     private static final double NORMAL_ENEMY_SPAWN_RATE = 0.7; // every seconds
     private static final double NORMAL_ENEMY_SPAWN_DISTANCE = 1000; // Spawns at 1000 in the x-axis
-    private static final double MINI_BOSS_SPAWN_DISTANCE = 1000;
+    private static final double MINI_BOSS_SPAWN_DISTANCE = 800;
     private static final double MINI_BOSS_SPAWN_RATE = 10;
 
     //Enemy presence manager
@@ -90,6 +90,7 @@ public class Application extends GameApplication {
     protected void initPhysics() {
         AudioManager.stopAll();
         AudioManager.playBackgroundMusic();
+        AudioManager.playReadyMusic();
 
         CollisionManager collisionManager = new CollisionManager();
         collisionManager.init();

@@ -79,7 +79,6 @@ public class BossLevelManager extends Component {
             gameOverTriggered = true;
             FXGL.spawn("death_overlay");
             FXGL.getGameTimer().runOnceAfter(() -> {
-                audioManager.playGameOver();
                 player.die();
             }, Duration.seconds(3));
         }

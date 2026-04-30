@@ -6,7 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 
 public class AudioManager {
     private static double audioVolume = 20.0;
-    private static double musicVolume = 0.1;
+    private static double musicVolume = 0.3;
 
     public static void setGlobalSoundVolume(double newVolume) {
         audioVolume = newVolume;
@@ -19,6 +19,12 @@ public class AudioManager {
 
     public static void playBackgroundMusic() {
         Music music = FXGL.getAssetLoader().loadMusic("main_music.wav");
+        FXGL.getAudioPlayer().loopMusic(music);
+        music.getAudio().setVolume(musicVolume);
+    }
+
+    public static void playMenuMusic() {
+        Music music = FXGL.getAssetLoader().loadMusic("menu_music.wav");
         FXGL.getAudioPlayer().loopMusic(music);
         music.getAudio().setVolume(musicVolume);
     }
@@ -43,12 +49,12 @@ public class AudioManager {
         FXGL.play("switch_bullet.wav");
     }
 
-    public static void playGameOver() {
-        //TODO: Sound effect for gameover
-    }
-
     public static void speedUpSound() {
         FXGL.play("speed.wav");
+    }
+
+    public static void playReadyMusic() {
+        FXGL.play("ready.wav");
     }
 
     public static void potionDrink() {

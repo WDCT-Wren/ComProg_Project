@@ -1,6 +1,7 @@
 package org.group1.GamePackage.Handlers;
 
 import org.group1.GamePackage.Components.Player.PlayerComponent;
+import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -77,6 +78,7 @@ public class GameMechanics {
 
     public static void restartGame() {
         FXGL.getGameController().startNewGame();
+        AudioManager.stopAll();
     }
 
     public static void setBULLET_COOLDOWN(long BULLET_COOLDOWN) {

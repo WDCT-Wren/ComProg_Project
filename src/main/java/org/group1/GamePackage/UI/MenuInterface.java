@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Modality;
 import org.group1.GamePackage.Handlers.GameMechanics;
+import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
@@ -43,6 +44,7 @@ public class MenuInterface extends FXGLMenu {
         MainMenuController controller = loader.getController();
         controller.setMenu(this);
 
+        AudioManager.playMenuMusic();
         getContentRoot().getChildren().add(root);
     }
 

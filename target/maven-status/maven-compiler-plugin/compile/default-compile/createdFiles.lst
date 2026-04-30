@@ -9,6 +9,7 @@ org/group1/GamePackage/Application.class
 org/group1/GamePackage/Handlers/CollisionManager$14.class
 org/group1/GamePackage/Components/Projectiles/BulletAnimationComponent.class
 org/group1/GamePackage/Components/UI/OverlayAnimationComponent.class
+org/group1/GamePackage/UI/Controllers/AboutWindowController.class
 org/group1/GamePackage/Handlers/BossLevelManager.class
 org/group1/GamePackage/Handlers/InputManager$3.class
 org/group1/GamePackage/Handlers/CollisionManager$2.class
