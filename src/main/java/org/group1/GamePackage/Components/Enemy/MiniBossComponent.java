@@ -40,6 +40,10 @@ public class MiniBossComponent extends BossComponent {
         return CURRENT_HEALTH <= 0;
     }
 
+    /**
+     * - Overrides super.shootLaser
+     * - Laser spawns in front of miniboss entities instead of tracking the player 
+     */
     @Override
     protected void shootLaser() {
         if (entity == null) {
@@ -50,6 +54,10 @@ public class MiniBossComponent extends BossComponent {
         FXGL.spawn(getLaser(), INITIAL_BOSS_X + 50, y+200);
     }
 
+    /**
+     * - Overrides super.slowEffect
+     * - Removes changes to animation speed and idle speed
+     */
     @Override
     public void slowEffect() {
         SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();
@@ -60,7 +68,7 @@ public class MiniBossComponent extends BossComponent {
         if (shootInterval != null && !shootInterval.isExpired()) {
             shootInterval.expire();
             shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
-                FXGL.spawn(getLaser(), INITIAL_BOSS_X, CHARGE_TARGET_Y);
+                shootLaser();
             }, Duration.seconds(BOSS_SHOOTING_RATE));
         }
 
@@ -71,11 +79,15 @@ public class MiniBossComponent extends BossComponent {
         }, javafx.util.Duration.seconds(SLOW_DURATION));
     }
 
+    /**
+     * - Overrides super.burnEffect to use MINI_BOSS_BURN_DURATION
+     */
     @Override
     public void burnEffect() {
         var burnTask = FXGL.getGameTimer().runAtInterval(() -> {
             if (entity == null || !entity.isActive()) return;
             takeDamage(FirePowerUpComponent.getFIRE_DAMAGE());
+            super.triggerDamage();
         }, Duration.seconds(MINI_BOSS_BURN_RATE));
 
         FXGL.getGameTimer().runOnceAfter(burnTask::expire, Duration.seconds(MINI_BOSS_BURN_DURATION));

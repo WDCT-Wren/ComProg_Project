@@ -5,7 +5,6 @@ import org.group1.GamePackage.Components.PowerUps.IcePowerUpComponent;
 import org.group1.GamePackage.Components.UI.GameOverComponent;
 import org.group1.GamePackage.Factory.EntityFactory.EntityType;
 import org.group1.GamePackage.Handlers.BossLevelManager;
-import org.group1.GamePackage.Music.AudioManager;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -163,6 +162,11 @@ public class BossComponent extends Component {
         }
     }
 
+    /**
+     * - Changes the state of boss entity
+     * - Performs different animation based on given state
+     * Takes @param newState as new entity state
+     */
     private void setState(State newState) {
         if (state == newState)
             return;
@@ -236,13 +240,19 @@ public class BossComponent extends Component {
         bossMovement(update);
     }
 
-    //Spawns laser
+    /**
+     * - Spawns laser entity 
+     * - Tracks player's y-axis postion in spawning
+     */
     protected void shootLaser() {
         FXGL.spawn(getLaser(), INITIAL_BOSS_X, CHARGE_TARGET_Y);
     }
 
-    // Transitions boss into SHOOTING state, fires lasers on interval, then returns
-    // to IDLE
+    /**
+     * - Transitions boss into SHOOTING state, fires lasers on 0.5 (BOSS_SHOOTING_RATE) seconds interval
+     * - Returns to IDLE after 4 seconds (SHOOT_DURATION)
+     */
+     
     private void enterShootingState() {
         setState(State.SHOOTING);
 
@@ -321,12 +331,17 @@ public class BossComponent extends Component {
         }
     }
 
+    /**
+     * - Triggers when boss entity is shot 
+     * - takes @param damage and subtracts it to boss's CURRENT_HEALTH
+     */
     public void takeDamage(int damage) {
         // guarding runtime errors lel
         if (entity == null || !entity.isActive() || state == State.DEAD)
             return;
 
-        CURRENT_HEALTH -= damage;
+        CURRENT_HEALTH -= damage; 
+        triggerDamage();
 
         // UPDATES HEALTH BAR
         var healthBar = BossLevelManager.getHealthBar();
@@ -343,6 +358,11 @@ public class BossComponent extends Component {
         return CURRENT_HEALTH <= 0;
     }
 
+    /**
+     * - Triggered when boss entity is dead
+     * - Removes entity from the world
+     * - Calls onDeathComplete once entity is removed
+     */
     private void triggerDeath() {
         // Cancel any active shoot interval so no more lasers are fired
         if (shootInterval != null && !shootInterval.isExpired()) {
@@ -359,11 +379,16 @@ public class BossComponent extends Component {
         }, Duration.seconds(0.6));
     }
  
+    //Wins the game
     protected void onDeathComplete() {
         GameOverComponent.winGame();
     }
 
-
+    /**
+     * - Decreases values of shootInterval, CHARGE_SPEED, SPEED_Y
+     * - Uses slow effect values from IcePowerUpComponent
+     * - Slow effect Lasts for 8 (SLOW_DURATION) seconds 
+     */
     public void slowEffect() {
         SPEED_Y = IcePowerUpComponent.getSLOW_EFFECT();
         CHARGE_SPEED = IcePowerUpComponent.getDASH_SLOW();
@@ -375,8 +400,7 @@ public class BossComponent extends Component {
         if (shootInterval != null && !shootInterval.isExpired()) {
             shootInterval.expire();
             shootInterval = FXGL.getGameTimer().runAtInterval(() -> {
-                double y = CHARGE_TARGET_Y;
-                FXGL.spawn(getLaser(), INITIAL_BOSS_X, y);
+                shootLaser();
             }, Duration.seconds(BOSS_SHOOTING_RATE));
         }
 
@@ -389,18 +413,30 @@ public class BossComponent extends Component {
         }, Duration.seconds(SLOW_DURATION));
     }
 
+    /**
+     * - Triggers burn damage
+     * - Entity health decreases by 2 (FirePowerUpComponent.getFIRE_DAMAGE()) every second (BURN_RATE)
+     * - Lasts for 8 (BURN_DURATION) seconds
+     */
     public void burnEffect() {
         var burnTask = FXGL.getGameTimer().runAtInterval(() -> {
             // if theres no entity dont do this
             if (entity == null || !entity.isActive())
                 return;
             takeDamage(FirePowerUpComponent.getFIRE_DAMAGE());
+            triggerDamage();
         }, Duration.seconds(BURN_RATE));
 
         FXGL.getGameTimer().runOnceAfter(burnTask::expire, Duration.seconds(BURN_DURATION));
     }
 
-    private void triggerDamage() {
+    /**
+     * - Used to display flashing effect when boss takes damage
+     * - Checks if boss is visible every 0.1 (FLASH_INTERVAL) seconds
+     * - Sets entity opacity to 0.3 if it is visible
+     * - After 0.3 (FLASH_DURATION), entity opacity is back to default value 1
+     */
+    protected void triggerDamage() {
         var flashTask = FXGL.getGameTimer().runAtInterval(() -> {
             visible = !visible;
             entity.getViewComponent().setOpacity(visible ? 1.0 : 0.3);
@@ -412,6 +448,7 @@ public class BossComponent extends Component {
         }, Duration.seconds(FLASH_DURATION));
     }
 
+    
     public static int getBOSS_HEALTH() {
         return BOSS_HEALTH;
     }
