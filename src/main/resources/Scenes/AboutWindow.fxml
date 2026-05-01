@@ -18,7 +18,7 @@
             <Label styleClass="popup-content" text="• Wren Tulio - Codebase Cleaner" wrapText="true" />
             <Label styleClass="popup-content" text="• Renzo Diaz - Character Designer" wrapText="true" />
             <Label styleClass="popup-content" text="• Jemima Pablo - Boss Designer" wrapText="true" />
-            <Label prefHeight="58.0" prefWidth="481.0" styleClass="popup-content" text="• Shane Calara - Menu Layout Designer" wrapText="true" />
+            <Label styleClass="popup-content" text="• Shane Calara - Menu Layout Designer" wrapText="true" />
          </children>
          <VBox.margin>
             <Insets left="50.0" right="50.0" />

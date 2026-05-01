@@ -4,19 +4,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background"
-      stylesheets="@../StyleSheets/styles.css" fx:controller="org.group1.GamePackage.UI.Controllers.MainMenuController" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@../StyleSheets/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group1.GamePackage.UI.Controllers.MainMenuController">
    <children>
       <Pane fx:id="backgroundContainer" prefHeight="720.0" prefWidth="1280.0" />
-      <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="30.0">
+      <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="20.0">
          <children>
             <Label styleClass="title-logo">
                <VBox.margin>
-                  <Insets top="-120.0" bottom="-80.0" />
+                  <Insets bottom="-80.0" top="-120.0" />
                </VBox.margin>
             </Label>
             <Button mnemonicParsing="false" onAction="#playGame" styleClass="play-button" text="Start Game" />
