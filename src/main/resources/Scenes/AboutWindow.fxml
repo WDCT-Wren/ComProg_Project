@@ -9,7 +9,7 @@
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" spacing="20.0" styleClass="popup-root" stylesheets="@../StyleSheets/Window.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.group1.GamePackage.UI.Controllers.AboutWindowController">
    <children>
       <Label styleClass="popup-title" text="About This Game" />
-      <Label prefHeight="56.0" prefWidth="447.0" styleClass="popup-content" text="Project: COMPROG FINALS PROJECT DEVELOPED WITH THE USE OF FXGL" wrapText="true" />
+      <Label prefHeight="62.0" prefWidth="447.0" styleClass="popup-content" text="Project: COMPROG FINALS PROJECT DEVELOPED WITH THE USE OF FXGL" wrapText="true" />
       <TextFlow prefHeight="200.0" prefWidth="580.0">
          <children>
             <Label styleClass="popup-content" text="Project Members: " wrapText="true" />
