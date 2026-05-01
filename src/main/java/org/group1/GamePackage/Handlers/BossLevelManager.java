@@ -93,6 +93,8 @@ public class BossLevelManager extends Component {
         // kill mini bosses on boss spawn
         FXGL.getGameWorld().getEntitiesByType(BossType.MINI_BOSS)
                 .forEach(Entity::removeFromWorld);
+
+        healthBar.currentValueProperty().setValue(BossComponent.getBOSS_HEALTH());
     }
 
     public boolean inBossLevel() {
